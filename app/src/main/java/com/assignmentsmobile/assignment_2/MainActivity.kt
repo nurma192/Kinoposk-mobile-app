@@ -53,7 +53,7 @@ fun OnboardingView() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 26.dp, vertical = 38.dp),
+            .padding(start = 26.dp, end = 26.dp, top = 38.dp, bottom = 63.dp),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         Row(modifier = Modifier.fillMaxWidth(),
@@ -62,16 +62,6 @@ fun OnboardingView() {
             Image(
                 painter = painterResource(id = R.drawable.ic_skillcinema),
                 contentDescription = ""
-            )
-            Text(
-                "Пропустить",
-                modifier = Modifier.clickable { },
-                style = TextStyle(
-                    color = Color(0xffb5b5c9),
-                    fontFamily = FontFamily(Font(R.font.graphik_medium)),
-                    fontSize = 14.sp,
-                ),
-
             )
             Text(
                 "Пропустить",
@@ -92,8 +82,15 @@ fun OnboardingView() {
                 fontSize = 32.sp,
             )
         )
-        Row {
-
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)){
+            repeat(3){
+                Box(
+                    modifier = Modifier
+                        .size(8.dp) // Размер круга
+                        .background(color = Color(0xffd9d9d9), shape = CircleShape)
+                )
+            }
+            //Color(0xff121616)
         }
     }
 }
