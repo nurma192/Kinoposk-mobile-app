@@ -48,8 +48,13 @@ class MainActivity : ComponentActivity() {
 }
 
 //che tam dimash, zhoma, zhalgas, nurma
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingView() {
+    val pagerState = rememberPagerState (
+        pageCount = {
+            3
+        })
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -74,7 +79,10 @@ fun OnboardingView() {
 
             )
         }
-        Image(painter = painterResource(id = R.drawable.image_1), contentDescription = "")
+        HorizontalPager(state = pagerState) {
+            Image(painter = painterResource(id = R.drawable.image_1), contentDescription = "")
+        }
+
         Text(
             text = "Узнавай о премьерах", style = TextStyle(
                 color = Color(0xff272727),
@@ -94,6 +102,18 @@ fun OnboardingView() {
         }
     }
 }
+
+data class Onboarding(
+    var imagePath: Int,
+    var imageText: String,
+    var text: String
+)
+
+val onboardingItems = listOf(
+    Onboarding(R.drawable.image_1, "Image_1", "Узнавай о премьерах"),
+    Onboarding(R.drawable.image_2, "Image_2", "Создавай коллекции"),
+    Onboarding(R.drawable.image_3, "Image_3", "Делись с друзьями")
+)
 
 //@Composable
 //fun OnboardingScreen(onFinish: () -> Unit) {
@@ -163,15 +183,3 @@ fun OnboardingView() {
 //        }
 //    }
 //}
-
-data class Onboarding(
-    var imagePath: Int,
-    var imageText: String,
-    var text: String
-)
-
-val onboardingItems = listOf(
-    Onboarding(R.drawable.image_1, "Image_1", "Узнавай о премьерах"),
-    Onboarding(R.drawable.image_2, "Image_2", "Создавай коллекции"),
-    Onboarding(R.drawable.image_3, "Image_3", "Делись с друзьями")
-)
