@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-//che tam
+//che tam dimash, zhoma, zhalgas, nurma
 @Composable
 fun OnboardingView() {
     Column(
