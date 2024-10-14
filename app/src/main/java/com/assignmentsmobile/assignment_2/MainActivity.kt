@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-
+//che tam
 @Composable
 fun OnboardingView() {
     Column(
@@ -71,6 +71,17 @@ fun OnboardingView() {
                     fontFamily = FontFamily(Font(R.font.graphik_medium)),
                     fontSize = 14.sp,
                 ),
+
+            )
+            Text(
+                "Пропустить",
+                modifier = Modifier.clickable { },
+                style = TextStyle(
+                    color = Color(0xffb5b5c9),
+                    fontFamily = FontFamily(Font(R.font.graphik_medium)),
+                    fontSize = 14.sp,
+                ),
+
             )
         }
         Image(painter = painterResource(id = R.drawable.image_1), contentDescription = "")
