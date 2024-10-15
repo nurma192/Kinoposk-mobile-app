@@ -74,17 +74,18 @@ fun OnboardingScreen() {
             Column(
                 modifier = Modifier.fillMaxWidth(),
             ) {
+                Spacer(modifier = Modifier.height(70.dp))
                 Image(
                     painter = painterResource(id = item.imagePath),
                     contentDescription = item.imageText,
                     modifier = Modifier.size(250.dp)
                 )
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(67.dp))
                 Text(
                     text = item.text,
                     style = TextStyle(
                         color = Color(0xff272727),
-                        fontFamily = FontFamily(Font(R.font.graphik_medium)),
+                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
                         fontSize = 32.sp
                     )
                 )
