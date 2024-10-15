@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.ui.theme.Assignment_2Theme
@@ -38,6 +39,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview(showBackground = true)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnboardingScreen() {
@@ -50,7 +52,8 @@ fun OnboardingScreen() {
         verticalArrangement = Arrangement.SpaceAround
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .padding(bottom = 100.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -77,7 +80,8 @@ fun OnboardingScreen() {
                 Image(
                     painter = painterResource(id = item.imagePath),
                     contentDescription = item.imageText,
-                    modifier = Modifier.size(250.dp)
+                    modifier = Modifier.height(height = 270.dp)
+                        .fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(80.dp))
                 Text(
@@ -115,7 +119,7 @@ data class Onboarding(
 )
 
 val onboardingItems = listOf(
-    Onboarding(R.drawable.image_1, "Image_1", "Узнавай о премьерах"),
-    Onboarding(R.drawable.image_2, "Image_2", "Создавай коллекции"),
+    Onboarding(R.drawable.image_1, "Image_1", "Узнавай \nо премьерах"),
+    Onboarding(R.drawable.image_2, "Image_2", "Создавай \nколлекции"),
     Onboarding(R.drawable.image_3, "Image_3", "Делись \nс друзьями")
 )
