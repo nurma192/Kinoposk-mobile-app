@@ -12,7 +12,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Assignment_2Theme {
-                OnboardingScreen()
+                HomepageScreen()
+//                OnboardingScreen()
             }
         }
     }

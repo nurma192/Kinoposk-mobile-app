@@ -42,7 +42,7 @@ fun OnboardingScreen() {
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_skillcinema),
-                contentDescription = ""
+                contentDescription = "Icon_Skillcinema"
             )
             Text(
                 text = "Пропустить",
@@ -54,7 +54,6 @@ fun OnboardingScreen() {
                 )
             )
         }
-
         HorizontalPager(state = pagerState) { page ->
             val item = onboardingItems[page]
             Column(
@@ -79,7 +78,6 @@ fun OnboardingScreen() {
                 )
             }
         }
-
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
