@@ -34,7 +34,8 @@ fun OnboardingScreen() {
         verticalArrangement = Arrangement.SpaceAround
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 100.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
@@ -63,7 +64,8 @@ fun OnboardingScreen() {
                 Image(
                     painter = painterResource(id = item.imagePath),
                     contentDescription = item.imageText,
-                    modifier = Modifier.height(height = 270.dp)
+                    modifier = Modifier
+                        .height(height = 270.dp)
                         .fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(67.dp))
