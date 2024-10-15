@@ -86,7 +86,8 @@ fun Section() {
 
 @Composable
 fun FilmView() {
-    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+    Column(modifier = Modifier.clickable { },
+        verticalArrangement = Arrangement.spacedBy(2.dp)) {
         Box(//box for test but there is should be image
             modifier = Modifier
                 .size(width = 111.dp, height = 156.dp)
