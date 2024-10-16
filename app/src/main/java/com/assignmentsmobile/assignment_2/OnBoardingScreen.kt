@@ -1,6 +1,5 @@
 package com.assignmentsmobile.assignment_2
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,13 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview(showBackground = true)
 @Composable
-fun OnboardingScreen(
+fun OnBoardingScreen(
     onSkipClicked: () -> Unit = {}
 ) {
     val pagerState = rememberPagerState(pageCount = { onboardingItems.size })

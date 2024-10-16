@@ -32,7 +32,7 @@ fun SkillCinemaApp(){
 
     Assignment_2Theme {
         if (!isOnboardingCompleted) {
-            OnboardingScreen(
+            OnBoardingScreen(
                 onSkipClicked = {
                     isOnboardingCompleted = true
                     navController.navigate("")
