@@ -47,7 +47,7 @@ fun OnboardingScreen(
             Text(
                 text = "Пропустить",
                 modifier = Modifier.clickable {
-                    onSkipClicked()
+
                 },
                 style = TextStyle(
                     color = Color(0xffb5b5c9),
