@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-@Preview(showBackground = true)
 @Composable
 fun OnboardingScreen(
     onSkipClicked: () -> Unit = {}
@@ -47,7 +46,7 @@ fun OnboardingScreen(
             Text(
                 text = "Пропустить",
                 modifier = Modifier.clickable {
-
+                    onSkipClicked()
                 },
                 style = TextStyle(
                     color = Color(0xffb5b5c9),
