@@ -1,19 +1,10 @@
 package com.assignmentsmobile.assignment_2
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
@@ -33,8 +24,9 @@ import androidx.compose.ui.unit.sp
 @Preview(showBackground = true)
 @Composable
 fun OnboardingScreen(
-    onSkipClicked: () ->  Unit = {}
+    onSkipClicked: () -> Unit = {}
 ) {
+    val pagerState = rememberPagerState(pageCount = { onboardingItems.size })
 
     Column(
         modifier = Modifier
@@ -43,14 +35,15 @@ fun OnboardingScreen(
         verticalArrangement = Arrangement.SpaceAround
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(bottom = 100.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_skillcinema),
-                contentDescription = ""
+                contentDescription = "Icon_Skillcinema"
             )
             Text(
                 text = "Пропустить",
@@ -61,34 +54,33 @@ fun OnboardingScreen(
                     color = Color(0xffb5b5c9),
                     fontFamily = FontFamily(Font(R.font.graphik_medium)),
                     fontSize = 14.sp
-                ),
+                )
             )
         }
-        val pagerState = rememberPagerState(pageCount = { onboardingItems.size })
-
         HorizontalPager(state = pagerState) { page ->
             val item = onboardingItems[page]
             Column(
                 modifier = Modifier.fillMaxWidth(),
             ) {
+                Spacer(modifier = Modifier.height(70.dp))
                 Image(
                     painter = painterResource(id = item.imagePath),
                     contentDescription = item.imageText,
-                    modifier = Modifier.height(height = 270.dp)
+                    modifier = Modifier
+                        .height(height = 270.dp)
                         .fillMaxWidth()
                 )
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(67.dp))
                 Text(
                     text = item.text,
                     style = TextStyle(
                         color = Color(0xff272727),
-                        fontFamily = FontFamily(Font(R.font.graphik_medium)),
+                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
                         fontSize = 32.sp
                     )
                 )
             }
         }
-
         Row(
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -110,6 +102,7 @@ data class Onboarding(
     val imagePath: Int,
     val imageText: String,
     val text: String
+
 )
 
 val onboardingItems = listOf(
