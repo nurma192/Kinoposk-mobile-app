@@ -99,6 +99,7 @@ data class Onboarding(
     val imagePath: Int,
     val imageText: String,
     val text: String
+
 )
 
 val onboardingItems = listOf(
