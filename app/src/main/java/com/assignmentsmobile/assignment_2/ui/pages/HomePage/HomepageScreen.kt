@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,7 +46,8 @@ fun HomepageScreen(
             .fillMaxSize()
             .padding(
                 top = innerPadding.calculateTopPadding(),
-                start = 26.dp
+                start = 26.dp,
+                bottom = innerPadding.calculateBottomPadding()
             ),
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
@@ -54,6 +56,9 @@ fun HomepageScreen(
             SectionView(section)
         }
 
+        item {
+            Spacer(modifier = Modifier.padding(10.dp))
+        }
 
     }
 }
