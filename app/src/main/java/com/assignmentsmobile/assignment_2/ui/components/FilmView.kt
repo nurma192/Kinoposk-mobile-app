@@ -2,6 +2,7 @@ package com.assignmentsmobile.assignment_2.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,9 +27,12 @@ import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 
 @Composable
-fun FilmView(film: Film) {
+fun FilmView(
+    film: Film,
+    onFilmClicked: (String) -> Unit = {}
+) {
     Column(
-
+        modifier = Modifier.clickable(onClick = { onFilmClicked(film.filmName) })
     ) {
         val colorModifier: List<Color>
         if (!film.isShowing) {

@@ -27,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
@@ -36,10 +35,11 @@ import com.assignmentsmobile.assignment_2.data.Section
 import com.assignmentsmobile.assignment_2.data.sectionItems
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 
-@Preview(showBackground = true)
 @Composable
-fun HomepageScreen(
-    innerPadding: PaddingValues = PaddingValues(0.dp)
+fun HomePage(
+    innerPadding: PaddingValues,
+    onFilmClicked: (String) -> Unit = {},
+    onFilmTypeClicked: (String) -> Unit = {}
 ) {
     LazyColumn(
         modifier = Modifier
@@ -51,9 +51,8 @@ fun HomepageScreen(
             ),
         verticalArrangement = Arrangement.spacedBy(36.dp)
     ) {
-        // Nurma's code
         items(sectionItems) { section: Section ->
-            SectionView(section)
+            SectionView(section, onFilmTypeClicked, onFilmClicked)
         }
 
         item {
@@ -64,7 +63,7 @@ fun HomepageScreen(
 }
 
 @Composable
-fun SectionView(section: Section) {
+fun SectionView(section: Section, onFilmTypeClicked: (String) -> Unit, onFilmClicked: (String) -> Unit) {
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
@@ -82,7 +81,8 @@ fun SectionView(section: Section) {
             )
             Text(
                 text = "Все",
-                modifier = Modifier.padding(end = 10.dp),
+                modifier = Modifier.padding(end = 10.dp)
+                    .clickable(onClick = { onFilmTypeClicked(section.sectionName) }),
                 style = TextStyle(
                     color = Color(0xff3d3bff),
                     fontFamily = FontFamily(Font(R.font.graphik_regular)),
@@ -94,10 +94,10 @@ fun SectionView(section: Section) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(section.list) { film: Film ->
-                FilmView(film)
+                FilmView(film, onFilmClicked)
             }
-            item(){
-                SeeAllButton()
+            item{
+                SeeAllButton(section, onFilmTypeClicked)
             }
         }
     }
@@ -106,7 +106,7 @@ fun SectionView(section: Section) {
 
 
 @Composable
-fun SeeAllButton() {
+fun SeeAllButton(section: Section, onFilmTypeClicked: (String) -> Unit) {
     Column(
         modifier = Modifier
             .size(width = 111.dp, height = 156.dp)
@@ -117,7 +117,9 @@ fun SeeAllButton() {
         IconButton(
             modifier = Modifier
                 .size(32.dp),
-            onClick = {}
+            onClick = {
+                onFilmTypeClicked(section.sectionName)
+            }
         ) {
             Image(
                 modifier = Modifier
