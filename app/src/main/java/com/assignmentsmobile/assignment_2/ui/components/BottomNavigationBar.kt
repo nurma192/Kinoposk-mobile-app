@@ -16,13 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.assignmentsmobile.assignment_2.Destination
 import com.assignmentsmobile.assignment_2.bottomBarPages
 
 @Composable
-@Preview(showBackground = true)
-fun BottomNavigationBar() {
+fun BottomNavigationBar(
+    allPages: List<Destination>,
+    onTabSelected: (Destination) -> Unit,
+    currentPage: Destination
+) {
     BottomAppBar(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,18 +47,30 @@ fun BottomNavigationBar() {
             horizontalArrangement = Arrangement.spacedBy(50.dp, Alignment.CenterHorizontally),
 
             ) {
-            bottomBarPages.forEach { page ->
-                Image(
-                    modifier = Modifier.clickable {
-
-                    },
-                    painter = painterResource(id = page.image),
-                    contentDescription = "Icon Home"
-                )
+            allPages.forEach { page ->
+                if(page == currentPage){
+                    Image(
+                        modifier = Modifier.clickable {
+                            onTabSelected(page)
+                        },
+                        painter = painterResource(id = page.selectedImage),
+                        contentDescription = "Icon Home"
+                    )
+                }
+                else {
+                    Image(
+                        modifier = Modifier.clickable {
+                            onTabSelected(page)
+                        },
+                        painter = painterResource(id = page.image),
+                        contentDescription = "Icon Home"
+                    )
+                }
             }
 
         }
     }
 }
+
 
 
