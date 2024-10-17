@@ -5,8 +5,8 @@ import androidx.navigation.navArgument
 
 sealed class Destination(val route: String, val image: Int, val selectedImage: Int) {
     object HomePage : Destination("home", R.drawable.ic_home, R.drawable.ic_home_selected)
-    object SearchPage : Destination("search", R.drawable.ic_search, R.drawable.ic_home_selected)
-    object AccountPage : Destination("profile", R.drawable.ic_profile, R.drawable.ic_home_selected)
+    object SearchPage : Destination("search", R.drawable.ic_search, R.drawable.ic_search_selected)
+    object AccountPage : Destination("profile", R.drawable.ic_profile, R.drawable.ic_profile_selected)
 
     object Film : Destination("film", R.drawable.ic_home, R.drawable.ic_home_selected) {
         const val routeWithArgs = "film/{filmName}"
