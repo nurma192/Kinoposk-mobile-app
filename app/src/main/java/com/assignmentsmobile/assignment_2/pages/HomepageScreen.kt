@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.components.NavigationBar
 
 
 @Preview(showBackground = true)
@@ -48,6 +49,7 @@ fun HomepageScreen() {
         ) {
             Section()
         }
+        NavigationBar()
     }
 }
 
