@@ -51,7 +51,7 @@ fun SkillCinemaApp(){
                         bottomBarPages,
                         onTabSelected = { page ->
                             currentPage = page
-                            navController.navigate(page.route)
+                            navController.navigateSingle(page.route)
                         },
                         currentPage
                     )
