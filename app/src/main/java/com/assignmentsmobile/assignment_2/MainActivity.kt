@@ -38,7 +38,6 @@ fun SkillCinemaApp(){
             OnBoardingScreen(
                 onSkipClicked = {
                     isOnboardingCompleted = true
-                    navController.navigate("")
                 }
             )
         } else {
@@ -47,8 +46,8 @@ fun SkillCinemaApp(){
                 }
             ) { innerPadding ->
                 SkillCinemaNavHost(
-                    navController = navController,
-                    modifier = Modifier.padding(innerPadding)
+                    navController,
+                    innerPadding
                 )
             }
         }
