@@ -12,7 +12,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.assignmentsmobile.assignment_2.pages.OnBoardingScreen
 import com.assignmentsmobile.assignment_2.ui.theme.Assignment_2Theme
 
 class MainActivity : ComponentActivity() {
@@ -25,6 +27,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
 fun SkillCinemaApp(){
     var isOnboardingCompleted by remember { mutableStateOf(false) }
