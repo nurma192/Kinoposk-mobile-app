@@ -32,6 +32,7 @@ fun SkillCinemaApp(){
     var isOnboardingCompleted by remember { mutableStateOf(false) }
     val navController = rememberNavController()
 
+    var currentPage: Destination by remember { mutableStateOf(HomePage) }
     Assignment_2Theme {
         if (!isOnboardingCompleted) {
             OnBoardingScreen(
@@ -40,13 +41,13 @@ fun SkillCinemaApp(){
                 }
             )
         } else {
-            var currentPage = HomePage
             Scaffold(
                 bottomBar = {
                     BottomNavigationBar(
                         bottomBarPages,
-                        onTabSelected = {
-
+                        onTabSelected = { page ->
+                            currentPage = page
+                            navController.navigate(page.route)
                         },
                         currentPage
                     )

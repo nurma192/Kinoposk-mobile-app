@@ -21,6 +21,12 @@ fun SkillCinemaNavHost(
         composable(route = HomePage.route){
             HomepageScreen(innerPadding)
         }
+        composable(route = SearchPage.route){
+            HomepageScreen(innerPadding)
+        }
+        composable(route = AccountPage.route){
+            HomepageScreen(innerPadding)
+        }
 //        composable(
 //            route = SingleAccount.routeWithArgs,
 //            arguments = SingleAccount.arguments,

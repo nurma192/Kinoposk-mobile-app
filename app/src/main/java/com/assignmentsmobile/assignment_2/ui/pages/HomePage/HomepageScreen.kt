@@ -25,7 +25,7 @@ fun HomepageScreen(
             .fillMaxSize()
             .padding(
                 top = innerPadding.calculateTopPadding()
-            ).background(Color.Black),
+            ),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // Nurma's code
