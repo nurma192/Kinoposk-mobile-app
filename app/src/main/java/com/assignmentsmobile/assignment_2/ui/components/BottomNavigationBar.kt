@@ -48,29 +48,37 @@ fun BottomNavigationBar(
 
             ) {
             allPages.forEach { page ->
-                if(page == currentPage){
-                    Image(
-                        modifier = Modifier.clickable {
-                            onTabSelected(page)
-                        },
-                        painter = painterResource(id = page.selectedImage),
-                        contentDescription = "Icon Home"
-                    )
-                }
-                else {
-                    Image(
-                        modifier = Modifier.clickable {
-                            onTabSelected(page)
-                        },
-                        painter = painterResource(id = page.image),
-                        contentDescription = "Icon Home"
-                    )
-                }
+                BottomNavigationBarItem(page, onTabSelected, currentPage)
             }
-
         }
     }
 }
 
+
+@Composable
+fun BottomNavigationBarItem(
+    page: Destination,
+    onTabSelected: (Destination) -> Unit,
+    currentPage: Destination
+){
+    if(page == currentPage){
+        Image(
+            modifier = Modifier.clickable {
+                onTabSelected(page)
+            },
+            painter = painterResource(id = page.selectedImage),
+            contentDescription = "Icon Home"
+        )
+    }
+    else {
+        Image(
+            modifier = Modifier.clickable {
+                onTabSelected(page)
+            },
+            painter = painterResource(id = page.image),
+            contentDescription = "Icon Home"
+        )
+    }
+}
 
 
