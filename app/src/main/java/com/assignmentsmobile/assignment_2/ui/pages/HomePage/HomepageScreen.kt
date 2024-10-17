@@ -105,7 +105,7 @@ fun SeeAllButton() {
     Column(
         modifier = Modifier
             .size(width = 111.dp, height = 156.dp)
-            .padding(top = 31.dp),
+            .padding(top = 51.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -119,7 +119,7 @@ fun SeeAllButton() {
                     .background(Color(0xffffffff), shape = CircleShape)
                     .padding(6.dp)
                     .size(20.dp),
-                painter = painterResource(id = R.drawable.ic_eyes),
+                painter = painterResource(id = R.drawable.ic_arrow),
                 contentDescription = "Ic_Arrow"
             )
         }
