@@ -33,7 +33,7 @@ fun SkillCinemaApp(){
     var isOnboardingCompleted by remember { mutableStateOf(false) }
     val navController = rememberNavController()
 
-    var currentPage: Destination by remember { mutableStateOf(HomePage) }
+    var currentPage: Destination by remember { mutableStateOf(Destination.HomePage) }
     Assignment_2Theme {
         if (!isOnboardingCompleted) {
             OnBoardingScreen(

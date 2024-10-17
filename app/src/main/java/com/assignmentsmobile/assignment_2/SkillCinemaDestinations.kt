@@ -1,58 +1,24 @@
 package com.assignmentsmobile.assignment_2
 
-import androidx.compose.material.icons.Icons
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 
-interface Destination {
-    val image: Int
-    val selectedImage: Int
-    val route: String
+sealed class Destination(val route: String, val image: Int, val selectedImage: Int) {
+    object HomePage : Destination("home", R.drawable.ic_home, R.drawable.ic_home_selected)
+    object SearchPage : Destination("search", R.drawable.ic_search, R.drawable.ic_home_selected)
+    object AccountPage : Destination("profile", R.drawable.ic_profile, R.drawable.ic_home_selected)
+
+    object Film : Destination("film", R.drawable.ic_home, R.drawable.ic_home_selected) {
+        const val routeWithArgs = "film/{filmName}"
+        const val filmName = "filmName"
+        val arguments = listOf(navArgument(filmName) { type = NavType.StringType })
+    }
+
+    object FilmType : Destination("filmType", R.drawable.ic_home, R.drawable.ic_home_selected) {
+        const val routeWithArgs = "filmType/{filmType}"
+        const val filmType = "filmType"
+        val arguments = listOf(navArgument(filmType) { type = NavType.StringType })
+    }
 }
 
-
-object HomePage: Destination{
-    override val image = R.drawable.ic_home
-    override val selectedImage = R.drawable.ic_home_selected
-    override val route = "homepage"
-}
-
-object SearchPage: Destination{
-    override val image = R.drawable.ic_search
-    override val selectedImage = R.drawable.ic_home_selected
-    override val route = "searchpage"
-}
-
-object AccountPage: Destination{
-    override val image = R.drawable.ic_profile
-    override val selectedImage = R.drawable.ic_home_selected
-    override val route = "accountpage"
-}
-
-    // Added for simplicity, this icon will not in fact be used, as SingleAccount isn't
-    // part of the RallyTabRow selection
-object Film: Destination {
-    override val image = R.drawable.ic_home_selected
-    override val selectedImage = R.drawable.ic_home_selected
-    override val route = "single_film"
-    val filmName = "film_name"
-    val routeWithArgs = "${route}/{${filmName}}"
-    val arguments = listOf(
-        navArgument(filmName) { type = NavType.StringType }
-    )
-}
-
-object FilmType: Destination {
-    override val image = R.drawable.ic_home_selected
-    override val selectedImage = R.drawable.ic_home_selected
-    override val route = "single_film_type"
-    val filmType = "film_type"
-    val routeWithArgs = "${route}/{${filmType}}"
-    val arguments = listOf(
-        navArgument(filmType) { type = NavType.StringType }
-    )
-}
-
-
-val bottomBarPages = listOf(HomePage, SearchPage, AccountPage)
+val bottomBarPages = listOf(Destination.HomePage, Destination.SearchPage, Destination.AccountPage)

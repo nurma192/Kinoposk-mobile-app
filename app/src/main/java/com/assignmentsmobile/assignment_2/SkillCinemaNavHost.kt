@@ -17,36 +17,34 @@ fun SkillCinemaNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomePage.route,
+        startDestination = Destination.HomePage.route,
     ) {
-        composable(route = HomePage.route){
+        composable(route = Destination.HomePage.route) {
             HomepageScreen(innerPadding)
         }
-        composable(route = SearchPage.route){
+        composable(route = Destination.SearchPage.route) {
             HomepageScreen(innerPadding)
         }
-        composable(route = AccountPage.route){
+        composable(route = Destination.AccountPage.route) {
             HomepageScreen(innerPadding)
         }
         composable(
-            route = Film.routeWithArgs,
-            arguments = Film.arguments
-        ){navBackStackEntry ->
-            val filmName =
-                navBackStackEntry.arguments?.getString(Film.filmName)
-//            FilmInfoPage(filmName)
+            route = Destination.Film.routeWithArgs,
+            arguments = Destination.Film.arguments
+        ) { navBackStackEntry ->
+            val filmName = navBackStackEntry.arguments?.getString(Destination.Film.filmName)
+            // FilmInfoPage(filmName)
         }
         composable(
-            route = FilmType.routeWithArgs,
-            arguments = FilmType.arguments
-        ){navBackStackEntry ->
-            val filmType =
-                navBackStackEntry.arguments?.getString(FilmType.filmType)
-//            FilmTypePage(filmType)
+            route = Destination.FilmType.routeWithArgs,
+            arguments = Destination.FilmType.arguments
+        ) { navBackStackEntry ->
+            val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
+            // FilmTypePage(filmType)
         }
-
     }
 }
+
 
 fun NavHostController.navigateSingle(route: String) =
     this.navigate(route) {
@@ -58,9 +56,9 @@ fun NavHostController.navigateSingle(route: String) =
     }
 
 fun NavHostController.navigateToSingleFilm(filmName: String) {
-    this.navigateSingle("${Film.route}/$filmName")
+    this.navigateSingle("${Destination.Film.route}/$filmName")
 }
 
 fun NavHostController.navigateToSingleFilmType(filmType: String) {
-    this.navigateSingle("${FilmType.route}/$filmType")
+    this.navigateSingle("${Destination.FilmType.route}/$filmType")
 }
