@@ -14,7 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.assignmentsmobile.assignment_2.pages.OnBoardingScreen
+import com.assignmentsmobile.assignment_2.ui.pages.OnBoardingScreen.OnBoardingScreen
 import com.assignmentsmobile.assignment_2.ui.theme.Assignment_2Theme
 
 class MainActivity : ComponentActivity() {

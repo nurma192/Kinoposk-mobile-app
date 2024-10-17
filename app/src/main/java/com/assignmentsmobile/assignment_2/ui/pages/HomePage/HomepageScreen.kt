@@ -1,4 +1,4 @@
-package com.assignmentsmobile.assignment_2.pages
+package com.assignmentsmobile.assignment_2.ui.pages.HomePage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize

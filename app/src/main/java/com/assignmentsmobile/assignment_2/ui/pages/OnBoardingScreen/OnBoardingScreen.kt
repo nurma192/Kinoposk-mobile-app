@@ -1,4 +1,4 @@
-package com.assignmentsmobile.assignment_2.pages
+package com.assignmentsmobile.assignment_2.ui.pages.OnBoardingScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
