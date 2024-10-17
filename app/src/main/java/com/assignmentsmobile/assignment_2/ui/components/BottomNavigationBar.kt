@@ -1,4 +1,4 @@
-package com.assignmentsmobile.assignment_2.components
+package com.assignmentsmobile.assignment_2.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

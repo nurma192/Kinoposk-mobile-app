@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.assignmentsmobile.assignment_2.components.AppHeader
-import com.assignmentsmobile.assignment_2.components.BottomNavigationBar
+import com.assignmentsmobile.assignment_2.ui.components.AppHeader
+import com.assignmentsmobile.assignment_2.ui.components.BottomNavigationBar
 
 
 @Preview(showBackground = true)
