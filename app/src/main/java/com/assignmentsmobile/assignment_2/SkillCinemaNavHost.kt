@@ -2,13 +2,13 @@ package com.assignmentsmobile.assignment_2
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomepageScreen
+import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
+import com.assignmentsmobile.assignment_2.ui.pages.FilmTypePage.FilmTypePage
+import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 
 @Composable
 fun SkillCinemaNavHost(
@@ -20,27 +20,51 @@ fun SkillCinemaNavHost(
         startDestination = Destination.HomePage.route,
     ) {
         composable(route = Destination.HomePage.route) {
-            HomepageScreen(innerPadding)
+            HomePage(
+                innerPadding,
+                onFilmClicked = { filmName ->
+                    navController.navigateToSingleFilm(filmName)
+                },
+                onFilmTypeClicked = { filmType ->
+                    navController.navigateToSingleFilmType(filmType)
+                }
+            )
         }
         composable(route = Destination.SearchPage.route) {
-            HomepageScreen(innerPadding)
+            HomePage(
+                innerPadding,
+                onFilmClicked = { filmName ->
+                    navController.navigateToSingleFilm(filmName)
+                },
+                onFilmTypeClicked = { filmType ->
+                    navController.navigateToSingleFilmType(filmType)
+                }
+            )
         }
         composable(route = Destination.AccountPage.route) {
-            HomepageScreen(innerPadding)
+            HomePage(
+                innerPadding,
+                onFilmClicked = { filmName ->
+                    navController.navigateToSingleFilm(filmName)
+                },
+                onFilmTypeClicked = { filmType ->
+                    navController.navigateToSingleFilmType(filmType)
+                }
+            )
         }
         composable(
             route = Destination.Film.routeWithArgs,
             arguments = Destination.Film.arguments
         ) { navBackStackEntry ->
             val filmName = navBackStackEntry.arguments?.getString(Destination.Film.filmName)
-            // FilmInfoPage(filmName)
+             FilmInfoPage(filmName, innerPadding)
         }
         composable(
             route = Destination.FilmType.routeWithArgs,
             arguments = Destination.FilmType.arguments
         ) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
-            // FilmTypePage(filmType)
+             FilmTypePage(filmType, innerPadding)
         }
     }
 }
