@@ -1,4 +1,4 @@
-package com.assignmentsmobile.assignment_2.ui.pages
+package com.assignmentsmobile.assignment_2.ui.pages.ListPage
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
