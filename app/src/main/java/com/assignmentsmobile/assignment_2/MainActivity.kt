@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.assignmentsmobile.assignment_2.ui.components.AppHeader
 import com.assignmentsmobile.assignment_2.ui.components.BottomNavigationBar
+import com.assignmentsmobile.assignment_2.ui.pages.ListPage
 import com.assignmentsmobile.assignment_2.ui.pages.OnBoardingScreen.OnBoardingScreen
 import com.assignmentsmobile.assignment_2.ui.theme.Assignment_2Theme
 
@@ -22,7 +23,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            SkillCinemaApp()
+//            SkillCinemaApp()
+            ListPage()
         }
     }
 }
