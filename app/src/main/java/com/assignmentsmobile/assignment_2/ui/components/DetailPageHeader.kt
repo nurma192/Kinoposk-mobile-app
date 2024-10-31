@@ -29,12 +29,13 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.assignmentsmobile.assignment_2.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailPageHeader(filmType: String?) {
+fun DetailPageHeader(filmType: String?, onBackClicked: () -> Unit) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
     TopAppBar(
         modifier = Modifier
@@ -52,7 +53,9 @@ fun DetailPageHeader(filmType: String?) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                IconButton(modifier = Modifier.size(24.dp), onClick = { }) {
+                IconButton(modifier = Modifier.size(24.dp), onClick = {
+                    onBackClicked()
+                }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_arrow_left),
                         contentDescription = "Icon_Arrow_Left"

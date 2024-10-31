@@ -85,7 +85,9 @@ fun SkillCinemaNavHost(
             arguments = Destination.FilmType.arguments
         ) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
-            ListPage(filmType)
+            ListPage(filmType, onBackClicked = {
+                navController.popBackStack()
+            })
         }
     }
 }

@@ -41,15 +41,15 @@ import com.assignmentsmobile.assignment_2.ui.components.DetailPageHeader
 
 @Composable
 fun ListPage(
-    filmType: String?
+    filmType: String?, onBackClicked: () -> Unit
 ) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
-    Scaffold (
+    Scaffold(
         topBar = {
-            DetailPageHeader(filmType)
+            DetailPageHeader(filmType, onBackClicked = onBackClicked)
         }
-    ){innerPaddingListPage ->
+    ) { innerPaddingListPage ->
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
@@ -57,20 +57,24 @@ fun ListPage(
                 .onGloballyPositioned { layoutCoordinates ->
                     rowMaxWidth = layoutCoordinates.size.width.dp
                 }
-                .padding(top = innerPaddingListPage.calculateTopPadding(), start = rowMaxWidth / 20, end = rowMaxWidth / 20),
+                .padding(
+                    top = innerPaddingListPage.calculateTopPadding(),
+                    start = rowMaxWidth / 20,
+                    end = rowMaxWidth / 20
+                ),
         ) {
             items(10) { index ->
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { },
                 ) {
                     Box(
                         modifier = Modifier
                             .size(width = 111.dp, height = 156.dp)
                             .clip(shape = RoundedCornerShape(4.dp))
                             .padding(top = 6.dp, end = 6.dp, bottom = 6.dp)
-                            .background(Color(181, 181, 201, 102)),
+                            .background(Color(181, 181, 201, 102))
+                            .clickable { },
                         contentAlignment = Alignment.TopEnd,
                     ) {
                         Column(
