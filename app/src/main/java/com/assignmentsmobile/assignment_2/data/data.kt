@@ -1,36 +1,47 @@
 package com.assignmentsmobile.assignment_2.data
 
-import androidx.compose.ui.graphics.Color
+import kotlinx.serialization.Serializable
 
-data class Film(
-    val color: Color,
-    var rating: String,
-    val filmName: String,
-    var genre: String,
-    var isShowing: Boolean
+@Serializable
+data class FilmCollectionsResponse(
+    val total: Int,
+    val totalPages: Int,
+    val items: List<Film>
 )
+
+@Serializable
+data class Film(
+    val kinopoiskId: Int,
+    val imdbId: String,
+    val nameRu: String,
+    val nameEn: String?,
+    val nameOriginal: String,
+    val countries: List<Country>,
+    val genres: List<Genre>,
+    val ratingKinopoisk: Double,
+    val ratingImdb: Double,
+    val year: Int,
+    val type: String,
+    val posterUrl: String,
+    val posterUrlPreview: String,
+    val coverUrl: String,
+    val logoUrl: String,
+    val description: String,
+    val ratingAgeLimits: String
+)
+
+@Serializable
+data class Country(
+    val country: String
+)
+
+@Serializable
+data class Genre(
+    val genre: String
+)
+
 
 data class Section(
     val sectionName: String,
     val list: List<Film>
-)
-
-val filmItems: List<Film> = listOf(
-    Film(Color(0xffb5b5c9), "7.8", "Близкие", "драма", false),
-    Film(Color(0xffb5b5c9), "8", "Game of Trones", "драма", true),
-    Film(Color(0xffb5b5c9), "7.8", "Braking bad", "драма", true),
-    Film(Color(0xffb5b5c9), "8", "You", "драма", false),
-    Film(Color(0xffb5b5c9), "6", "Sheker", "драма", false),
-    Film(Color(0xffb5b5c9), "7", "Hello world", "драма", false),
-    Film(Color(0xffb5b5c9), "10", "Valli", "драма", false),
-    Film(Color(0xffb5b5c9), "10", "Zhezduha", "драма", false)
-)
-
-var sectionItems: List<Section> = listOf(
-    Section("Премьеры", filmItems),
-    Section("Популярное", filmItems),
-    Section("Боевики США", filmItems),
-    Section("Топ-250", filmItems),
-    Section("Драмы Франции", filmItems),
-    Section("Сериалы", filmItems)
 )

@@ -2,10 +2,17 @@ package com.assignmentsmobile.assignment_2
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.assignmentsmobile.assignment_2.data.repository.FilmCollectionRepository
+import com.assignmentsmobile.assignment_2.data.repository.FilmCollectionsViewModelFactory
+import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
@@ -15,6 +22,17 @@ fun SkillCinemaNavHost(
     navController: NavHostController,
     innerPadding: PaddingValues
 ) {
+
+    val repository = FilmCollectionRepository()
+    val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel(
+        factory = FilmCollectionsViewModelFactory(repository)
+    )
+    val sections by filmCollectionsViewModel.sections.observeAsState(emptyList())
+
+    LaunchedEffect(Unit) {
+        filmCollectionsViewModel.loadFilmCollections()
+    }
+
     NavHost(
         navController = navController,
         startDestination = Destination.HomePage.route,
@@ -27,7 +45,8 @@ fun SkillCinemaNavHost(
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
-                }
+                },
+                sections
             )
         }
         composable(route = Destination.SearchPage.route) {
@@ -38,7 +57,8 @@ fun SkillCinemaNavHost(
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
-                }
+                },
+                sections
             )
         }
         composable(route = Destination.AccountPage.route) {
@@ -49,7 +69,8 @@ fun SkillCinemaNavHost(
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
-                }
+                },
+                sections
             )
         }
         composable(
@@ -72,10 +93,10 @@ fun SkillCinemaNavHost(
 
 fun NavHostController.navigateSingle(route: String) =
     this.navigate(route) {
-        launchSingleTop = true  // Avoid multiple instances of the same destination
-        restoreState = true     // Restore previous state if it exists
+        launchSingleTop = true
+        restoreState = true
         popUpTo(graph.findStartDestination().id) {
-            saveState = true    // Save state when navigating between bottom tabs
+            saveState = true
         }
     }
 

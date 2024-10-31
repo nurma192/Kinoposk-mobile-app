@@ -32,20 +32,20 @@ fun FilmView(
     onFilmClicked: (String) -> Unit = {}
 ) {
     Column(
-        modifier = Modifier.clickable(onClick = { onFilmClicked(film.filmName) })
+        modifier = Modifier.clickable(onClick = { onFilmClicked(film.nameRu) })
     ) {
         val colorModifier: List<Color>
-        if (!film.isShowing) {
+//        if (!film.isShowing) {
             colorModifier = listOf(
                 Color(181, 181, 201, 102),
                 Color(61, 59, 255, 102)
             )
-        } else {
-            colorModifier = listOf(
-                Color(181, 181, 201, 102),
-                Color(181, 181, 201, 102)
-            )
-        }
+//        } else {
+//            colorModifier = listOf(
+//                Color(181, 181, 201, 102),
+//                Color(181, 181, 201, 102)
+//            )
+//        }
         Box(
             modifier = Modifier
                 .size(width = 111.dp, height = 156.dp)
@@ -60,28 +60,28 @@ fun FilmView(
                 .padding(top = 6.dp, end = 6.dp, bottom = 6.dp),
             contentAlignment = Alignment.TopEnd
         ) {
-            if (film.isShowing) {
-                RatingView(film.rating)
-            } else {
-                Column(
-                    modifier = Modifier
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    horizontalAlignment = Alignment.End
-                ) {
-                    RatingView(film.rating)
-
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_eyes),
-                        contentDescription = "Ic-eye"
-                    )
-
-                }
-            }
+//            if (film.isShowing) {
+                RatingView(film.ratingKinopoisk.toString())
+//            } else {
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxHeight(),
+//                    verticalArrangement = Arrangement.SpaceBetween,
+//                    horizontalAlignment = Alignment.End
+//                ) {
+//                    RatingView(film.ratingKinopoisk)
+//
+//                    Image(
+//                        painter = painterResource(id = R.drawable.ic_eyes),
+//                        contentDescription = "Ic-eye"
+//                    )
+//
+//                }
+//            }
         }
 
         Text(
-            text = film.filmName,
+            text = film.nameRu,
             modifier = Modifier.padding(top = 8.dp),
             style = TextStyle(
                 color = Color(0xff272727),
@@ -90,7 +90,7 @@ fun FilmView(
             )
         )
         Text(
-            text = film.genre,
+            text = film.nameEn.toString(),
             modifier = Modifier.padding(top = 2.dp),
             style = TextStyle(
                 color = Color(0xff838390),

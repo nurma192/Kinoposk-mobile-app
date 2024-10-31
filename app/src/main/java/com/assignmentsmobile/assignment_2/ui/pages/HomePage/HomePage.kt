@@ -1,5 +1,6 @@
 package com.assignmentsmobile.assignment_2.ui.pages.HomePage
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.Section
-import com.assignmentsmobile.assignment_2.data.sectionItems
 import com.assignmentsmobile.assignment_2.ui.components.AppHeader
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 
@@ -41,7 +41,8 @@ import com.assignmentsmobile.assignment_2.ui.components.FilmView
 fun HomePage(
     innerPadding: PaddingValues,
     onFilmClicked: (String) -> Unit = {},
-    onFilmTypeClicked: (String) -> Unit = {}
+    onFilmTypeClicked: (String) -> Unit = {},
+    sectionItems: List<Section>
 ) {
     Scaffold(
         topBar = {

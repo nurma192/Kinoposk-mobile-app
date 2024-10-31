@@ -34,7 +34,7 @@ import com.assignmentsmobile.assignment_2.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppHeader2(filmType: String?) {
+fun DetailPageHeader(filmType: String?) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
     TopAppBar(
         modifier = Modifier
