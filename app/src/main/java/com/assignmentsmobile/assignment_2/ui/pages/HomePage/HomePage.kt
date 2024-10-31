@@ -61,11 +61,9 @@ fun HomePage(
             items(sectionItems) { section: Section ->
                 SectionView(section, onFilmTypeClicked, onFilmClicked)
             }
-
             item {
                 Spacer(modifier = Modifier.padding(10.dp))
             }
-
         }
     }
 }
