@@ -44,9 +44,6 @@ fun SkillCinemaApp(){
             )
         } else {
             Scaffold(
-                topBar = {
-                    AppHeader()
-                },
                 bottomBar = {
                     BottomNavigationBar(
                         bottomBarPages,
