@@ -29,13 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
-import com.assignmentsmobile.assignment_2.data.sectionItems
 
 @Composable
 fun ListPage(
     filmType: String?
 ) {
-    val section = sectionItems.find{it.sectionName == filmType}
+//    val section = sectionItems.find{it.sectionName == filmType}
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
     Column(modifier = Modifier.padding(top = 30.dp)) {
