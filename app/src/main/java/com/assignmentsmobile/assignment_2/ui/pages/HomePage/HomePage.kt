@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,6 +34,7 @@ import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.Section
 import com.assignmentsmobile.assignment_2.data.sectionItems
+import com.assignmentsmobile.assignment_2.ui.components.AppHeader
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 
 @Composable
@@ -41,24 +43,30 @@ fun HomePage(
     onFilmClicked: (String) -> Unit = {},
     onFilmTypeClicked: (String) -> Unit = {}
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(
-                top = innerPadding.calculateTopPadding(),
-                start = 26.dp,
-                bottom = innerPadding.calculateBottomPadding()
-            ),
-        verticalArrangement = Arrangement.spacedBy(36.dp)
-    ) {
-        items(sectionItems) { section: Section ->
-            SectionView(section, onFilmTypeClicked, onFilmClicked)
+    Scaffold(
+        topBar = {
+            AppHeader()
         }
+    ) {innerPaddingHomePage ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = innerPaddingHomePage.calculateTopPadding(),
+                    start = 26.dp,
+                    bottom = innerPadding.calculateBottomPadding()
+                ),
+            verticalArrangement = Arrangement.spacedBy(36.dp)
+        ) {
+            items(sectionItems) { section: Section ->
+                SectionView(section, onFilmTypeClicked, onFilmClicked)
+            }
 
-        item {
-            Spacer(modifier = Modifier.padding(10.dp))
+            item {
+                Spacer(modifier = Modifier.padding(10.dp))
+            }
+
         }
-
     }
 }
 

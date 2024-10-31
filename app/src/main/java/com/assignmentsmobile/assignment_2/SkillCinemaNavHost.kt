@@ -7,8 +7,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
-import com.assignmentsmobile.assignment_2.ui.pages.FilmTypePage.FilmTypePage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
+import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
 
 @Composable
 fun SkillCinemaNavHost(
@@ -64,7 +64,7 @@ fun SkillCinemaNavHost(
             arguments = Destination.FilmType.arguments
         ) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
-             FilmTypePage(filmType, innerPadding)
+            ListPage(filmType)
         }
     }
 }

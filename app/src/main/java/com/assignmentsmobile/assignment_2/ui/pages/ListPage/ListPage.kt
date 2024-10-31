@@ -38,9 +38,10 @@ import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.ui.components.RatingView
 
-@Preview(showBackground = true)
 @Composable
-fun ListPage() {
+fun ListPage(
+    filmType: String?
+) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
     Column(modifier = Modifier.padding(top = 30.dp).background(Color.Blue),

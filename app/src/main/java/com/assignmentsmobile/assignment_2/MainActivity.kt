@@ -23,8 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-//            SkillCinemaApp()
-            ListPage()
+            SkillCinemaApp()
         }
     }
 }
@@ -45,9 +44,6 @@ fun SkillCinemaApp(){
             )
         } else {
             Scaffold(
-                topBar = {
-                    AppHeader()
-                },
                 bottomBar = {
                     BottomNavigationBar(
                         bottomBarPages,
