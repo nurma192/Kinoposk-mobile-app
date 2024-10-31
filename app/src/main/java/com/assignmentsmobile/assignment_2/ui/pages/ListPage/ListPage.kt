@@ -3,6 +3,7 @@ package com.assignmentsmobile.assignment_2.ui.pages.ListPage
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,10 +29,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.sectionItems
 
-@Preview(showBackground = true)
 @Composable
-fun ListPage() {
+fun ListPage(
+    filmType: String?
+) {
+    val section = sectionItems.find{it.sectionName == filmType}
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
     Column(modifier = Modifier.padding(top = 30.dp)) {
