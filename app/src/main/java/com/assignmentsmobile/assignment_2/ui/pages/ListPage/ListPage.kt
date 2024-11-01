@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -36,12 +38,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.Film
+import com.assignmentsmobile.assignment_2.data.Section
 import com.assignmentsmobile.assignment_2.ui.components.DetailPageHeader
+import com.assignmentsmobile.assignment_2.ui.components.FilmView
+import com.assignmentsmobile.assignment_2.ui.pages.HomePage.SectionView
 
 @Composable
 
 fun ListPage(
-    filmType: String?, onBackClicked: () -> Unit
+    filmType: String?,
+    onBackClicked: () -> Unit,
+    onFilmClicked: (String) -> Unit = {},
+    sectionItems: List<Section>
 ) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
@@ -63,47 +72,10 @@ fun ListPage(
                     end = rowMaxWidth / 20
                 ),
         ) {
-            items(10) { index ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(width = 111.dp, height = 156.dp)
-                            .clip(shape = RoundedCornerShape(4.dp))
-                            .padding(top = 6.dp, end = 6.dp, bottom = 6.dp)
-                            .background(Color(181, 181, 201, 102))
-                            .clickable { },
-                        contentAlignment = Alignment.TopEnd,
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxHeight(),
-                            verticalArrangement = Arrangement.SpaceBetween,
-                            horizontalAlignment = Alignment.End
-                        ) {
-                            Text(text = "7.8")
-                        }
-                    }
-                    Text(
-                        text = "Hello",
-                        modifier = Modifier.padding(top = 8.dp),
-                        style = TextStyle(
-                            color = Color(0xff272727),
-                            fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                            fontSize = 14.sp
-                        )
-                    )
-                    Text(
-                        text = "NoHello",
-                        modifier = Modifier.padding(top = 2.dp),
-                        style = TextStyle(
-                            color = Color(0xff838390),
-                            fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                            fontSize = 12.sp
-                        )
-                    )
+            val thisSection = sectionItems.find { item -> item.sectionName == filmType }
+            if(thisSection != null){
+                items(thisSection.list) { film: Film ->
+                    FilmView(film,onFilmClicked)
                 }
             }
             item {

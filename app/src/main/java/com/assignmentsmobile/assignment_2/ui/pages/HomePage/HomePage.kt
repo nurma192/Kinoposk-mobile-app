@@ -1,17 +1,17 @@
 package com.assignmentsmobile.assignment_2.ui.pages.HomePage
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -76,7 +76,7 @@ fun HomePage(
 @Composable
 fun SectionView(section: Section, onFilmTypeClicked: (String) -> Unit, onFilmClicked: (String) -> Unit) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
         Row(
             modifier = Modifier
@@ -102,9 +102,10 @@ fun SectionView(section: Section, onFilmTypeClicked: (String) -> Unit, onFilmCli
             )
         }
         LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier.height(IntrinsicSize.Max),
         ) {
-            items(section.list) { film: Film ->
+            items(section.list.take(7)) { film: Film ->
                 FilmView(film, onFilmClicked)
             }
             item{

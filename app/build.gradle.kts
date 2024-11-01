@@ -89,4 +89,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Glide
+    implementation(libs.glide)
+    //Coil
+    implementation(libs.coil.compose.v200)
+
+
 }

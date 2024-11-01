@@ -27,7 +27,7 @@ fun SkillCinemaNavHost(
     val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel(
         factory = FilmCollectionsViewModelFactory(repository)
     )
-    val sections by filmCollectionsViewModel.sections.observeAsState(emptyList())
+    val sections by filmCollectionsViewModel.sectionz.observeAsState(emptyList())
 
     LaunchedEffect(Unit) {
         filmCollectionsViewModel.loadFilmCollections()
@@ -85,9 +85,16 @@ fun SkillCinemaNavHost(
             arguments = Destination.FilmType.arguments
         ) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
-            ListPage(filmType, onBackClicked = {
-                navController.popBackStack()
-            })
+            ListPage(
+                filmType,
+                onBackClicked = {
+                    navController.popBackStack()
+                },
+                onFilmClicked = { filmName ->
+                    navController.navigateToSingleFilm(filmName)
+                },
+                sections,
+            )
         }
     }
 }

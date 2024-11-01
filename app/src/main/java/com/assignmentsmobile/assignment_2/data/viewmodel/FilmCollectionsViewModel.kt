@@ -21,12 +21,12 @@ class FilmCollectionsViewModel(private val repository: FilmCollectionRepository)
         viewModelScope.launch {
             try {
                 val collectionTypes = mapOf(
-                    "Top Popular All" to "TOP_POPULAR_ALL",
-                    "Top Popular Movies" to "TOP_POPULAR_MOVIES",
                     "Top 250 TV Shows" to "TOP_250_TV_SHOWS",
                     "Top 250 Movies" to "TOP_250_MOVIES",
                     "Vampire Theme" to "VAMPIRE_THEME",
+                    "Top Popular Movies" to "TOP_POPULAR_MOVIES",
                     "Comics Theme" to "COMICS_THEME"
+//                    "Top Popular All" to "TOP_POPULAR_ALL",
                 )
 
                 val sectionsList = mutableListOf<Section>()
