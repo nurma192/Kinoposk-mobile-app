@@ -23,7 +23,7 @@ fun CoilImage(url: String, modifier: Modifier = Modifier) {
     Image(
         painter = painter,
         contentDescription = null,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentScale = ContentScale.Crop
     )
 }
