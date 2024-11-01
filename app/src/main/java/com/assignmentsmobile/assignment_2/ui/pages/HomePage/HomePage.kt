@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
@@ -38,6 +39,7 @@ import com.assignmentsmobile.assignment_2.ui.components.AppHeader
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 
 @Composable
+
 fun HomePage(
     innerPadding: PaddingValues,
     onFilmClicked: (String) -> Unit = {},

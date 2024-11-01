@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -40,6 +39,7 @@ import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.ui.components.DetailPageHeader
 
 @Composable
+
 fun ListPage(
     filmType: String?, onBackClicked: () -> Unit
 ) {
