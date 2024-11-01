@@ -3,6 +3,7 @@ package com.assignmentsmobile.assignment_2
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -27,7 +28,7 @@ fun SkillCinemaNavHost(
     val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel(
         factory = FilmCollectionsViewModelFactory(repository)
     )
-    val sections by filmCollectionsViewModel.sectionz.observeAsState(emptyList())
+    val screenState by filmCollectionsViewModel.screenState.collectAsState()
 
     LaunchedEffect(Unit) {
         filmCollectionsViewModel.loadFilmCollections()
@@ -39,38 +40,39 @@ fun SkillCinemaNavHost(
     ) {
         composable(route = Destination.HomePage.route) {
             HomePage(
-                innerPadding,
+                innerPadding = innerPadding,
+                screenState = screenState,
                 onFilmClicked = { filmName ->
                     navController.navigateToSingleFilm(filmName)
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
                 },
-                sections
+
             )
         }
         composable(route = Destination.SearchPage.route) {
             HomePage(
-                innerPadding,
+                innerPadding = innerPadding,
+                screenState = screenState,
                 onFilmClicked = { filmName ->
                     navController.navigateToSingleFilm(filmName)
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
-                },
-                sections
+                }
             )
         }
         composable(route = Destination.AccountPage.route) {
             HomePage(
-                innerPadding,
+                innerPadding = innerPadding,
+                screenState  = screenState,
                 onFilmClicked = { filmName ->
                     navController.navigateToSingleFilm(filmName)
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
-                },
-                sections
+                }
             )
         }
         composable(
@@ -78,23 +80,11 @@ fun SkillCinemaNavHost(
             arguments = Destination.Film.arguments
         ) { navBackStackEntry ->
             val filmName = navBackStackEntry.arguments?.getString(Destination.Film.filmName)
-             FilmInfoPage(filmName, innerPadding)
+            FilmInfoPage(filmName = filmName, innerPadding = innerPadding)
         }
-        composable(
-            route = Destination.FilmType.routeWithArgs,
-            arguments = Destination.FilmType.arguments
-        ) { navBackStackEntry ->
+        composable(route = Destination.FilmType.routeWithArgs) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
-            ListPage(
-                filmType,
-                onBackClicked = {
-                    navController.popBackStack()
-                },
-                onFilmClicked = { filmName ->
-                    navController.navigateToSingleFilm(filmName)
-                },
-                sections,
-            )
+            ListPage(filmType = filmType, onBackClicked = { navController.popBackStack() })
         }
     }
 }

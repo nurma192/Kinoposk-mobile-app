@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +38,7 @@ import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.Section
 import com.assignmentsmobile.assignment_2.ui.components.AppHeader
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
+import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 
 @Composable
 
@@ -44,37 +46,72 @@ fun HomePage(
     innerPadding: PaddingValues,
     onFilmClicked: (String) -> Unit = {},
     onFilmTypeClicked: (String) -> Unit = {},
-    sectionItems: List<Section>
+    screenState: ScreenState<List<Section>>
+
 ) {
     Scaffold(
         topBar = {
             AppHeader()
         }
-    ) {innerPaddingHomePage ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = innerPaddingHomePage.calculateTopPadding(),
-                    start = 26.dp,
-                    bottom = innerPadding.calculateBottomPadding()
-                ),
-            verticalArrangement = Arrangement.spacedBy(36.dp)
-        ) {
-            items(sectionItems) { section: Section ->
-                SectionView(section, onFilmTypeClicked, onFilmClicked)
+    ) { innerPaddingHomePage ->
+        when (screenState) {
+            is ScreenState.Initial -> {
+                Text("Press the button to load film collections.")
             }
 
-            item {
-                Spacer(modifier = Modifier.padding(10.dp))
+            is ScreenState.Error -> {
+                Text("Error : ${screenState.message}", color = Color.Red)
+
             }
 
+            ScreenState.Loading -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            bottom = innerPadding.calculateBottomPadding(),
+                            top = innerPaddingHomePage.calculateTopPadding()
+                        ),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+
+                }
+
+
+            }
+
+            is ScreenState.Success -> {
+                val sections = screenState.data
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = innerPaddingHomePage.calculateTopPadding(),
+                            start = 26.dp,
+                            bottom = innerPadding.calculateBottomPadding()
+                        ),
+                    verticalArrangement = Arrangement.spacedBy(36.dp)
+                ) {
+                    items(sections) { section ->
+                        SectionView(section, onFilmTypeClicked, onFilmClicked)
+                    }
+
+                }
+
+            }
         }
     }
 }
 
+
 @Composable
-fun SectionView(section: Section, onFilmTypeClicked: (String) -> Unit, onFilmClicked: (String) -> Unit) {
+fun SectionView(
+    section: Section,
+    onFilmTypeClicked: (String) -> Unit,
+    onFilmClicked: (String) -> Unit
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp),
     ) {
@@ -92,7 +129,8 @@ fun SectionView(section: Section, onFilmTypeClicked: (String) -> Unit, onFilmCli
             )
             Text(
                 text = "Все",
-                modifier = Modifier.padding(end = 10.dp)
+                modifier = Modifier
+                    .padding(end = 10.dp)
                     .clickable(onClick = { onFilmTypeClicked(section.sectionName) }),
                 style = TextStyle(
                     color = Color(0xff3d3bff),
@@ -108,13 +146,12 @@ fun SectionView(section: Section, onFilmTypeClicked: (String) -> Unit, onFilmCli
             items(section.list.take(7)) { film: Film ->
                 FilmView(film, onFilmClicked)
             }
-            item{
+            item {
                 SeeAllButton(section, onFilmTypeClicked)
             }
         }
     }
 }
-
 
 
 @Composable
@@ -144,7 +181,7 @@ fun SeeAllButton(section: Section, onFilmTypeClicked: (String) -> Unit) {
         }
         Text(
             text = "Показать все",
-            modifier = Modifier.clickable {  },
+            modifier = Modifier.clickable { },
             style = TextStyle(
                 color = Color(0xff272727),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),
