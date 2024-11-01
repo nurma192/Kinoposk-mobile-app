@@ -61,7 +61,6 @@ fun HomePage(
 
             is ScreenState.Error -> {
                 Text("Error : ${screenState.message}", color = Color.Red)
-
             }
 
             ScreenState.Loading -> {
@@ -90,12 +89,14 @@ fun HomePage(
                         .padding(
                             top = innerPaddingHomePage.calculateTopPadding(),
                             start = 26.dp,
-                            bottom = innerPadding.calculateBottomPadding()
                         ),
                     verticalArrangement = Arrangement.spacedBy(36.dp)
                 ) {
                     items(sections) { section ->
                         SectionView(section, onFilmTypeClicked, onFilmClicked)
+                    }
+                    item{
+                        Spacer(modifier = Modifier.padding(bottom = 80.dp))
                     }
 
                 }

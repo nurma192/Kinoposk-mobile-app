@@ -84,7 +84,15 @@ fun SkillCinemaNavHost(
         }
         composable(route = Destination.FilmType.routeWithArgs) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
-            ListPage(filmType = filmType, onBackClicked = { navController.popBackStack() })
+            ListPage(
+                filmType = filmType,
+                onBackClicked = { navController.popBackStack() },
+                screenState = screenState,
+                innerPadding = innerPadding,
+                onFilmClicked = { filmName ->
+                    navController.navigateToSingleFilm(filmName)
+                },
+            )
         }
     }
 }

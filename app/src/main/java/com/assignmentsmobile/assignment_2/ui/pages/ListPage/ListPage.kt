@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +20,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,6 +45,7 @@ import com.assignmentsmobile.assignment_2.data.Section
 import com.assignmentsmobile.assignment_2.ui.components.DetailPageHeader
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.SectionView
+import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 
 @Composable
 
@@ -50,7 +53,9 @@ fun ListPage(
     filmType: String?,
     onBackClicked: () -> Unit,
     onFilmClicked: (String) -> Unit = {},
-    sectionItems: List<Section>
+    screenState: ScreenState<List<Section>>,
+    innerPadding: PaddingValues,
+
 ) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
@@ -59,35 +64,64 @@ fun ListPage(
             DetailPageHeader(filmType, onBackClicked = onBackClicked)
         }
     ) { innerPaddingListPage ->
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .fillMaxWidth()
-                .onGloballyPositioned { layoutCoordinates ->
-                    rowMaxWidth = layoutCoordinates.size.width.dp
-                }
-                .padding(
-                    top = innerPaddingListPage.calculateTopPadding(),
-                    start = rowMaxWidth / 20,
-                    end = rowMaxWidth / 20
-                ),
-        ) {
-            val thisSection = sectionItems.find { item -> item.sectionName == filmType }
-            if(thisSection != null){
-                items(thisSection.list) { film: Film ->
-                    FilmView(film,onFilmClicked)
+        when(screenState){
+            is ScreenState.Initial -> {
+                Text("Press the button to load film collections.")
+            }
+
+            is ScreenState.Error -> {
+                Text("Error : ${screenState.message}", color = Color.Red)
+            }
+            ScreenState.Loading -> {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            bottom = innerPadding.calculateBottomPadding(),
+                            top = innerPaddingListPage.calculateTopPadding()
+                        ),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+
                 }
             }
-            item {
-                Spacer(modifier = Modifier.padding(40.dp))
+            is ScreenState.Success -> {
+                val sections = screenState.data
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onGloballyPositioned { layoutCoordinates ->
+                            rowMaxWidth = layoutCoordinates.size.width.dp
+                        }
+                        .padding(
+                            top = innerPaddingListPage.calculateTopPadding(),
+                            start = rowMaxWidth / 20,
+                            end = rowMaxWidth / 20
+                        ),
+                ) {
+
+                    val thisSection =  sections.find { item -> item.sectionName == filmType }
+                    if(thisSection != null){
+                        items(thisSection.list) { film: Film ->
+                            FilmView(film, onFilmClicked)
+                        }
+                    }
+                    item {
+                        Spacer(modifier = Modifier.padding(40.dp))
+                    }
+                }
             }
         }
-    }
-    Column(
-        modifier = Modifier.padding(top = 30.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
 
     }
+//    Column(
+//        modifier = Modifier.padding(top = 30.dp),
+//        horizontalAlignment = Alignment.CenterHorizontally
+//    ) {
+//
+//
+//    }
 }

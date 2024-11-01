@@ -75,23 +75,14 @@ fun FilmView(
         }
 
         Text(
-            text = if(film.nameRu.length > 13) "${film.nameRu.take(13)}..." else film.nameRu,
-            modifier = Modifier.padding(top = 8.dp).widthIn(max = 111.dp),
+            text = if(film.nameRu.length > 20) "${film.nameRu.take(20)}..." else film.nameRu,
+            modifier = Modifier.padding(top = 8.dp).widthIn(max = 111.dp).height(35.dp),
             style = TextStyle(
                 color = Color(0xff272727),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),
                 fontSize = 14.sp
             )
         )
-//        Text(
-//            text = ""+film.coverUrl,
-//            modifier = Modifier.padding(top = 8.dp).widthIn(max = 111.dp),
-//            style = TextStyle(
-//                color = Color(0xff272727),
-//                fontFamily = FontFamily(Font(R.font.graphik_regular)),
-//                fontSize = 14.sp
-//            )
-//        )
 
         Text(
             text = film.genres[0].genre,
