@@ -6,10 +6,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -37,10 +39,7 @@ fun FilmView(
     onFilmClicked: (String) -> Unit = {}
 ) {
 
-    Column(
-        modifier = Modifier
-            .clickable(onClick = { onFilmClicked(film.nameRu) })
-    ) {
+    Column {
         val colorModifier: List<Color> = listOf(
             Color(181, 181, 201, 102),
             Color(61, 59, 255, 102)
@@ -48,6 +47,7 @@ fun FilmView(
 
         Box(
             modifier = Modifier
+                .clickable(onClick = { onFilmClicked(film.nameRu) })
                 .size(width = 111.dp, height = 156.dp)
                 .clip(shape = RoundedCornerShape(4.dp))
                 .background(
@@ -73,10 +73,10 @@ fun FilmView(
                 RatingView(10.0, Modifier.padding(top = 6.dp, end = 6.dp))
             }
         }
-
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = if(film.nameRu.length > 20) "${film.nameRu.take(20)}..." else film.nameRu,
-            modifier = Modifier.padding(top = 8.dp).widthIn(max = 111.dp).height(35.dp),
+            modifier = Modifier.clickable(onClick = { onFilmClicked(film.nameRu) }).widthIn(max = 111.dp).height(35.dp),
             style = TextStyle(
                 color = Color(0xff272727),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),
@@ -86,13 +86,14 @@ fun FilmView(
 
         Text(
             text = film.genres[0].genre,
-            modifier = Modifier.padding(top = 2.dp),
+            modifier = Modifier.clickable(onClick = { onFilmClicked(film.nameRu) }).padding(top = 2.dp),
             style = TextStyle(
                 color = Color(0xff838390),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),
                 fontSize = 12.sp
             )
         )
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

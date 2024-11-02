@@ -131,7 +131,7 @@ fun SectionView(
             Text(
                 text = "Все",
                 modifier = Modifier
-                    .padding(end = 10.dp)
+                    .padding(end = 26.dp)
                     .clickable(onClick = { onFilmTypeClicked(section.sectionName) }),
                 style = TextStyle(
                     color = Color(0xff3d3bff),

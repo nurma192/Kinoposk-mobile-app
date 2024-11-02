@@ -56,7 +56,7 @@ fun ListPage(
     screenState: ScreenState<List<Section>>,
     innerPadding: PaddingValues,
 
-) {
+    ) {
     var rowMaxWidth by remember { mutableStateOf(0.dp) }
 
     Scaffold(
@@ -64,7 +64,7 @@ fun ListPage(
             DetailPageHeader(filmType, onBackClicked = onBackClicked)
         }
     ) { innerPaddingListPage ->
-        when(screenState){
+        when (screenState) {
             is ScreenState.Initial -> {
                 Text("Press the button to load film collections.")
             }
@@ -72,6 +72,7 @@ fun ListPage(
             is ScreenState.Error -> {
                 Text("Error : ${screenState.message}", color = Color.Red)
             }
+
             ScreenState.Loading -> {
                 Column(
                     modifier = Modifier
@@ -87,6 +88,7 @@ fun ListPage(
 
                 }
             }
+
             is ScreenState.Success -> {
                 val sections = screenState.data
                 LazyVerticalGrid(
@@ -98,13 +100,14 @@ fun ListPage(
                         }
                         .padding(
                             top = innerPaddingListPage.calculateTopPadding(),
-                            start = rowMaxWidth / 20,
+                            start = rowMaxWidth / 18,
                             end = rowMaxWidth / 20
                         ),
+                    horizontalArrangement = Arrangement.Center
                 ) {
 
-                    val thisSection =  sections.find { item -> item.sectionName == filmType }
-                    if(thisSection != null){
+                    val thisSection = sections.find { item -> item.sectionName == filmType }
+                    if (thisSection != null) {
                         items(thisSection.list) { film: Film ->
                             FilmView(film, onFilmClicked)
                         }
@@ -115,13 +118,5 @@ fun ListPage(
                 }
             }
         }
-
     }
-//    Column(
-//        modifier = Modifier.padding(top = 30.dp),
-//        horizontalAlignment = Alignment.CenterHorizontally
-//    ) {
-//
-//
-//    }
 }
