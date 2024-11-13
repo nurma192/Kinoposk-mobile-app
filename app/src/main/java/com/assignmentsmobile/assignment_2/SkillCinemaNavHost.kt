@@ -24,15 +24,9 @@ fun SkillCinemaNavHost(
     innerPadding: PaddingValues
 ) {
 
-    val repository = FilmCollectionRepository()
-    val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel(
-        factory = FilmCollectionsViewModelFactory(repository)
-    )
+    val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel()
     val screenState by filmCollectionsViewModel.screenState.collectAsState()
 
-    LaunchedEffect(Unit) {
-        filmCollectionsViewModel.loadFilmCollections()
-    }
 
     NavHost(
         navController = navController,

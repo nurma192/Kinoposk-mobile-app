@@ -15,6 +15,9 @@ class FilmCollectionsViewModel(private val repository: FilmCollectionRepository)
     private val _screenState = MutableStateFlow<ScreenState<List<Section>>>(ScreenState.Initial)
     val screenState: StateFlow<ScreenState<List<Section>>> = _screenState
 
+    init {
+        loadFilmCollections()
+    }
 
     fun loadFilmCollections() {
         _screenState.value = ScreenState.Loading

@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class FilmCollectionRepository {
+object FilmCollectionRepository {
     suspend fun getFilmCollections(type: String, page: Int): List<Film> {
         return fetchFilmCollections(type, page) ?: emptyList()
     }
