@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
-class FilmCollectionsViewModel(private val repository: FilmCollectionRepository) : ViewModel() {
+class FilmCollectionsViewModel(private val repository: FilmCollectionRepository = FilmCollectionRepository()) : ViewModel() {
     private val _screenState = MutableStateFlow<ScreenState<List<Section>>>(ScreenState.Initial)
     val screenState: StateFlow<ScreenState<List<Section>>> = _screenState
 
