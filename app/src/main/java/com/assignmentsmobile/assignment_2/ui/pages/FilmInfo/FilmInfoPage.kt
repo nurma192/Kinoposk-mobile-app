@@ -179,7 +179,8 @@ fun FilmInfoPage(
         filmImagesList = filmImagesList,
         similarFilmsList = similarFilmsList,
         onBackClicked = onBackClicked,
-        onFilmClicked = onFilmClicked
+        onFilmClicked = onFilmClicked,
+        onGalleryClicked = onGalleryClicked
     )
 
 }
@@ -191,7 +192,8 @@ fun FilmInfoContent(
     filmImagesList: FilmImagesList,
     similarFilmsList: SimilarFilmList,
     onBackClicked: () -> Unit,
-    onFilmClicked: (Int) -> Unit = {}
+    onFilmClicked: (Int) -> Unit = {},
+    onGalleryClicked: (FilmImagesList) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -201,7 +203,7 @@ fun FilmInfoContent(
         Header(film, onBackClicked)
         InFilmActor(staffList)
         InFilmWorker(staffList)
-        FilmGallery(filmImagesList)
+        FilmGallery(filmImagesList, onGalleryClicked)
         SimilarFilms(similarFilmsList, film, onFilmClicked)
     }
 }
@@ -375,9 +377,10 @@ fun InFilmWorker(
 
 @Composable
 fun FilmGallery(
-    filmImagesList: FilmImagesList
+    filmImagesList: FilmImagesList,
+    onGalleryClicked: (FilmImagesList) -> Unit
 ){
-    RowInfo("Галерея", filmImagesList.total.toString())
+    RowInfo("Галерея", filmImagesList.total.toString(), Modifier.clickable { onGalleryClicked(filmImagesList) })
     Spacer(modifier = Modifier.height(32.dp))
     LazyRow(
         modifier = Modifier.padding(start = 26.dp),
@@ -437,7 +440,8 @@ fun FilmText(text: String){
 @Composable
 fun RowInfo(
     text: String,
-    amount: String
+    amount: String,
+    modifier: Modifier = Modifier
 ){
     Row(
         modifier = Modifier
@@ -453,24 +457,28 @@ fun RowInfo(
                 fontSize = 18.sp
             )
         )
-        Box {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    modifier = Modifier.clickable { },
-                    text = amount, style = TextStyle(
-                        color = Color(0xff3d3bff),
-                        fontFamily = FontFamily(Font(R.font.graphik_medium)),
-                        fontSize = 14.sp
-                    )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = modifier
+        ) {
+            Text(
+                modifier = modifier,
+                text = amount, style = TextStyle(
+                    color = Color(0xff3d3bff),
+                    fontFamily = FontFamily(Font(R.font.graphik_medium)),
+                    fontSize = 14.sp
                 )
-                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_arrow_right),
-                        contentDescription = "Icon_Arrow_Right"
-                    )
-                }
+            )
+            IconButton(modifier = Modifier.size(18.dp), onClick = {}) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
+                    contentDescription = "Icon_Arrow_Right",
+                    modifier = modifier
+                )
             }
         }
+
     }
 }
 

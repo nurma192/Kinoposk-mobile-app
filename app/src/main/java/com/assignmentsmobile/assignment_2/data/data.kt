@@ -68,7 +68,6 @@ data class FilmImage(
     val type: String
 )
 
-@Serializable
 data class FilmImagesList(
     val total: Int,
     val totalPages: Int,

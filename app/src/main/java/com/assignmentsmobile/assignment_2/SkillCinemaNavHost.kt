@@ -1,10 +1,12 @@
 package com.assignmentsmobile.assignment_2
 
-import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -14,9 +16,9 @@ import com.assignmentsmobile.assignment_2.data.FilmImagesList
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
+import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
-import kotlinx.serialization.json.Json
 
 @Composable
 fun SkillCinemaNavHost(
@@ -26,7 +28,7 @@ fun SkillCinemaNavHost(
 
     val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel()
     val screenState by filmCollectionsViewModel.screenState.collectAsState()
-
+    var gallery by remember { mutableStateOf<FilmImagesList?>(null) }
 
     NavHost(
         navController = navController,
@@ -69,6 +71,15 @@ fun SkillCinemaNavHost(
                 }
             )
         }
+        composable(route = Destination.Gallery.route){
+            GalleryPage(
+                innerPadding,
+                gallery,
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
         composable(
             route = Destination.Film.routeWithArgs,
             arguments = Destination.Film.arguments
@@ -82,10 +93,10 @@ fun SkillCinemaNavHost(
                 onFilmClicked = { id ->
                     navController.navigateToSingleFilm(id)
                 },
-//                onGalleryClicked = { galleryList ->
-//                    var images = Json.encodeToString(FilmImagesList.serializer(), galleryList)
-//                    navController.navigateSingle("")
-//                }
+                onGalleryClicked = { galleryList ->
+                    gallery = galleryList
+                    navController.navigateSingle(Destination.Gallery.route)
+                }
             )
         }
         composable(route = Destination.FilmType.routeWithArgs) { navBackStackEntry ->
@@ -108,9 +119,6 @@ fun NavHostController.navigateSingle(route: String) =
     this.navigate(route) {
         launchSingleTop = true
         restoreState = true
-        popUpTo(graph.findStartDestination().id) {
-            saveState = true
-        }
     }
 
 

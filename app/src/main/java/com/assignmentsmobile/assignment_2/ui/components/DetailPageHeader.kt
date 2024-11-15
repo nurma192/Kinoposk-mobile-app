@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -65,8 +66,8 @@ fun DetailPageHeader(filmType: String?, onBackClicked: () -> Unit) {
                     text = filmType.toString(),
                     style = TextStyle(
                         color = Color(0xff272727),
-                        fontFamily = FontFamily(Font(R.font.graphik_bold)),
-                        fontSize = 14.sp
+                        fontFamily = FontFamily(Font(R.font.graphik_medium)),
+                        fontSize = 16.sp,
                     )
                 )
                 Spacer(modifier = Modifier.width(rowMaxWidth / 20))
