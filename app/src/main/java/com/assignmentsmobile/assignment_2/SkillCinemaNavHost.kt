@@ -2,17 +2,14 @@ package com.assignmentsmobile.assignment_2
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.assignmentsmobile.assignment_2.data.repository.FilmCollectionRepository
-import com.assignmentsmobile.assignment_2.data.repository.FilmCollectionsViewModelFactory
+
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
@@ -36,8 +33,8 @@ fun SkillCinemaNavHost(
             HomePage(
                 innerPadding = innerPadding,
                 screenState = screenState,
-                onFilmClicked = { filmName ->
-                    navController.navigateToSingleFilm(filmName)
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
@@ -49,8 +46,8 @@ fun SkillCinemaNavHost(
             HomePage(
                 innerPadding = innerPadding,
                 screenState = screenState,
-                onFilmClicked = { filmName ->
-                    navController.navigateToSingleFilm(filmName)
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
@@ -61,8 +58,8 @@ fun SkillCinemaNavHost(
             HomePage(
                 innerPadding = innerPadding,
                 screenState  = screenState,
-                onFilmClicked = { filmName ->
-                    navController.navigateToSingleFilm(filmName)
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
                 },
                 onFilmTypeClicked = { filmType ->
                     navController.navigateToSingleFilmType(filmType)
@@ -73,8 +70,14 @@ fun SkillCinemaNavHost(
             route = Destination.Film.routeWithArgs,
             arguments = Destination.Film.arguments
         ) { navBackStackEntry ->
-            val filmName = navBackStackEntry.arguments?.getString(Destination.Film.filmName)
-            FilmInfoPage(filmName = filmName, innerPadding = innerPadding)
+            val filmId = navBackStackEntry.arguments!!.getInt(Destination.Film.filmId)
+            FilmInfoPage(
+                filmId = filmId,
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+
         }
         composable(route = Destination.FilmType.routeWithArgs) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
@@ -83,8 +86,8 @@ fun SkillCinemaNavHost(
                 onBackClicked = { navController.popBackStack() },
                 screenState = screenState,
                 innerPadding = innerPadding,
-                onFilmClicked = { filmName ->
-                    navController.navigateToSingleFilm(filmName)
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
                 },
             )
         }
@@ -101,8 +104,9 @@ fun NavHostController.navigateSingle(route: String) =
         }
     }
 
-fun NavHostController.navigateToSingleFilm(filmName: String) {
-    this.navigateSingle("${Destination.Film.route}/$filmName")
+
+fun NavHostController.navigateToSingleFilm(filmId: Int) {
+    this.navigateSingle("${Destination.Film.route}/$filmId")
 }
 
 fun NavHostController.navigateToSingleFilmType(filmType: String) {

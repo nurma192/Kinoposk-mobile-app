@@ -9,9 +9,9 @@ sealed class Destination(val route: String, val image: Int, val selectedImage: I
     data object AccountPage : Destination("profile", R.drawable.ic_profile, R.drawable.ic_profile_selected)
 
     data object Film : Destination("film", R.drawable.ic_home, R.drawable.ic_home_selected) {
-        const val routeWithArgs = "film/{filmName}"
-        const val filmName = "filmName"
-        val arguments = listOf(navArgument(filmName) { type = NavType.StringType })
+        const val routeWithArgs = "film/{filmId}"
+        const val filmId = "filmId"
+        val arguments = listOf(navArgument(filmId) { type = NavType.IntType })
     }
 
     data object FilmType : Destination("filmType", R.drawable.ic_home, R.drawable.ic_home_selected) {

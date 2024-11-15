@@ -10,7 +10,7 @@ import coil.compose.rememberImagePainter
 import coil.request.CachePolicy
 
 @Composable
-fun CoilImage(url: String, modifier: Modifier = Modifier) {
+fun CoilImage(url: String, modifier: Modifier = Modifier, contentScale: ContentScale) {
     val painter = rememberImagePainter(
         data = url,
         builder = {
@@ -24,6 +24,6 @@ fun CoilImage(url: String, modifier: Modifier = Modifier) {
         painter = painter,
         contentDescription = null,
         modifier = modifier.fillMaxSize(),
-        contentScale = ContentScale.Crop
+        contentScale = contentScale
     )
 }

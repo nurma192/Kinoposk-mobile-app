@@ -44,7 +44,7 @@ import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 
 fun HomePage(
     innerPadding: PaddingValues,
-    onFilmClicked: (String) -> Unit = {},
+    onFilmClicked: (Int) -> Unit = {},
     onFilmTypeClicked: (String) -> Unit = {},
     screenState: ScreenState<List<Section>>
 
@@ -111,7 +111,7 @@ fun HomePage(
 fun SectionView(
     section: Section,
     onFilmTypeClicked: (String) -> Unit,
-    onFilmClicked: (String) -> Unit
+    onFilmClicked: (Int) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(24.dp),

@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -36,9 +37,8 @@ import com.assignmentsmobile.assignment_2.data.Film
 @Composable
 fun FilmView(
     film: Film,
-    onFilmClicked: (String) -> Unit = {}
+    onFilmClicked: (Int) -> Unit = {}
 ) {
-
     Column {
         val colorModifier: List<Color> = listOf(
             Color(181, 181, 201, 102),
@@ -47,7 +47,7 @@ fun FilmView(
 
         Box(
             modifier = Modifier
-                .clickable(onClick = { onFilmClicked(film.nameRu) })
+                .clickable(onClick = { onFilmClicked(film.kinopoiskId) })
                 .size(width = 111.dp, height = 156.dp)
                 .clip(shape = RoundedCornerShape(4.dp))
                 .background(
@@ -63,7 +63,8 @@ fun FilmView(
             if(film.coverUrl != null){
                 CoilImage(
                     url = film.coverUrl,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
                 )
             }
 
@@ -76,7 +77,7 @@ fun FilmView(
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = if(film.nameRu.length > 20) "${film.nameRu.take(20)}..." else film.nameRu,
-            modifier = Modifier.clickable(onClick = { onFilmClicked(film.nameRu) }).widthIn(max = 111.dp).height(35.dp),
+            modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).widthIn(max = 111.dp).height(35.dp),
             style = TextStyle(
                 color = Color(0xff272727),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),
@@ -86,7 +87,7 @@ fun FilmView(
 
         Text(
             text = film.genres[0].genre,
-            modifier = Modifier.clickable(onClick = { onFilmClicked(film.nameRu) }).padding(top = 2.dp),
+            modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).padding(top = 2.dp),
             style = TextStyle(
                 color = Color(0xff838390),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),

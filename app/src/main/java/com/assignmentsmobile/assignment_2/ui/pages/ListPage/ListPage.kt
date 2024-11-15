@@ -52,7 +52,7 @@ import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 fun ListPage(
     filmType: String?,
     onBackClicked: () -> Unit,
-    onFilmClicked: (String) -> Unit = {},
+    onFilmClicked: (Int) -> Unit = {},
     screenState: ScreenState<List<Section>>,
     innerPadding: PaddingValues,
 
