@@ -201,190 +201,228 @@ fun FilmInfoContent(
             .verticalScroll(state = rememberScrollState()),
 //        verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
-        Box(
+        Header(film, onBackClicked)
+        InFilmActor(staffList)
+        InFilmWorker(staffList)
+        FilmGallery(filmImagesList)
+        SimilarFilms(similarFilmsList, film, onFilmClicked)
+    }
+}
+
+@Composable
+fun Header(
+    film: Film,
+    onBackClicked: () -> Unit
+){
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(360.dp)
+            .background(
+                Brush.verticalGradient(
+                    colors = listOf(Color(0x001b1b1b), Color(0xff1b1b1b)),
+                    startY = 0f,
+                    endY = Float.POSITIVE_INFINITY
+                )
+            )
+    ) {
+        if (film.coverUrl != "") {
+            CoilImage(
+                url = film.coverUrl,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        }
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(360.dp)
-                .background(
-                    Brush.verticalGradient(
-                        colors = listOf(Color(0x001b1b1b), Color(0xff1b1b1b)),
-                        startY = 0f,
-                        endY = Float.POSITIVE_INFINITY
+                .padding(top = 42.dp, start = 26.dp)
+        ) {
+            IconButton(modifier = Modifier.size(24.dp), onClick = {
+                onBackClicked()
+            }) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_arrow_left),
+                    contentDescription = "Icon_Arrow_Left"
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.padding(top = 50.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CoilImage(
+                url = film.logoUrl,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                contentScale = ContentScale.Fit
+            )
+//                        Text(text = film.nameRu, fontSize = 40.sp, color = Color.White)
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = film.ratingImdb.toString(), style = TextStyle(
+                        color = Color(0xffb5b5c9),
+                        fontFamily = FontFamily(Font(R.font.graphik_bold)),
+                        fontSize = 12.sp
                     )
                 )
-        ) {
-            if (film.coverUrl != "") {
+                Text(
+                    text = "  " + film.nameRu, style = TextStyle(
+                        color = Color(0xffb5b5c9),
+                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                        fontSize = 12.sp
+                    )
+                )
+            }
+            Text(
+                modifier = Modifier.padding(vertical = 4.dp),
+                text = film.year.toString() + ", " + film.genres.joinToString { it.genre },
+                style = TextStyle(
+                    color = Color(0xffb5b5c9),
+                    fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                    fontSize = 12.sp
+                )
+            )
+            Text(
+                modifier = Modifier.padding(bottom = 5.dp),
+                text = film.countries.joinToString { it.country } + ", " +
+                        "${if (film.filmLength >= 60) "${film.filmLength / 60} ч ${film.filmLength % 60} мин" else "${film.filmLength % 60} мин"}, " +
+                        film.ratingAgeLimits.filter { it.isDigit() } + "+",
+                style = TextStyle(
+                    color = Color(0xffb5b5c9),
+                    fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                    fontSize = 12.sp
+                )
+            )
+            Row(
+                modifier = Modifier.padding(top = 8.dp, bottom = 17.dp),
+                horizontalArrangement = Arrangement.spacedBy(22.dp)
+            ) {
+
+                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_like),
+                        contentDescription = "Icon_Like"
+                    )
+                }
+                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_flag),
+                        contentDescription = "Icon_Flag"
+                    )
+                }
+                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_eye),
+                        contentDescription = "Icon_Eye"
+                    )
+                }
+                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_share),
+                        contentDescription = "Icon_Share"
+                    )
+                }
+                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_more),
+                        contentDescription = "Icon_More"
+                    )
+                }
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(40.dp))
+    FilmText(film.shortDescription)
+    Spacer(modifier = Modifier.height(20.dp))
+    FilmText(film.description)
+    Spacer(modifier = Modifier.height(40.dp))
+}
+
+@Composable
+fun InFilmActor(
+    staffList: StaffList
+){
+    RowInfo("В фильме снимались", staffList.actors.size.toString())
+    Spacer(modifier = Modifier.height(32.dp))
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(4),
+        modifier = Modifier.height(300.dp)
+    ) {
+        items(staffList.actors.take(20)) { actor ->
+            PersonView(actor)
+        }
+    }
+    Spacer(modifier = Modifier.height(40.dp))
+}
+
+@Composable
+fun InFilmWorker(
+    staffList: StaffList
+){
+    RowInfo("Над фильмом работали", staffList.otherStaff.size.toString())
+    Spacer(modifier = Modifier.height(32.dp))
+    LazyHorizontalGrid(
+        rows = GridCells.Fixed(2),
+        modifier = Modifier.height(150.dp)
+    ) {
+        items(staffList.otherStaff.take(10)) { otherStaff ->
+            PersonView(otherStaff)
+        }
+    }
+    Spacer(modifier = Modifier.height(40.dp))
+}
+
+@Composable
+fun FilmGallery(
+    filmImagesList: FilmImagesList
+){
+    RowInfo("Галерея", filmImagesList.total.toString())
+    Spacer(modifier = Modifier.height(32.dp))
+    LazyRow(
+        modifier = Modifier.padding(start = 26.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(filmImagesList.items.take(20)) { item ->
+            Box(
+                Modifier
+                    .size(width = 192.dp, height = 108.dp)
+                    .clip(shape = RoundedCornerShape(4.dp))
+                    .background(Color(0x40b5b5c9))
+            ) {
                 CoilImage(
-                    url = film.coverUrl,
-                    modifier = Modifier.fillMaxSize(),
+                    url = item.imageUrl,
                     contentScale = ContentScale.Crop
                 )
             }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 42.dp, start = 26.dp)
-            ) {
-                IconButton(modifier = Modifier.size(24.dp), onClick = {
-                    onBackClicked()
-                }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_arrow_left),
-                        contentDescription = "Icon_Arrow_Left"
-                    )
-                }
-            }
-            Column(
-                modifier = Modifier.padding(top = 50.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CoilImage(
-                    url = film.logoUrl,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    contentScale = ContentScale.Fit
-                )
-//                        Text(text = film.nameRu, fontSize = 40.sp, color = Color.White)
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = film.ratingImdb.toString(), style = TextStyle(
-                            color = Color(0xffb5b5c9),
-                            fontFamily = FontFamily(Font(R.font.graphik_bold)),
-                            fontSize = 12.sp
-                        )
-                    )
-                    Text(
-                        text = "  " + film.nameRu, style = TextStyle(
-                            color = Color(0xffb5b5c9),
-                            fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                            fontSize = 12.sp
-                        )
-                    )
-                }
-                Text(
-                    modifier = Modifier.padding(vertical = 4.dp),
-                    text = film.year.toString() + ", " + film.genres.joinToString { it.genre },
-                    style = TextStyle(
-                        color = Color(0xffb5b5c9),
-                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                        fontSize = 12.sp
-                    )
-                )
-                Text(
-                    modifier = Modifier.padding(bottom = 5.dp),
-                    text = film.countries.joinToString { it.country } + ", " +
-                            "${if (film.filmLength >= 60) "${film.filmLength / 60} ч ${film.filmLength % 60} мин" else "${film.filmLength % 60} мин"}, " +
-                            film.ratingAgeLimits.filter { it.isDigit() } + "+",
-                    style = TextStyle(
-                        color = Color(0xffb5b5c9),
-                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                        fontSize = 12.sp
-                    )
-                )
-                Row(
-                    modifier = Modifier.padding(top = 8.dp, bottom = 17.dp),
-                    horizontalArrangement = Arrangement.spacedBy(22.dp)
-                ) {
-
-                    IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_like),
-                            contentDescription = "Icon_Like"
-                        )
-                    }
-                    IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_flag),
-                            contentDescription = "Icon_Flag"
-                        )
-                    }
-                    IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_eye),
-                            contentDescription = "Icon_Eye"
-                        )
-                    }
-                    IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_share),
-                            contentDescription = "Icon_Share"
-                        )
-                    }
-                    IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_more),
-                            contentDescription = "Icon_More"
-                        )
-                    }
-                }
-            }
-
         }
-        Spacer(modifier = Modifier.height(40.dp))
-        FilmText(film.shortDescription)
-        Spacer(modifier = Modifier.height(20.dp))
-        FilmText(film.description)
-        Spacer(modifier = Modifier.height(40.dp))
-        RowInfo("В фильме снимались", staffList.actors.size.toString())
-        Spacer(modifier = Modifier.height(32.dp))
-        LazyHorizontalGrid(
-            rows = GridCells.Fixed(4),
-            modifier = Modifier.height(300.dp)
-        ) {
-            items(staffList.actors.take(20)) { actor ->
-                PersonView(actor)
-            }
-        }
-        Spacer(modifier = Modifier.height(40.dp))
-        RowInfo("Над фильмом работали", staffList.otherStaff.size.toString())
-        Spacer(modifier = Modifier.height(32.dp))
-        LazyHorizontalGrid(
-            rows = GridCells.Fixed(2),
-            modifier = Modifier.height(150.dp)
-        ) {
-            items(staffList.otherStaff.take(10)) { otherStaff ->
-                PersonView(otherStaff)
-            }
-        }
-        Spacer(modifier = Modifier.height(40.dp))
-        RowInfo("Галерея", filmImagesList.total.toString())
-        Spacer(modifier = Modifier.height(32.dp))
-        LazyRow(
-            modifier = Modifier.padding(start = 26.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(filmImagesList.items.take(20)) { item ->
-                Box(
-                    Modifier
-                        .size(width = 192.dp, height = 108.dp)
-                        .clip(shape = RoundedCornerShape(4.dp))
-                        .background(Color(0x40b5b5c9))
-                ) {
-                    CoilImage(
-                        url = item.imageUrl,
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(40.dp))
-        RowInfo("Похожие фильмы", similarFilmsList.total.toString())
-        Spacer(modifier = Modifier.height(32.dp))
-        LazyRow(
-            modifier = Modifier.padding(start = 26.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(similarFilmsList.items) { item ->
-                val filmViewItem: Film = item.toFilm(film.genres)
-                FilmView(filmViewItem, onFilmClicked)
-            }
-        }
-        Spacer(modifier = Modifier.padding(bottom = 80.dp))
     }
+    Spacer(modifier = Modifier.height(40.dp))
 }
+
+@Composable
+fun SimilarFilms(
+    similarFilmsList: SimilarFilmList,
+    film: Film,
+    onFilmClicked: (Int) -> Unit
+){
+    RowInfo("Похожие фильмы", similarFilmsList.total.toString())
+    Spacer(modifier = Modifier.height(32.dp))
+    LazyRow(
+        modifier = Modifier.padding(start = 26.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(similarFilmsList.items) { item ->
+            val filmViewItem: Film = item.toFilm(film.genres)
+            FilmView(filmViewItem, onFilmClicked)
+        }
+    }
+    Spacer(modifier = Modifier.padding(bottom = 80.dp))
+}
+
 
 @Composable
 fun FilmText(text: String){
