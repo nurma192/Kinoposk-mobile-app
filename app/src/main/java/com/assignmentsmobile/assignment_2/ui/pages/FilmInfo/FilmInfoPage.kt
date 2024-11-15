@@ -51,9 +51,11 @@ import com.assignmentsmobile.assignment_2.data.SimilarFilmList
 import com.assignmentsmobile.assignment_2.data.Staff
 import com.assignmentsmobile.assignment_2.data.StaffList
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
+import com.assignmentsmobile.assignment_2.data.toFilm
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
 import com.assignmentsmobile.assignment_2.ui.components.CoilImage
+import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import com.assignmentsmobile.assignment_2.ui.components.RatingView
 import com.assignmentsmobile.assignment_2.ui.components.getFilmRating
 import com.assignmentsmobile.assignment_2.ui.states.ScreenState
@@ -69,7 +71,8 @@ fun FilmInfoPage(
             KinopoiskDomain.filmImagesApiService,
             KinopoiskDomain.similarFilmsApiService
         )
-    )
+    ),
+    onFilmClicked: (Int) -> Unit = {}
 ) {
     val filmInfoState by viewModel.filmInfoState.collectAsState()
     val staffInfoState by viewModel.staffInfoState.collectAsState()
@@ -83,101 +86,104 @@ fun FilmInfoPage(
         viewModel.getSimilarFilms(filmId)
     }
 
-    when (filmInfoState) {
-        is ScreenState.Initial -> {
+    val film = (filmInfoState as? ScreenState.Success<Film>)?.data
+    val staffList = (staffInfoState as? ScreenState.Success<StaffList>)?.data
+    val filmImagesList = (filmImagesState as? ScreenState.Success<FilmImagesList>)?.data
+    val similarFilmsList = (similarFilmState as? ScreenState.Success<SimilarFilmList>)?.data
 
-        }
-
-        is ScreenState.Error -> {
-            Text(text = "Error: ${(filmInfoState as ScreenState.Error).message}")
-        }
-
-        is ScreenState.Loading -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CircularProgressIndicator()
+    if (film == null) {
+        when (filmInfoState) {
+            is ScreenState.Initial -> return
+            is ScreenState.Error -> {
+                Text(text = "Error: ${(filmInfoState as ScreenState.Error).message}")
+                return
             }
-        }
-
-        is ScreenState.Success -> {
-            when (staffInfoState) {
-                is ScreenState.Initial -> {
-
+            is ScreenState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
                 }
-
-                is ScreenState.Error -> {
-                    Text(text = "Error: ${(staffInfoState as ScreenState.Error).message}")
-                }
-
-                is ScreenState.Loading -> {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                is ScreenState.Success -> {
-                    when (filmImagesState) {
-                        is ScreenState.Initial -> {
-
-                        }
-
-                        is ScreenState.Error -> {
-                            Text(text = "Error: ${(filmImagesState as ScreenState.Error).message}")
-                        }
-
-                        is ScreenState.Loading -> {
-                            Column(
-                                modifier = Modifier.fillMaxSize(),
-                                verticalArrangement = Arrangement.Center,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                CircularProgressIndicator()
-                            }
-                        }
-
-                        is ScreenState.Success -> {
-                            when (similarFilmState) {
-                                is ScreenState.Initial -> {
-
-                                }
-
-                                is ScreenState.Error -> {
-                                    Text(text = "Error: ${(filmImagesState as ScreenState.Error).message}")
-                                }
-
-                                is ScreenState.Loading -> {
-                                    Column(
-                                        modifier = Modifier.fillMaxSize(),
-                                        verticalArrangement = Arrangement.Center,
-                                        horizontalAlignment = Alignment.CenterHorizontally
-                                    ) {
-                                        CircularProgressIndicator()
-                                    }
-                                }
-
-                                is ScreenState.Success -> {
-                                    FilmInfoContent(
-                                        film = (filmInfoState as ScreenState.Success<Film>).data,
-                                        staffList = (staffInfoState as ScreenState.Success<StaffList>).data,
-                                        filmImagesList = (filmImagesState as ScreenState.Success<FilmImagesList>).data,
-                                        similarFilmsList = (similarFilmState as ScreenState.Success<SimilarFilmList>).data,
-                                        onBackClicked = onBackClicked
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                return
             }
+            is ScreenState.Success -> return
         }
     }
+
+    if (staffList == null) {
+        when (staffInfoState) {
+            is ScreenState.Initial -> return
+            is ScreenState.Error -> {
+                Text(text = "Error: ${(staffInfoState as ScreenState.Error).message}")
+                return
+            }
+            is ScreenState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                }
+                return
+            }
+            is ScreenState.Success -> return
+        }
+    }
+
+    if (filmImagesList == null) {
+        when (filmImagesState) {
+            is ScreenState.Initial -> return
+            is ScreenState.Error -> {
+                Text(text = "Error: ${(filmImagesState as ScreenState.Error).message}")
+                return
+            }
+            is ScreenState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                }
+                return
+            }
+            is ScreenState.Success -> return
+        }
+    }
+
+    if (similarFilmsList == null) {
+        when (similarFilmState) {
+            is ScreenState.Initial -> return
+            is ScreenState.Error -> {
+                Text(text = "Error: ${(similarFilmState as ScreenState.Error).message}")
+                return
+            }
+            is ScreenState.Loading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator()
+                }
+                return
+            }
+            is ScreenState.Success -> return
+        }
+    }
+
+    FilmInfoContent(
+        film = film,
+        staffList = staffList,
+        filmImagesList = filmImagesList,
+        similarFilmsList = similarFilmsList,
+        onBackClicked = onBackClicked,
+        onFilmClicked
+    )
+
 }
 
 @Composable
@@ -186,7 +192,8 @@ fun FilmInfoContent(
     staffList: StaffList,
     filmImagesList: FilmImagesList,
     similarFilmsList: SimilarFilmList,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onFilmClicked: (Int) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -371,7 +378,8 @@ fun FilmInfoContent(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(similarFilmsList.items) { item ->
-                FilmView2(item, film)
+                val filmViewItem: Film = item.toFilm(film.genres)
+                FilmView(filmViewItem, onFilmClicked)
             }
         }
         Spacer(modifier = Modifier.padding(bottom = 80.dp))
@@ -471,76 +479,5 @@ fun PersonView(
                 )
             )
         }
-    }
-}
-
-@Composable
-fun FilmView2(
-    similarFilm: SimilarFilm,
-    film: Film
-) {
-    Column {
-        val colorModifier: List<Color> = listOf(
-            Color(181, 181, 201, 102),
-            Color(61, 59, 255, 102)
-        )
-
-        Box(
-            modifier = Modifier
-                .clickable(onClick = { })
-                .size(width = 111.dp, height = 156.dp)
-                .clip(shape = RoundedCornerShape(4.dp))
-                .background(
-                    Brush.verticalGradient(
-                        colors = colorModifier,
-                        startY = 0f,
-                        endY = 100f
-                    )
-                ),
-            contentAlignment = Alignment.TopEnd
-        ) {
-            if (similarFilm.posterUrl != null) {
-                CoilImage(
-                    url = similarFilm.posterUrl,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
-                )
-            }
-
-            if (getFilmRating(film) != 0.0) {
-                RatingView(
-                    getFilmRating(film),
-                    Modifier.padding(top = 6.dp, end = 6.dp)
-                )
-            } else {
-                RatingView(9.0, Modifier.padding(top = 6.dp, end = 6.dp))
-            }
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = if (similarFilm.nameRu.length > 20) "${similarFilm.nameRu.take(20)}..." else similarFilm.nameRu,
-            modifier = Modifier
-                .clickable(onClick = { })
-                .widthIn(max = 111.dp)
-                .height(35.dp),
-            style = TextStyle(
-                color = Color(0xff272727),
-                fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                fontSize = 14.sp
-            )
-        )
-
-        Text(
-            text = film.genres[0].genre,
-            modifier = Modifier
-                .clickable(onClick = { })
-                .padding(top = 2.dp),
-            style = TextStyle(
-                color = Color(0xff838390),
-                fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                fontSize = 12.sp
-            )
-        )
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }

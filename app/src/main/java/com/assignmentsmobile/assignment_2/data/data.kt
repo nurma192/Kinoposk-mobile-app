@@ -88,3 +88,27 @@ data class SimilarFilmList(
     val total: Int,
     val items: List<SimilarFilm>
 )
+
+fun SimilarFilm.toFilm(genres: List<Genre>): Film {
+    return Film(
+        kinopoiskId = this.filmId,
+        imdbId = "",
+        nameRu = this.nameRu,
+        nameEn = this.nameEn,
+        nameOriginal = this.nameOriginal,
+        countries = emptyList(),
+        genres = genres,
+        ratingKinopoisk = 0.0,
+        ratingImdb = 0.0,
+        year = 0,
+        type = "",
+        posterUrl = "",
+        posterUrlPreview = this.posterUrlPreview,
+        coverUrl = this.posterUrl,
+        logoUrl = "",
+        description = "",
+        ratingAgeLimits = "0+",
+        filmLength = 0,
+        shortDescription = ""
+    )
+}

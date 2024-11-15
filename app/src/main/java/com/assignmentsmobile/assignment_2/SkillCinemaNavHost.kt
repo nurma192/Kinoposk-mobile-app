@@ -75,7 +75,8 @@ fun SkillCinemaNavHost(
                 filmId = filmId,
                 onBackClicked = {
                     navController.popBackStack()
-                }
+                },
+                onFilmClicked = {}
             )
 
         }

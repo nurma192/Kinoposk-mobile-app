@@ -70,8 +70,6 @@ fun FilmView(
 
             if (getFilmRating(film) != 0.0) {
                 RatingView(getFilmRating(film), Modifier.padding(top = 6.dp, end = 6.dp))
-            }else{
-                RatingView(10.0, Modifier.padding(top = 6.dp, end = 6.dp))
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
