@@ -19,6 +19,12 @@ sealed class Destination(val route: String, val image: Int, val selectedImage: I
         const val filmType = "filmType"
         val arguments = listOf(navArgument(filmType) { type = NavType.StringType })
     }
+
+    data object Gallery : Destination("gallery", R.drawable.ic_home, R.drawable.ic_home_selected){
+        const val routeWithArgs = "gallery/{imageList}"
+        const val imageList = "imageList"
+        val arguments = listOf(navArgument(imageList) { type = NavType.StringType })
+    }
 }
 
 val bottomBarPages = listOf(Destination.HomePage, Destination.SearchPage, Destination.AccountPage)

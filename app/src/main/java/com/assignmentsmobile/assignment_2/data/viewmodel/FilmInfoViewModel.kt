@@ -74,11 +74,11 @@ class FilmInfoViewModel(
         }
     }
 
-    fun getFilmImages(filmId: Int, type: String, page: Int){
+    fun getFilmImages(filmId: Int){
         viewModelScope.launch {
             _filmImagesState.value = ScreenState.Loading
             try {
-                val result = imagesListRepository.getFilmImages(filmId, type, page)
+                val result = imagesListRepository.getFilmImages(filmId, "SHOOTING", 1)
                 result.fold(
                     onSuccess = { images ->
                         _filmImagesState.value = ScreenState.Success(images)

@@ -1,5 +1,6 @@
 package com.assignmentsmobile.assignment_2.ui.pages.FilmInfo
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
@@ -46,7 +46,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
-import com.assignmentsmobile.assignment_2.data.SimilarFilm
 import com.assignmentsmobile.assignment_2.data.SimilarFilmList
 import com.assignmentsmobile.assignment_2.data.Staff
 import com.assignmentsmobile.assignment_2.data.StaffList
@@ -56,14 +55,13 @@ import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
 import com.assignmentsmobile.assignment_2.ui.components.CoilImage
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
-import com.assignmentsmobile.assignment_2.ui.components.RatingView
-import com.assignmentsmobile.assignment_2.ui.components.getFilmRating
 import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 
 @Composable
 fun FilmInfoPage(
     filmId: Int,
     onBackClicked: () -> Unit,
+    onFilmClicked: (Int) -> Unit = {},
     viewModel: FilmInfoViewModel = viewModel(
         factory = FilmInfoViewModelFactory(
             KinopoiskDomain.filmApiService,
@@ -72,7 +70,7 @@ fun FilmInfoPage(
             KinopoiskDomain.similarFilmsApiService
         )
     ),
-    onFilmClicked: (Int) -> Unit = {}
+    onGalleryClicked: (FilmImagesList) -> Unit = {}
 ) {
     val filmInfoState by viewModel.filmInfoState.collectAsState()
     val staffInfoState by viewModel.staffInfoState.collectAsState()
@@ -82,7 +80,7 @@ fun FilmInfoPage(
     LaunchedEffect(filmId) {
         viewModel.getFilmById(filmId)
         viewModel.getStaffById(filmId)
-        viewModel.getFilmImages(filmId, "SHOOTING", 1)
+        viewModel.getFilmImages(filmId)
         viewModel.getSimilarFilms(filmId)
     }
 
@@ -181,7 +179,7 @@ fun FilmInfoPage(
         filmImagesList = filmImagesList,
         similarFilmsList = similarFilmsList,
         onBackClicked = onBackClicked,
-        onFilmClicked
+        onFilmClicked = onFilmClicked
     )
 
 }
@@ -193,13 +191,12 @@ fun FilmInfoContent(
     filmImagesList: FilmImagesList,
     similarFilmsList: SimilarFilmList,
     onBackClicked: () -> Unit,
-    onFilmClicked: (Int) -> Unit
+    onFilmClicked: (Int) -> Unit = {}
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState()),
-//        verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
         Header(film, onBackClicked)
         InFilmActor(staffList)
@@ -386,7 +383,7 @@ fun FilmGallery(
         modifier = Modifier.padding(start = 26.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(filmImagesList.items.take(20)) { item ->
+        items(filmImagesList.items.take(7)) { item ->
             Box(
                 Modifier
                     .size(width = 192.dp, height = 108.dp)
@@ -407,7 +404,7 @@ fun FilmGallery(
 fun SimilarFilms(
     similarFilmsList: SimilarFilmList,
     film: Film,
-    onFilmClicked: (Int) -> Unit
+    onFilmClicked: (Int) -> Unit = {}
 ){
     RowInfo("Похожие фильмы", similarFilmsList.total.toString())
     Spacer(modifier = Modifier.height(32.dp))

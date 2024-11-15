@@ -1,5 +1,6 @@
 package com.assignmentsmobile.assignment_2
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -9,11 +10,13 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.assignmentsmobile.assignment_2.data.FilmImagesList
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
+import kotlinx.serialization.json.Json
 
 @Composable
 fun SkillCinemaNavHost(
@@ -76,9 +79,14 @@ fun SkillCinemaNavHost(
                 onBackClicked = {
                     navController.popBackStack()
                 },
-                onFilmClicked = {}
+                onFilmClicked = { id ->
+                    navController.navigateToSingleFilm(id)
+                },
+//                onGalleryClicked = { galleryList ->
+//                    var images = Json.encodeToString(FilmImagesList.serializer(), galleryList)
+//                    navController.navigateSingle("")
+//                }
             )
-
         }
         composable(route = Destination.FilmType.routeWithArgs) { navBackStackEntry ->
             val filmType = navBackStackEntry.arguments?.getString(Destination.FilmType.filmType)
@@ -107,7 +115,8 @@ fun NavHostController.navigateSingle(route: String) =
 
 
 fun NavHostController.navigateToSingleFilm(filmId: Int) {
-    this.navigateSingle("${Destination.Film.route}/$filmId")
+    val route = "${Destination.Film.route}/$filmId"
+    this.navigate(route)
 }
 
 fun NavHostController.navigateToSingleFilmType(filmType: String) {
