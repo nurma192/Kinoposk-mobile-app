@@ -3,14 +3,17 @@ package com.assignmentsmobile.assignment_2.data.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.assignmentsmobile.assignment_2.data.Actor
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
 import com.assignmentsmobile.assignment_2.data.SimilarFilmList
 import com.assignmentsmobile.assignment_2.data.StaffList
+import com.assignmentsmobile.assignment_2.data.domain.ActorApiService
 import com.assignmentsmobile.assignment_2.data.domain.FilmApiService
 import com.assignmentsmobile.assignment_2.data.domain.FilmImagesApiService
 import com.assignmentsmobile.assignment_2.data.domain.SimilarFilmsApiService
 import com.assignmentsmobile.assignment_2.data.domain.StaffApiService
+import com.assignmentsmobile.assignment_2.data.repository.ActorRepository
 import com.assignmentsmobile.assignment_2.data.repository.FilmImagesListRepository
 import com.assignmentsmobile.assignment_2.data.repository.FilmRepository
 import com.assignmentsmobile.assignment_2.data.repository.SimilarFilmsListRepository
@@ -24,18 +27,26 @@ class FilmInfoViewModel(
     private val filmRepository: FilmRepository,
     private val staffRepository: StaffRepository,
     private val imagesListRepository: FilmImagesListRepository,
-    private val similarFilmsListRepository: SimilarFilmsListRepository
+    private val similarFilmsListRepository: SimilarFilmsListRepository,
+    private val actorRepository: ActorRepository
+
 ) : ViewModel() {
+    private val _actorDetailState = MutableStateFlow<ScreenState<Actor>>(ScreenState.Initial)
+    val actorDetailState: StateFlow<ScreenState<Actor>> = _actorDetailState
+
+
     private val _filmInfoState = MutableStateFlow<ScreenState<Film>>(ScreenState.Initial)
     val filmInfoState: StateFlow<ScreenState<Film>> = _filmInfoState
 
     private val _staffInfoState = MutableStateFlow<ScreenState<StaffList>>(ScreenState.Initial)
     val staffInfoState: StateFlow<ScreenState<StaffList>> = _staffInfoState
 
-    private val _filmImagesState = MutableStateFlow<ScreenState<FilmImagesList>>(ScreenState.Initial)
+    private val _filmImagesState =
+        MutableStateFlow<ScreenState<FilmImagesList>>(ScreenState.Initial)
     val filmImagesState: StateFlow<ScreenState<FilmImagesList>> = _filmImagesState
 
-    private val _similarFilmState = MutableStateFlow<ScreenState<SimilarFilmList>>(ScreenState.Initial)
+    private val _similarFilmState =
+        MutableStateFlow<ScreenState<SimilarFilmList>>(ScreenState.Initial)
     val similarFilmState: StateFlow<ScreenState<SimilarFilmList>> = _similarFilmState
 
     fun getFilmById(filmId: Int) {
@@ -52,6 +63,25 @@ class FilmInfoViewModel(
                 _filmInfoState.value = ScreenState.Error("Network error: ${e.message}")
             }
         }
+    }
+
+    fun getActorDetailById(actorId: Int) {
+        viewModelScope.launch {
+            _actorDetailState.value = ScreenState.Loading
+            try {
+                val response = actorRepository.getActorDetailById(actorId)
+                if (response.isSuccessful && response.body() != null) {
+                    _actorDetailState.value = ScreenState.Success(response.body()!!)
+                } else {
+
+                    _actorDetailState.value = ScreenState.Error("Error: ${response.message()}")
+
+                }
+            } catch (e: Exception) {
+                _actorDetailState.value = ScreenState.Error("Network error: ${e.message}")
+            }
+        }
+
     }
 
     fun getStaffById(filmId: Int) {
@@ -74,7 +104,7 @@ class FilmInfoViewModel(
         }
     }
 
-    fun getFilmImages(filmId: Int){
+    fun getFilmImages(filmId: Int) {
         viewModelScope.launch {
             _filmImagesState.value = ScreenState.Loading
             try {
@@ -87,19 +117,19 @@ class FilmInfoViewModel(
                         _filmImagesState.value = ScreenState.Error("Error: ${error.message}")
                     }
                 )
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 _filmImagesState.value = ScreenState.Error("Network error: ${e.message}")
             }
         }
     }
 
-    fun getSimilarFilms(filmId: Int){
+    fun getSimilarFilms(filmId: Int) {
         viewModelScope.launch {
             _similarFilmState.value = ScreenState.Loading
-            try{
+            try {
                 val result = similarFilmsListRepository.getSimilarFilms(filmId)
                 _similarFilmState.value = ScreenState.Success(result)
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 _similarFilmState.value = ScreenState.Error("Network error: ${e.message}")
             }
         }
@@ -110,7 +140,9 @@ class FilmInfoViewModelFactory(
     private val filmApiService: FilmApiService,
     private val staffApiService: StaffApiService,
     private val filmImagesApiService: FilmImagesApiService,
-    private val similarFilmsApiService: SimilarFilmsApiService
+    private val similarFilmsApiService: SimilarFilmsApiService,
+    private val actorApiService: ActorApiService
+
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FilmInfoViewModel::class.java)) {
@@ -118,7 +150,14 @@ class FilmInfoViewModelFactory(
             val staffRepository = StaffRepository(staffApiService)
             val filmImagesListRepository = FilmImagesListRepository(filmImagesApiService)
             val similarFilmsListRepository = SimilarFilmsListRepository(similarFilmsApiService)
-            return FilmInfoViewModel(filmRepository, staffRepository, filmImagesListRepository, similarFilmsListRepository) as T
+            val actorRepository = ActorRepository(actorApiService)
+            return FilmInfoViewModel(
+                filmRepository,
+                staffRepository,
+                filmImagesListRepository,
+                similarFilmsListRepository,
+                actorRepository
+            ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

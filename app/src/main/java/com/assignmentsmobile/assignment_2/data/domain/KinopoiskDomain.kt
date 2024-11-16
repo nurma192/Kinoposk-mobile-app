@@ -45,6 +45,11 @@ object KinopoiskDomain {
         retrofit.create(StaffApiService::class.java)
     }
 
+    val actorApiService: ActorApiService by lazy {
+        retrofit.create(actorApiService::class.java)
+    }
+
+
     val filmImagesApiService: FilmImagesApiService by lazy {
         retrofit.create(FilmImagesApiService::class.java)
     }

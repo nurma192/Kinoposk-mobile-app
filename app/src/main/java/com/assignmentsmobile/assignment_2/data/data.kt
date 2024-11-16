@@ -28,7 +28,8 @@ data class Film(
     val description: String,
     val ratingAgeLimits: String,
     val filmLength: Int,
-    val shortDescription: String
+    val shortDescription: String,
+    val professionKey: String?
 )
 
 @Serializable
@@ -89,6 +90,46 @@ data class SimilarFilmList(
     val items: List<SimilarFilm>
 )
 
+data class Actor (
+    val personId: Int,
+    val nameRu: String,
+    val posterUrl:String,
+    val profession:String,
+    val films:List<ActorFilm>
+)
+data class ActorFilm(
+    val filmId:Int,
+    val nameRu:String,
+    val nameEn: String,
+    val rating:String,
+    val professionKey: String
+)
+
+fun ActorFilm.toFilm(): Film {
+    return Film(
+        kinopoiskId = this.filmId,
+        imdbId = "",
+        nameRu = this.nameRu,
+        nameEn = this.nameEn,
+        nameOriginal = "",
+        countries = emptyList(),
+        genres = emptyList(),
+        ratingKinopoisk = 0.0,
+        ratingImdb = 0.0,
+        year = 0,
+        type = "",
+        posterUrl = "",
+        posterUrlPreview = "",
+        coverUrl = "",
+        logoUrl = "",
+        description = "",
+        ratingAgeLimits = "0+",
+        filmLength = 0,
+        shortDescription = "",
+        professionKey = this.professionKey
+    )
+}
+
 fun SimilarFilm.toFilm(genres: List<Genre>): Film {
     return Film(
         kinopoiskId = this.filmId,
@@ -109,6 +150,7 @@ fun SimilarFilm.toFilm(genres: List<Genre>): Film {
         description = "",
         ratingAgeLimits = "0+",
         filmLength = 0,
-        shortDescription = ""
+        shortDescription = "",
+        professionKey = ""
     )
 }

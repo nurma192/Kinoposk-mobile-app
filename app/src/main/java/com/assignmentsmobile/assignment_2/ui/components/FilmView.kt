@@ -82,16 +82,16 @@ fun FilmView(
                 fontSize = 14.sp
             )
         )
-
-        Text(
-            text = film.genres[0].genre,
-            modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).padding(top = 2.dp),
-            style = TextStyle(
-                color = Color(0xff838390),
-                fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                fontSize = 12.sp
+        if(film.genres != null)
+            Text(
+                text = film.genres[0].genre,
+                modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).padding(top = 2.dp),
+                style = TextStyle(
+                    color = Color(0xff838390),
+                    fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                    fontSize = 12.sp
+                )
             )
-        )
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
