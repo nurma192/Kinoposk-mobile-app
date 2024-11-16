@@ -142,13 +142,12 @@ fun SectionView(
         }
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-//            modifier = Modifier.height(IntrinsicSize.Max),
         ) {
             items(section.list.take(7)) { film: Film ->
                 FilmView(film, onFilmClicked)
             }
             item {
-                SeeAllButton(section, onFilmTypeClicked)
+                SeeAllButton(section.sectionName, onFilmTypeClicked)
             }
         }
     }
@@ -156,7 +155,7 @@ fun SectionView(
 
 
 @Composable
-fun SeeAllButton(section: Section, onFilmTypeClicked: (String) -> Unit) {
+fun SeeAllButton(sectionName: String, onFilmTypeClicked: (String) -> Unit) {
     Column(
         modifier = Modifier
             .size(width = 111.dp, height = 156.dp)
@@ -168,7 +167,7 @@ fun SeeAllButton(section: Section, onFilmTypeClicked: (String) -> Unit) {
             modifier = Modifier
                 .size(32.dp),
             onClick = {
-                onFilmTypeClicked(section.sectionName)
+                onFilmTypeClicked(sectionName)
             }
         ) {
             Image(

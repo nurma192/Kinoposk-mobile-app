@@ -60,7 +60,7 @@ fun FilmView(
                 ,
             contentAlignment = Alignment.TopEnd
         ) {
-            if(film.coverUrl != null){
+            if(film.coverUrl != null && film.coverUrl != ""){
                 CoilImage(
                     url = film.coverUrl,
                     modifier = Modifier.fillMaxSize(),
@@ -82,7 +82,7 @@ fun FilmView(
                 fontSize = 14.sp
             )
         )
-        if(film.genres != null)
+        if(film.genres != null && film.genres.isNotEmpty())
             Text(
                 text = film.genres[0].genre,
                 modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).padding(top = 2.dp),

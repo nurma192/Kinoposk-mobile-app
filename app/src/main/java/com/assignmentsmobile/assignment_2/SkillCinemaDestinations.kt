@@ -21,6 +21,7 @@ sealed class Destination(val route: String, val image: Int, val selectedImage: I
     }
 
     data object Gallery : Destination("gallery", R.drawable.ic_home, R.drawable.ic_home_selected)
+    data object Actor : Destination("actor", R.drawable.ic_home, R.drawable.ic_home_selected)
 }
 
 val bottomBarPages = listOf(Destination.HomePage, Destination.SearchPage, Destination.AccountPage)

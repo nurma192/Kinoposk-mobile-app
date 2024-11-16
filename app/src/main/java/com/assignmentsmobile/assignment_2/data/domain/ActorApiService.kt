@@ -7,9 +7,8 @@ import retrofit2.http.Path
 
 
 interface ActorApiService {
-    @GET("api/v1/staff/{id}")
+    @GET("/api/v1/staff/{id}")
     suspend fun getActorDetailById(
         @Path("id")id:Int
-    ):Response<Actor>
-
+    ) : Response<Actor>
 }

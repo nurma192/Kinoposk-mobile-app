@@ -1,12 +1,18 @@
 package com.assignmentsmobile.assignment_2
 
+import ActorInfoViewModel
+import ActorInfoViewModelFactory
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -15,6 +21,8 @@ import androidx.navigation.compose.composable
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
+import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
+import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
@@ -29,6 +37,7 @@ fun SkillCinemaNavHost(
     val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel()
     val screenState by filmCollectionsViewModel.screenState.collectAsState()
     var gallery by remember { mutableStateOf<FilmImagesList?>(null) }
+    var actorInfoId by remember { mutableIntStateOf(0) }
 
     NavHost(
         navController = navController,
@@ -80,6 +89,18 @@ fun SkillCinemaNavHost(
                 }
             )
         }
+        composable(route = Destination.Actor.route){
+            ActorPage(
+                id = actorInfoId,
+                mainPadding = innerPadding,
+                onBackClicked = {
+                    navController.popBackStack()
+                },
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
+                }
+            )
+        }
         composable(
             route = Destination.Film.routeWithArgs,
             arguments = Destination.Film.arguments
@@ -96,6 +117,10 @@ fun SkillCinemaNavHost(
                 onGalleryClicked = { galleryList ->
                     gallery = galleryList
                     navController.navigateSingle(Destination.Gallery.route)
+                },
+                onActorClicked = { actorId ->
+                    actorInfoId = actorId
+                    navController.navigate(Destination.Actor.route)
                 }
             )
         }

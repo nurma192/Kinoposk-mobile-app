@@ -101,7 +101,7 @@ data class ActorFilm(
     val filmId:Int,
     val nameRu:String,
     val nameEn: String,
-    val rating:String,
+    val rating: String,
     val professionKey: String
 )
 
@@ -114,7 +114,7 @@ fun ActorFilm.toFilm(): Film {
         nameOriginal = "",
         countries = emptyList(),
         genres = emptyList(),
-        ratingKinopoisk = 0.0,
+        ratingKinopoisk = this.rating.toDouble(),
         ratingImdb = 0.0,
         year = 0,
         type = "",

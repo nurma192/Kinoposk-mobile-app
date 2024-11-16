@@ -27,13 +27,8 @@ class FilmInfoViewModel(
     private val filmRepository: FilmRepository,
     private val staffRepository: StaffRepository,
     private val imagesListRepository: FilmImagesListRepository,
-    private val similarFilmsListRepository: SimilarFilmsListRepository,
-    private val actorRepository: ActorRepository
-
+    private val similarFilmsListRepository: SimilarFilmsListRepository
 ) : ViewModel() {
-    private val _actorDetailState = MutableStateFlow<ScreenState<Actor>>(ScreenState.Initial)
-    val actorDetailState: StateFlow<ScreenState<Actor>> = _actorDetailState
-
 
     private val _filmInfoState = MutableStateFlow<ScreenState<Film>>(ScreenState.Initial)
     val filmInfoState: StateFlow<ScreenState<Film>> = _filmInfoState
@@ -63,25 +58,6 @@ class FilmInfoViewModel(
                 _filmInfoState.value = ScreenState.Error("Network error: ${e.message}")
             }
         }
-    }
-
-    fun getActorDetailById(actorId: Int) {
-        viewModelScope.launch {
-            _actorDetailState.value = ScreenState.Loading
-            try {
-                val response = actorRepository.getActorDetailById(actorId)
-                if (response.isSuccessful && response.body() != null) {
-                    _actorDetailState.value = ScreenState.Success(response.body()!!)
-                } else {
-
-                    _actorDetailState.value = ScreenState.Error("Error: ${response.message()}")
-
-                }
-            } catch (e: Exception) {
-                _actorDetailState.value = ScreenState.Error("Network error: ${e.message}")
-            }
-        }
-
     }
 
     fun getStaffById(filmId: Int) {
@@ -141,8 +117,6 @@ class FilmInfoViewModelFactory(
     private val staffApiService: StaffApiService,
     private val filmImagesApiService: FilmImagesApiService,
     private val similarFilmsApiService: SimilarFilmsApiService,
-    private val actorApiService: ActorApiService
-
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(FilmInfoViewModel::class.java)) {
@@ -150,13 +124,11 @@ class FilmInfoViewModelFactory(
             val staffRepository = StaffRepository(staffApiService)
             val filmImagesListRepository = FilmImagesListRepository(filmImagesApiService)
             val similarFilmsListRepository = SimilarFilmsListRepository(similarFilmsApiService)
-            val actorRepository = ActorRepository(actorApiService)
             return FilmInfoViewModel(
                 filmRepository,
                 staffRepository,
                 filmImagesListRepository,
-                similarFilmsListRepository,
-                actorRepository
+                similarFilmsListRepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

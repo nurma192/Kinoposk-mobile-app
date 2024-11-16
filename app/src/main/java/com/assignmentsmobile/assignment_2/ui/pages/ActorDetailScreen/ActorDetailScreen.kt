@@ -1,5 +1,8 @@
 package com.assignmentsmobile.assignment_2.ui.pages
 
+import ActorInfoViewModel
+import ActorInfoViewModelFactory
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,95 +22,139 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.data.Actor
-import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
 import com.assignmentsmobile.assignment_2.ui.components.CoilImage
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
+import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
+import com.assignmentsmobile.assignment_2.data.repository.ActorRepository
 import com.assignmentsmobile.assignment_2.data.toFilm
+import com.assignmentsmobile.assignment_2.ui.components.DetailPageHeader
+import com.assignmentsmobile.assignment_2.ui.pages.HomePage.SeeAllButton
 
 @Composable
-fun ActorPageScreen(viewModel: FilmInfoViewModel, actorId: Int) {
+fun ActorPage(
+    viewModel: ActorInfoViewModel = viewModel(
+        factory = ActorInfoViewModelFactory()
+    ),
+    id: Int,
+    mainPadding: PaddingValues,
+    onBackClicked: () -> Unit = {},
+    onFilmClicked: (Int) -> Unit = {}
+) {
     val actorDetailState by viewModel.actorDetailState.collectAsState()
 
-    LaunchedEffect(actorId) {
-        viewModel.getActorDetailById(actorId)
+    LaunchedEffect(id) {
+        viewModel.getActorDetailById(id)
     }
 
-    when (val state = actorDetailState) {
+    when (actorDetailState) {
         is ScreenState.Loading -> {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.White),
+                modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         }
-        is ScreenState.Success -> {
-            ActorPageContent(state.data)
-        }
         is ScreenState.Error -> {
-            Text(text = "Error: ${state.message}", color = Color.Red)
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = (actorDetailState as ScreenState.Error).message,
+                    color = Color.Red
+                )
+            }
         }
-        ScreenState.Initial -> {
-            // Optionally handle initial state or leave it as is if not needed
+        is ScreenState.Success -> {
+            val actor = (actorDetailState as? ScreenState.Success<Actor>)!!.data
+            Scaffold(
+                topBar = {
+                    DetailPageHeader("", onBackClicked)
+                }
+            ) { innerPadding ->
+                ActorPageContent(
+                    actor,
+                    Modifier.padding(
+                        top = innerPadding.calculateTopPadding(),
+                        bottom = mainPadding.calculateBottomPadding()
+                    ),
+                    onFilmClicked = onFilmClicked
+                )
+            }
+        }
+        else -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(text = "No data available.")
+            }
         }
     }
 }
 
 @Composable
-fun ActorPageContent(actor: Actor) {
+fun ActorPageContent(actor: Actor, modifier: Modifier = Modifier, onFilmClicked: (Int) -> Unit) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
     ) {
         ActorHeader(actor)
 
-        // Лучшее Section
-        Text(
-            text = "Лучшее",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 8.dp)
-        )
+        SectionTopic("Лучшее", "Все >")
+        Spacer(modifier = Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(actor.films.take(5)) { actorFilm ->
                 val film = actorFilm.toFilm()
-                FilmView(film, onFilmClicked = {})
+                FilmView(film, onFilmClicked = onFilmClicked)
+            }
+            item {
+                SeeAllButton("Best", {})
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Фильмография Section
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Фильмография",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = "К списку",
-                color = Color(0xff3d3bff),
-                fontSize = 14.sp
-            )
-        }
-
+        SectionTopic("Фильмография", "К списку >")
         Spacer(modifier = Modifier.height(8.dp))
 
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(actor.films) { actorFilm ->
-                val film = actorFilm.toFilm()
-                FilmView(film = film, onFilmClicked = {})
-            }
-        }
+        Text(
+            text = actor.films.size.toString() + " films",
+            style = TextStyle(
+                color = Color(0xff838390),
+                fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                fontSize = 12.sp
+            )
+        )
+    }
+}
+
+@Composable
+fun SectionTopic(name: String, link: String){
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = link,
+            color = Color(0xff3d3bff),
+            fontSize = 14.sp
+        )
     }
 }
 
@@ -121,7 +168,7 @@ fun ActorHeader(actor: Actor) {
     ) {
         Box(
             modifier = Modifier
-                .size(100.dp)
+                .size(width = 150.dp, height = 200.dp )
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.Gray)
         ) {
@@ -136,7 +183,8 @@ fun ActorHeader(actor: Actor) {
             Text(
                 text = actor.nameRu,
                 fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 5.dp)
             )
             Text(
                 text = actor.profession,

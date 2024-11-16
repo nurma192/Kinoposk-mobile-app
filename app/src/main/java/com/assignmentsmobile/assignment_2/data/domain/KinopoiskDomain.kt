@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object KinopoiskDomain {
     private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
-    private const val API_KEY = "21fc471a-76dc-4c9f-b86f-2afc2c0ce659"
+    private const val API_KEY = "8676224b-2e1c-446e-953c-dcbba3e78ed8"
 
     private val gson = GsonBuilder()
         .setLenient()
@@ -32,7 +32,6 @@ object KinopoiskDomain {
             .build()
     }
 
-    // Service instances
     val apiCollections: KinopoiskCollections by lazy {
         retrofit.create(KinopoiskCollections::class.java)
     }
@@ -46,7 +45,7 @@ object KinopoiskDomain {
     }
 
     val actorApiService: ActorApiService by lazy {
-        retrofit.create(actorApiService::class.java)
+        retrofit.create(ActorApiService::class.java)
     }
 
 
