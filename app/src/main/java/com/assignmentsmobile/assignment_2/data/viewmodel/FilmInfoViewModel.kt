@@ -60,6 +60,19 @@ class FilmInfoViewModel(
         }
     }
 
+    suspend fun fetchFilmDirectly(filmId: Int): ScreenState<Film> {
+        return try {
+            val response = filmRepository.getFilmById(filmId)
+            if (response.isSuccessful && response.body() != null) {
+                ScreenState.Success(response.body()!!)
+            } else {
+                ScreenState.Error("Error: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            ScreenState.Error("Network error: ${e.message}")
+        }
+    }
+
     fun getStaffById(filmId: Int) {
         viewModelScope.launch {
             _staffInfoState.value = ScreenState.Loading

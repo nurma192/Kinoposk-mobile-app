@@ -4,6 +4,7 @@ import ActorInfoViewModel
 import ActorInfoViewModelFactory
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +33,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.ActorFilm
+import com.assignmentsmobile.assignment_2.data.ActorFilmList
 import com.assignmentsmobile.assignment_2.data.Film
+import com.assignmentsmobile.assignment_2.data.FilmImagesList
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
 import com.assignmentsmobile.assignment_2.data.repository.ActorRepository
 import com.assignmentsmobile.assignment_2.data.toFilm
@@ -47,7 +51,8 @@ fun ActorPage(
     id: Int,
     mainPadding: PaddingValues,
     onBackClicked: () -> Unit = {},
-    onFilmClicked: (Int) -> Unit = {}
+    onFilmClicked: (Int) -> Unit = {},
+    onFilmographyClicked: (String, List<ActorFilm>) -> Unit = { _, _ -> }
 ) {
     val actorDetailState by viewModel.actorDetailState.collectAsState()
 
@@ -64,6 +69,7 @@ fun ActorPage(
                 CircularProgressIndicator()
             }
         }
+
         is ScreenState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -75,6 +81,7 @@ fun ActorPage(
                 )
             }
         }
+
         is ScreenState.Success -> {
             val actor = (actorDetailState as? ScreenState.Success<Actor>)!!.data
             Scaffold(
@@ -88,10 +95,12 @@ fun ActorPage(
                         top = innerPadding.calculateTopPadding(),
                         bottom = mainPadding.calculateBottomPadding()
                     ),
-                    onFilmClicked = onFilmClicked
+                    onFilmClicked = onFilmClicked,
+                    onFilmographyClicked = onFilmographyClicked
                 )
             }
         }
+
         else -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -104,7 +113,12 @@ fun ActorPage(
 }
 
 @Composable
-fun ActorPageContent(actor: Actor, modifier: Modifier = Modifier, onFilmClicked: (Int) -> Unit) {
+fun ActorPageContent(
+    actor: Actor,
+    modifier: Modifier = Modifier,
+    onFilmClicked: (Int) -> Unit,
+    onFilmographyClicked: (String, List<ActorFilm>) -> Unit
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -112,10 +126,11 @@ fun ActorPageContent(actor: Actor, modifier: Modifier = Modifier, onFilmClicked:
     ) {
         ActorHeader(actor)
 
-        SectionTopic("Лучшее", "Все >")
+        SectionTopic("Лучшее", "Все >", onFilmographyClicked, actor)
         Spacer(modifier = Modifier.height(8.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(actor.films.take(5)) { actorFilm ->
+                if(actorFilm.rating == null) actorFilm.rating = "0.0"
                 val film = actorFilm.toFilm()
                 FilmView(film, onFilmClicked = onFilmClicked)
             }
@@ -124,7 +139,7 @@ fun ActorPageContent(actor: Actor, modifier: Modifier = Modifier, onFilmClicked:
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
-        SectionTopic("Фильмография", "К списку >")
+        SectionTopic("Фильмография", "К списку >", onFilmographyClicked, actor)
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(
@@ -139,7 +154,7 @@ fun ActorPageContent(actor: Actor, modifier: Modifier = Modifier, onFilmClicked:
 }
 
 @Composable
-fun SectionTopic(name: String, link: String){
+fun SectionTopic(name: String, link: String, onFilmographyClicked: (String, List<ActorFilm>) -> Unit, actor: Actor) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -153,7 +168,8 @@ fun SectionTopic(name: String, link: String){
         Text(
             text = link,
             color = Color(0xff3d3bff),
-            fontSize = 14.sp
+            fontSize = 14.sp,
+            modifier = Modifier.clickable { onFilmographyClicked(actor.nameRu, actor.films) }
         )
     }
 }
@@ -168,15 +184,17 @@ fun ActorHeader(actor: Actor) {
     ) {
         Box(
             modifier = Modifier
-                .size(width = 150.dp, height = 200.dp )
+                .size(width = 150.dp, height = 200.dp)
                 .clip(RoundedCornerShape(8.dp))
                 .background(Color.Gray)
         ) {
-            CoilImage(
-                url = actor.posterUrl,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            if (actor.posterUrl != null && actor.posterUrl != "") {
+                CoilImage(
+                    url = actor.posterUrl,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
         Spacer(modifier = Modifier.width(16.dp))
         Column {

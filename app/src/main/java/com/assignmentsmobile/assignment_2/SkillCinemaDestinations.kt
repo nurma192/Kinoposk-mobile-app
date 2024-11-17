@@ -20,6 +20,12 @@ sealed class Destination(val route: String, val image: Int, val selectedImage: I
         val arguments = listOf(navArgument(filmType) { type = NavType.StringType })
     }
 
+    data object Filmography : Destination("actor", R.drawable.ic_home, R.drawable.ic_home_selected){
+        const val routeWithArgs = "actor/{actorName}/filmography"
+        const val actorName = "actorName"
+        const val films = "films"
+        val arguments = listOf(navArgument(actorName) { type = NavType.StringType })
+    }
     data object Gallery : Destination("gallery", R.drawable.ic_home, R.drawable.ic_home_selected)
     data object Actor : Destination("actor", R.drawable.ic_home, R.drawable.ic_home_selected)
 }

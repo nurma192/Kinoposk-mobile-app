@@ -1,7 +1,6 @@
 package com.assignmentsmobile.assignment_2
 
-import ActorInfoViewModel
-import ActorInfoViewModelFactory
+import FilmographyPage
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -18,9 +17,14 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.assignmentsmobile.assignment_2.data.ActorFilm
+import com.assignmentsmobile.assignment_2.data.ActorFilmList
+import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
+import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
+import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
@@ -37,6 +41,7 @@ fun SkillCinemaNavHost(
     val filmCollectionsViewModel: FilmCollectionsViewModel = viewModel()
     val screenState by filmCollectionsViewModel.screenState.collectAsState()
     var gallery by remember { mutableStateOf<FilmImagesList?>(null) }
+    var filmographyFilms by remember { mutableStateOf<List<ActorFilm>?>(null) }
     var actorInfoId by remember { mutableIntStateOf(0) }
 
     NavHost(
@@ -98,6 +103,11 @@ fun SkillCinemaNavHost(
                 },
                 onFilmClicked = { filmId ->
                     navController.navigateToSingleFilm(filmId)
+                },
+                onFilmographyClicked = { actorName, films ->
+                    Log.d("onFilmographyClicked", actorName)
+                    filmographyFilms = films
+                    navController.navigateToActorFilmography(actorName)
                 }
             )
         }
@@ -136,6 +146,20 @@ fun SkillCinemaNavHost(
                 },
             )
         }
+        composable(route = Destination.Filmography.routeWithArgs) { navBackStackEntry ->
+            val actorName = navBackStackEntry.arguments?.getString(Destination.Filmography.actorName)
+            Log.d("actorName", actorName.toString())
+            FilmographyPage(
+                actorFilmList = filmographyFilms,
+                actorName = actorName,
+                onBackClicked = { navController.popBackStack() },
+                innerPadding = innerPadding,
+                screenState = screenState,
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
+                },
+            )
+        }
     }
 }
 
@@ -149,6 +173,12 @@ fun NavHostController.navigateSingle(route: String) =
 
 fun NavHostController.navigateToSingleFilm(filmId: Int) {
     val route = "${Destination.Film.route}/$filmId"
+    this.navigate(route)
+}
+
+fun NavHostController.navigateToActorFilmography(actorName: String) {
+    val route = "${Destination.Filmography.route}/$actorName/filmography"
+    Log.d("route", route)
     this.navigate(route)
 }
 

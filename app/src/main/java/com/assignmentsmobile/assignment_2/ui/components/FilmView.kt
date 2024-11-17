@@ -44,7 +44,6 @@ fun FilmView(
             Color(181, 181, 201, 102),
             Color(61, 59, 255, 102)
         )
-
         Box(
             modifier = Modifier
                 .clickable(onClick = { onFilmClicked(film.kinopoiskId) })
@@ -73,15 +72,17 @@ fun FilmView(
             }
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = if(film.nameRu.length > 20) "${film.nameRu.take(20)}..." else film.nameRu,
-            modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).widthIn(max = 111.dp).height(35.dp),
-            style = TextStyle(
-                color = Color(0xff272727),
-                fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                fontSize = 14.sp
+        if(film.nameRu != null){
+            Text(
+                text = if(film.nameRu.length > 20) "${film.nameRu.take(20)}..." else film.nameRu,
+                modifier = Modifier.clickable(onClick = { onFilmClicked(film.kinopoiskId) }).widthIn(max = 111.dp).height(35.dp),
+                style = TextStyle(
+                    color = Color(0xff272727),
+                    fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                    fontSize = 14.sp
+                )
             )
-        )
+        }
         if(film.genres != null && film.genres.isNotEmpty())
             Text(
                 text = film.genres[0].genre,
@@ -98,10 +99,12 @@ fun FilmView(
 
 
 fun getFilmRating(film: Film): Double {
-    if(film.ratingKinopoisk != 0.0){
+
+    if( film.ratingKinopoisk != null && film.ratingKinopoisk != 0.0 ){
         return film.ratingKinopoisk
     }
-    return film.ratingImdb
+    if(film.ratingImdb != null) return film.ratingImdb
+    return 0.0
 }
 
 @Composable

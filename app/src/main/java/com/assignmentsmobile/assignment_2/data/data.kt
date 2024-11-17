@@ -101,8 +101,13 @@ data class ActorFilm(
     val filmId:Int,
     val nameRu:String,
     val nameEn: String,
-    val rating: String,
+    var rating: String,
     val professionKey: String
+)
+data class ActorFilmList(
+    val actorId:Int,
+    val actorName: String,
+    val films: List<ActorFilm>
 )
 
 fun ActorFilm.toFilm(): Film {
