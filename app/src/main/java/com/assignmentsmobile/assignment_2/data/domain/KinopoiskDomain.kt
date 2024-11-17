@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object KinopoiskDomain {
     private const val BASE_URL = "https://kinopoiskapiunofficial.tech/"
-    private const val API_KEY = "91d38748-8b3a-4d64-9e3b-5c71cc0e6b96"
+    private const val API_KEY = "88efea52-b9f2-4bb9-b1d1-1af821253424"
 
 
     private val gson = GsonBuilder()
