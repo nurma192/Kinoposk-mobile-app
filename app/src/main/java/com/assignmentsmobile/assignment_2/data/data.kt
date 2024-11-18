@@ -77,11 +77,11 @@ data class FilmImagesList(
 
 data class SimilarFilm(
     val filmId: Int,
-    val nameRu: String,
-    val nameEn: String,
-    val nameOriginal: String,
-    val posterUrl: String,
-    val posterUrlPreview: String,
+    var nameRu: String,
+    var nameEn: String,
+    var nameOriginal: String,
+    var posterUrl: String,
+    var posterUrlPreview: String,
     val relationType: String
 )
 
@@ -136,6 +136,12 @@ fun ActorFilm.toFilm(): Film {
 }
 
 fun SimilarFilm.toFilm(genres: List<Genre>): Film {
+    if(this.nameOriginal == null) this.nameOriginal = ""
+    if(this.nameRu == null) this.nameRu = ""
+    if(this.nameEn == null) this.nameEn = ""
+    if(this.posterUrl == null) this.posterUrl = ""
+    if(this.posterUrlPreview == null) this.posterUrlPreview = ""
+
     return Film(
         kinopoiskId = this.filmId,
         imdbId = "",

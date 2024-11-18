@@ -277,22 +277,24 @@ fun PersonView(
                 )
         }
         Column(modifier = Modifier.padding(start = 16.dp)) {
-            Text(
-                modifier = Modifier.clickable { onActorClicked(otherStaff.staffId) },
-                text = otherStaff.nameRu, style = TextStyle(
-                    color = Color(0xff272727),
-                    fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                    fontSize = 14.sp
+            if(otherStaff.nameRu != null && otherStaff.nameRu != "")
+                Text(
+                    modifier = Modifier.clickable { onActorClicked(otherStaff.staffId) },
+                    text = otherStaff.nameRu, style = TextStyle(
+                        color = Color(0xff272727),
+                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                        fontSize = 14.sp
+                    )
                 )
-            )
-            Text(
-                modifier = Modifier.clickable { onActorClicked(otherStaff.staffId) },
-                text = otherStaff.professionText, style = TextStyle(
-                    color = Color(0xff838390),
-                    fontFamily = FontFamily(Font(R.font.graphik_regular)),
-                    fontSize = 12.sp
+            if(otherStaff.professionText != null && otherStaff.professionText != "")
+                Text(
+                    modifier = Modifier.clickable { onActorClicked(otherStaff.staffId) },
+                    text = otherStaff.professionText, style = TextStyle(
+                        color = Color(0xff838390),
+                        fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                        fontSize = 12.sp
+                    )
                 )
-            )
         }
     }
 }
