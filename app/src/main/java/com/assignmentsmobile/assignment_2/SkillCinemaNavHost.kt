@@ -32,6 +32,7 @@ import com.assignmentsmobile.assignment_2.ui.pages.FilterPage.FilterPage
 import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
+import com.assignmentsmobile.assignment_2.ui.pages.Profile.ProfilePage
 import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.SearchPage
 
 @Composable
@@ -89,7 +90,7 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.AccountPage.route) {
-//            ProfilePage();
+            ProfilePage();
 //            HomePage(
 //                innerPadding = innerPadding,
 //                screenState  = screenState,

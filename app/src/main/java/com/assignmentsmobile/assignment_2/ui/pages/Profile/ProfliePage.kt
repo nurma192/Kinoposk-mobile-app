@@ -9,6 +9,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,14 +30,6 @@ import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.draw.clip
 
 data class Collection(val name: String, val icon: Int, val count: Int)
@@ -39,7 +37,6 @@ data class Collection(val name: String, val icon: Int, val count: Int)
 @Composable
 @Preview(showBackground = true)
 fun ProfilePage() {
-    // Example list of films for preview purposes
     val films = listOf(
         Film(
             kinopoiskId = 123456,
@@ -87,142 +84,123 @@ fun ProfilePage() {
         )
     )
 
-    // UI Layout
-    Column(modifier = Modifier.fillMaxSize().padding(top = 54.dp, start = 25.dp, end = 20.dp).verticalScroll(
-        rememberScrollState()
-    )) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            // .verticalScroll(rememberScrollState())
+            .padding(top = 54.dp, start = 25.dp, end = 20.dp)
+    ) {
+        SectionHeader(
+            title = "Просмотрено",
+            count = 15,
+            onIconClick = {}
+        )
 
-        // Просмотрено Section
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Просмотрено", style = TextStyle(
-                    color = Color(0xff272727),
-                    fontFamily = FontFamily(Font(R.font.graphik_bold)),
-                    fontSize = 18.sp
-                )
-            )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "15", style = TextStyle(
-                        color = Color(0xff3d3bff),
-                        fontFamily = FontFamily(Font(R.font.graphik_medium)),
-                        fontSize = 14.sp
-                    )
-                )
-                IconButton(modifier = Modifier.size(18.dp), onClick = {}) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_arrow_right),
-                        contentDescription = "Icon_Arrow_Right"
-                    )
-                }
-            }
-        }
-
-        // Films LazyRow
+        Spacer(modifier = Modifier.height(20.dp))
         LazyRow(
             modifier = Modifier.padding(top = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(films) { film ->
-                // Call the FilmView component for each film in the list
-                FilmView(film = film, onFilmClicked = { kinopoiskId ->
-                    // Handle the click (e.g., navigate to the film's details page)
-                })
+                FilmView(film = film, onFilmClicked = { kinopoiskId -> })
             }
         }
 
-        // Коллекции Section
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Коллекции", style = TextStyle(
-                    color = Color(0xff272727),
-                    fontFamily = FontFamily(Font(R.font.graphik_bold)),
-                    fontSize = 18.sp
-                )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Коллекции",
+            style = TextStyle(
+                color = Color(0xff272727),
+                fontFamily = FontFamily(Font(R.font.graphik_bold)),
+                fontSize = 18.sp
             )
-        }
+        )
 
-        // Create New Collection Button
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 12.dp),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
+        Spacer(modifier = Modifier.height(8.dp))
+        CreateCollectionButton()
+
+        Spacer(modifier = Modifier.height(6.dp))
+        CollectionsGrid()
+
+        Spacer(modifier = Modifier.height(8.dp))
+        SectionHeader(
+            title = "Вам было интересно",
+            count = 15,
+            onIconClick = {}
+        )
+
+        LazyRow(
+            modifier = Modifier.padding(top = 20.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            IconButton(onClick = { /* Handle add new collection */ }) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_plus),
-                    contentDescription = "Add Collection",
-                    modifier = Modifier.size(24.dp)
-                )
+            items(films) { film ->
+                FilmView(film = film, onFilmClicked = { kinopoiskId -> })
             }
+        }
+    }
+}
+
+@Composable
+fun SectionHeader(title: String, count: Int, onIconClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 10.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            style = TextStyle(
+                color = Color(0xff272727),
+                fontFamily = FontFamily(Font(R.font.graphik_bold)),
+                fontSize = 18.sp
+            )
+        )
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Создать свою коллекцию", style = TextStyle(
-                    color = Color(0xff272727),
-                    fontFamily = FontFamily(Font(R.font.graphik_bold)),
+                text = count.toString(),
+                style = TextStyle(
+                    color = Color(0xff3d3bff),
+                    fontFamily = FontFamily(Font(R.font.graphik_medium)),
                     fontSize = 14.sp
                 )
             )
-        }
-        CollectionsGrid()
-        // Вами было интересно Section
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 20.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Вам было интересно", style = TextStyle(
-                    color = Color(0xff272727),
-                    fontFamily = FontFamily(Font(R.font.graphik_bold)),
-                    fontSize = 18.sp
+            IconButton(modifier = Modifier.size(18.dp), onClick = onIconClick) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_arrow_right),
+                    contentDescription = "Icon_Arrow_Right"
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun CreateCollectionButton() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = {}) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_plus),
+                contentDescription = "Add Collection",
+                modifier = Modifier.size(24.dp)
             )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = "15", style = TextStyle(
-                        color = Color(0xff3d3bff),
-                        fontFamily = FontFamily(Font(R.font.graphik_medium)),
-                        fontSize = 14.sp
-                    )
-                )
-                IconButton(modifier = Modifier.size(18.dp), onClick = {}) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_arrow_right),
-                        contentDescription = "Icon_Arrow_Right"
-                    )
-                }
-            }
         }
-
-        LazyRow(
-            modifier = Modifier.padding(top = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            items(films) { film ->
-                // Call the FilmView component for each film in the list
-                FilmView(film = film, onFilmClicked = { kinopoiskId ->
-                    // Handle the click (e.g., navigate to the film's details page)
-                })
-            }
-        }
+        Text(
+            text = "Создать свою коллекцию",
+            style = TextStyle(
+                color = Color(0xff272727),
+                fontFamily = FontFamily(Font(R.font.graphik_bold)),
+                fontSize = 14.sp
+            )
+        )
     }
 }
 
@@ -236,7 +214,9 @@ fun CollectionsGrid() {
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp),
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -245,13 +225,12 @@ fun CollectionsGrid() {
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .clickable(onClick = {})
                     .height(150.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .border(BorderStroke(1.dp, Color.Gray), shape = RoundedCornerShape(10.dp)),
                 shape = MaterialTheme.shapes.medium,
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-
-
             ) {
                 Box(modifier = Modifier.fillMaxWidth().padding(top = 20.dp)) {
                     Column(
@@ -280,7 +259,6 @@ fun CollectionsGrid() {
                             modifier = Modifier
                                 .height(24.dp)
                                 .width(40.dp)
-                                .clickable(onClick = { /* Handle click here */ })
                                 .background(Color(0xff3d3bff), shape = RoundedCornerShape(14.dp)),
                             contentAlignment = Alignment.Center
                         ) {
@@ -293,11 +271,9 @@ fun CollectionsGrid() {
                                 )
                             )
                         }
-
-
                     }
                     IconButton(
-                        onClick = { /* Handle close button click */ },
+                        onClick = {},
                         modifier = Modifier
                             .size(18.dp)
                             .align(Alignment.TopEnd)
@@ -313,4 +289,3 @@ fun CollectionsGrid() {
         }
     }
 }
-
