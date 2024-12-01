@@ -29,12 +29,15 @@ import com.assignmentsmobile.assignment_2.ui.components.SearchBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun SearchPage() {
+fun SearchPage(
+    onFilterClicked: () -> Unit
+) {
     Scaffold(
         topBar = {
-            SearchBar()
+            SearchBar(onFilterClicked)
         }
     ) { innerPaddingSearchPage ->
+        //if else kosy kerek list bar zhogyna
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(

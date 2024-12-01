@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,7 +34,9 @@ import com.assignmentsmobile.assignment_2.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar() {
+fun SearchBar(
+    onFilterClicked: () -> Unit
+) {
     var searchText by remember { mutableStateOf("") }
     TopAppBar(
         modifier = Modifier.padding(start = 10.dp, end = 26.dp),
@@ -78,7 +79,7 @@ fun SearchBar() {
                             modifier = Modifier
                                 .size(24.dp)
                                 .clickable {
-                                    //FilterPage
+                                    onFilterClicked()//FilterPage
                                 },
                             painter = painterResource(R.drawable.ic_filter),
                             contentDescription = "Ic_Filter"

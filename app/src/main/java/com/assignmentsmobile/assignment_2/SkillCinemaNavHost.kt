@@ -28,6 +28,7 @@ import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactor
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
+import com.assignmentsmobile.assignment_2.ui.pages.FilterPage.FilterPage
 import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
@@ -63,7 +64,12 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.SearchPage.route) {
-            SearchPage()
+            SearchPage(
+                onFilterClicked = {
+                    navController.navigate(Destination.FilterPage.route)
+                }
+            )
+
 //            HomePage(
 //                innerPadding = innerPadding,
 //                screenState = screenState,
@@ -74,6 +80,13 @@ fun SkillCinemaNavHost(
 //                    navController.navigateToSingleFilmType(filmType)
 //                }
 //            )
+        }
+        composable(route = Destination.FilterPage.route) {
+            FilterPage(
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
         }
         composable(route = Destination.AccountPage.route) {
 
