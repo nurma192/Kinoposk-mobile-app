@@ -41,7 +41,6 @@ import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import com.assignmentsmobile.assignment_2.ui.states.ScreenState
 
 @Composable
-
 fun HomePage(
     innerPadding: PaddingValues,
     onFilmClicked: (Int) -> Unit = {},

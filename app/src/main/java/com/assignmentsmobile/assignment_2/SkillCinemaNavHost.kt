@@ -89,7 +89,7 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.AccountPage.route) {
-
+//            ProfilePage();
 //            HomePage(
 //                innerPadding = innerPadding,
 //                screenState  = screenState,
