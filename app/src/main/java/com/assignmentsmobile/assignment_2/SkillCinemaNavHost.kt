@@ -31,6 +31,7 @@ import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
+import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.SearchPage
 
 @Composable
 fun SkillCinemaNavHost(
@@ -62,28 +63,30 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.SearchPage.route) {
-            HomePage(
-                innerPadding = innerPadding,
-                screenState = screenState,
-                onFilmClicked = { filmId ->
-                    navController.navigateToSingleFilm(filmId)
-                },
-                onFilmTypeClicked = { filmType ->
-                    navController.navigateToSingleFilmType(filmType)
-                }
-            )
+            SearchPage()
+//            HomePage(
+//                innerPadding = innerPadding,
+//                screenState = screenState,
+//                onFilmClicked = { filmId ->
+//                    navController.navigateToSingleFilm(filmId)
+//                },
+//                onFilmTypeClicked = { filmType ->
+//                    navController.navigateToSingleFilmType(filmType)
+//                }
+//            )
         }
         composable(route = Destination.AccountPage.route) {
-            HomePage(
-                innerPadding = innerPadding,
-                screenState  = screenState,
-                onFilmClicked = { filmId ->
-                    navController.navigateToSingleFilm(filmId)
-                },
-                onFilmTypeClicked = { filmType ->
-                    navController.navigateToSingleFilmType(filmType)
-                }
-            )
+
+//            HomePage(
+//                innerPadding = innerPadding,
+//                screenState  = screenState,
+//                onFilmClicked = { filmId ->
+//                    navController.navigateToSingleFilm(filmId)
+//                },
+//                onFilmTypeClicked = { filmType ->
+//                    navController.navigateToSingleFilmType(filmType)
+//                }
+//            )
         }
         composable(route = Destination.Gallery.route){
             GalleryPage(
