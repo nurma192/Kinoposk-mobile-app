@@ -2,6 +2,7 @@ package com.assignmentsmobile.assignment_2
 
 import FilmographyPage
 import android.app.Application
+import SearchFilmsRepository
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -27,6 +28,7 @@ import com.assignmentsmobile.assignment_2.data.addFilmToSection
 import com.assignmentsmobile.assignment_2.data.dbList
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
 import com.assignmentsmobile.assignment_2.data.initializeSections
+import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain.filmsSearchApiService
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
@@ -81,8 +83,23 @@ fun SkillCinemaNavHost(
             SearchPage(
                 onFilterClicked = {
                     navController.navigate(Destination.FilterPage.route)
-                }
+                },
+                searchFilmsRepository = searchFilmsRepository,
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
+                },
             )
+
+//            HomePage(
+//                innerPadding = innerPadding,
+//                screenState = screenState,
+//                onFilmClicked = { filmId ->
+//                    navController.navigateToSingleFilm(filmId)
+//                },
+//                onFilmTypeClicked = { filmType ->
+//                    navController.navigateToSingleFilmType(filmType)
+//                }
+//            )
         }
         composable(route = Destination.FilterPage.route) {
             FilterPage(
@@ -98,7 +115,7 @@ fun SkillCinemaNavHost(
                 }
             )
         }
-        composable(route = Destination.Gallery.route){
+        composable(route = Destination.Gallery.route) {
             GalleryPage(
                 innerPadding,
                 gallery,
@@ -107,7 +124,7 @@ fun SkillCinemaNavHost(
                 }
             )
         }
-        composable(route = Destination.Actor.route){
+        composable(route = Destination.Actor.route) {
             ActorPage(
                 id = actorInfoId,
                 mainPadding = innerPadding,
@@ -168,7 +185,8 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.Filmography.routeWithArgs) { navBackStackEntry ->
-            val actorName = navBackStackEntry.arguments?.getString(Destination.Filmography.actorName)
+            val actorName =
+                navBackStackEntry.arguments?.getString(Destination.Filmography.actorName)
             Log.d("actorName", actorName.toString())
             FilmographyPage(
                 actorFilmList = filmographyFilms,

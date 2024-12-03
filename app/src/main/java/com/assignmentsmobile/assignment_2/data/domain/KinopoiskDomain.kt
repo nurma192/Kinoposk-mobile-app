@@ -16,6 +16,7 @@ object KinopoiskDomain {
 //    8676224b-2e1c-446e-953c-dcbba3e78ed8
 //    88efea52-b9f2-4bb9-b1d1-1af821253424
 
+
     private val gson = GsonBuilder()
         .setLenient()
         .create()
@@ -60,6 +61,9 @@ object KinopoiskDomain {
 
     val similarFilmsApiService: SimilarFilmsApiService by lazy {
         retrofit.create(SimilarFilmsApiService::class.java)
+    }
+    val filmsSearchApiService: FilmsSearchApiService by lazy {
+        retrofit.create(FilmsSearchApiService::class.java)
     }
 }
 
