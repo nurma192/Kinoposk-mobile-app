@@ -32,6 +32,7 @@ sealed class Destination(val route: String, val image: Int, val selectedImage: I
     data object FilterPage : Destination("filter", R.drawable.ic_filter, R.drawable.ic_filter)
     data object CountrySelectorScreen : Destination("country", R.drawable.ic_filter, R.drawable.ic_filter)
     data object GenreSelectorScreen : Destination("genre", R.drawable.ic_filter, R.drawable.ic_filter)
+    data object DataRangeSelector : Destination("date", R.drawable.ic_filter, R.drawable.ic_filter)
 
 }
 

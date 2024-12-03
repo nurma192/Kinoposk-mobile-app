@@ -44,6 +44,7 @@ import com.assignmentsmobile.assignment_2.R
 fun FilterPage(
     onBackClicked: () -> Unit,
     onCountryClicked: () -> Unit,
+    onDateRangeClicked: () -> Unit,
     onGenreClicked: () -> Unit
 ) {
     Column(modifier = Modifier.padding(top = 42.dp, start = 26.dp, end = 26.dp)) {
@@ -51,7 +52,7 @@ fun FilterPage(
         AllFilmsSerials()
         Country(onCountryClicked)
         Genre(onGenreClicked)
-        Year()
+        Year(onDateRangeClicked)
         Rating()
         DatePopularityRating()
         NotViewed()
@@ -310,7 +311,9 @@ fun Genre(
 }
 
 @Composable
-fun Year() {
+fun Year(
+    onDateRangeClicked: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -327,7 +330,7 @@ fun Year() {
         )
         Text(
             modifier = Modifier.clickable {
-
+                onDateRangeClicked()
             },
             text = "с 1998 до 2017",
             style = TextStyle(

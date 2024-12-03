@@ -21,8 +21,9 @@ import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
 
 @Composable
-@Preview(showBackground = true)
-fun DateRangeSelector() {
+fun DateRangeSelector(
+    onBackClicked: () -> Unit
+) {
     var startRange by remember { mutableStateOf("1998 - 2009") }
     var endRange by remember { mutableStateOf("1998 - 2009") }
 
@@ -32,7 +33,7 @@ fun DateRangeSelector() {
     )
 
     Column(modifier = Modifier.padding(16.dp)) {
-        DateRangeHeader()
+        DateRangeHeader(onBackClicked)
         StartRangeSelector(startRange, years) { startRange = it }
         Spacer(modifier = Modifier.height(16.dp))
         EndRangeSelector(endRange, years) { endRange = it }
@@ -42,12 +43,16 @@ fun DateRangeSelector() {
 }
 
 @Composable
-fun DateRangeHeader() {
+fun DateRangeHeader(
+    onBackClicked: () -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /* Handle previous action */ }) {
+        IconButton(onClick = {
+            onBackClicked()
+        }) {
             Image(
                 painter = painterResource(id = R.drawable.ic_small_left_arrow),
                 contentDescription = "Previous",
@@ -55,7 +60,9 @@ fun DateRangeHeader() {
             )
         }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(end = 35.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 35.dp),
             horizontalArrangement = Arrangement.Center
         ) {
             Text(

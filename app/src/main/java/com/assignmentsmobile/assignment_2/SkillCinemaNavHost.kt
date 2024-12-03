@@ -43,6 +43,7 @@ import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
 import com.assignmentsmobile.assignment_2.ui.pages.Profile.ProfilePage
 import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.CountrySelectorScreen
+import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.DateRangeSelector
 import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.SearchPage
 
 @Composable
@@ -101,6 +102,9 @@ fun SkillCinemaNavHost(
                 onCountryClicked = {
                     navController.navigate(Destination.CountrySelectorScreen.route)
                 },
+                onDateRangeClicked = {
+                    navController.navigate(Destination.DataRangeSelector.route)
+                },
                 onGenreClicked = {
                     navController.navigate(Destination.GenreSelectorScreen.route)
                 }
@@ -108,6 +112,13 @@ fun SkillCinemaNavHost(
         }
         composable(route = Destination.CountrySelectorScreen.route) {
             CountrySelectorScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(route = Destination.DataRangeSelector.route) {
+            DateRangeSelector(
                 onBackClicked = {
                     navController.popBackStack()
                 }
