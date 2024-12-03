@@ -9,6 +9,52 @@ import com.assignmentsmobile.assignment_2.data.local.FilmListConverter
 import com.assignmentsmobile.assignment_2.data.local.GenreListConverter
 import kotlinx.serialization.Serializable
 
+val breakingBad = Film(
+    kinopoiskId = 404900,
+    imdbId = "",
+    nameRu = "Во все тяжкие",
+    nameEn = "Breaking Bad",
+    nameOriginal = "Breaking Bad",
+    countries = listOf(Country("США")),  // List of countries (using the Country class)
+    genres = listOf(Genre("триллер"), Genre("драма"), Genre("криминал")),  // List of genres (using the Genre class)
+    ratingKinopoisk = 8.9,
+    ratingImdb = 9.5,
+    year = 2008,
+    type = "TV_SERIES",
+    posterUrl = "https://kinopoiskapiunofficial.tech/images/posters/kp/404900.jpg",
+    posterUrlPreview = "https://kinopoiskapiunofficial.tech/images/posters/kp_small/404900.jpg",
+    coverUrl = "https://avatars.mds.yandex.net/get-ott/1531675/2a0000017c07954f2e92e530a0947de62952/orig",
+    logoUrl = "https://avatars.mds.yandex.net/get-ott/200035/2a0000017802c0dff697971233b0e9def244/orig",
+    description = "Школьный учитель химии Уолтер Уайт узнаёт, что болен раком лёгких...",
+    shortDescription = "Умирающий учитель химии начинает варить мет ради благополучия семьи...",
+    ratingAgeLimits = "age18",
+    filmLength = 47,
+    professionKey = null
+)
+
+val gameOfThrones = Film(
+    kinopoiskId = 464963,
+    imdbId = "",
+    nameRu = "Игра престолов",
+    nameEn = "Game of Thrones",
+    nameOriginal = "Game of Thrones",
+    countries = listOf(Country("США"), Country("Великобритания")),  // List of countries
+    genres = listOf(Genre("драма"), Genre("мелодрама"), Genre("приключения"), Genre("боевик"), Genre("фэнтези")),  // List of genres
+    ratingKinopoisk = 9.0,
+    ratingImdb = 9.2,
+    year = 2011,
+    type = "TV_SERIES",
+    posterUrl = "https://kinopoiskapiunofficial.tech/images/posters/kp/464963.jpg",
+    posterUrlPreview = "https://kinopoiskapiunofficial.tech/images/posters/kp_small/464963.jpg",
+    coverUrl = "https://avatars.mds.yandex.net/get-ott/200035/2a0000017d5bad9aee6287b862b1414eb223/orig",
+    logoUrl = "https://avatars.mds.yandex.net/get-ott/239697/2a00000170b077ba4dca5c9303185c5e8003/orig",
+    description = "К концу подходит время благоденствия, и лето, длившееся почти десятилетие...",
+    shortDescription = "Рыцари, мертвецы и драконы — в эпической битве за судьбы мира...",
+    ratingAgeLimits = "age18",
+    filmLength = 55,
+    professionKey = null
+)
+
 @Serializable
 data class FilmCollectionsResponse(
     val total: Int,
@@ -49,10 +95,11 @@ data class Film(
 val dbList = MutableLiveData<List<Section>>()
 
 fun initializeSections() {
-    val watchedSection = Section("watched", emptyList())
-    val favoritesSection = Section("favorites", emptyList())
+    val watchedSection = Section("watched", listOf(breakingBad, gameOfThrones))
+    val favoritesSection = Section("favorites", listOf(breakingBad, gameOfThrones))
+    val interestSection = Section("interest", listOf(breakingBad, gameOfThrones))
 
-    dbList.value = listOf(watchedSection, favoritesSection)
+    dbList.value = listOf(watchedSection, favoritesSection, interestSection)
 }
 fun addFilmToSection(sectionName: String, film: Film) {
     val currentList = dbList.value ?: return
