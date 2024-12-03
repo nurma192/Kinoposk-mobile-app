@@ -1,4 +1,5 @@
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,6 +33,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.assignmentsmobile.assignment_2.data.Actor
 import com.assignmentsmobile.assignment_2.data.ActorFilm
 import com.assignmentsmobile.assignment_2.data.ActorFilmList
 import com.assignmentsmobile.assignment_2.data.Film
@@ -67,7 +69,8 @@ fun FilmographyPage(
     val filmInfoState by viewModel.filmInfoState.collectAsState()
     val filmsAllInfo = remember { mutableStateListOf<Film>() }
     var professionKey by remember { mutableStateOf("ACTOR") }
-    val professions: List<String> = actorFilmList?.map { it.professionKey }?.distinct()?: emptyList()
+    val professions: List<String> =
+        actorFilmList?.map { it.professionKey }?.distinct() ?: emptyList()
 
 
 
@@ -84,7 +87,7 @@ fun FilmographyPage(
                     filmsAllInfo.add(fetchedFilm)
                     Log.d("show film fetched ID", fetchedFilm.kinopoiskId.toString())
                 } else if (state is ScreenState.Error) {
-                    Log.e("Film fetch error", "Failed to fetch film ${film.filmId}: ${state.message}")
+                    Log.e("Film fetch error", "Error fetch ${film.filmId}: ${state.message}")
                 }
             }
 //            Log.d("All films", filmsAllInfo.size.toString())
@@ -137,16 +140,19 @@ fun FilmographyPage(
                             start = 10.dp,
                             end = 10.dp
                         ),
-                ) {  items(professions) { profession ->
-                    Button(
-                        onClick = {
-                            professionKey = profession
-                        },
-                        modifier = Modifier.padding(vertical = 2.dp)
-                    ) {
-                        Text(text = profession)
+                ) {
+                    items(professions) { profession ->
+                        Button(
+                            onClick = {
+                                professionKey = profession
+                            },
+                            modifier = Modifier.padding(horizontal = 2.dp)
+                        ) {
+                            Text(text = getRusProfessionKey(profession))
+
+                        }
                     }
-                } }
+                }
 
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
@@ -173,4 +179,27 @@ fun FilmographyPage(
             }
         }
     }
+
+
+}
+
+fun getRusProfessionKey(key: String): String {
+    if(key == "ACTOR"){
+        return "Актер"
+    }else if(key == "HRONO_TITR_MALE"){
+        return "Актер дубляжа"
+    }else if(key == "HRONO_TITR_FEMALE"){
+        return "Актиса дубляжа"
+    }else if(key == "HERSELF"){
+        return "Актиса: играет саму себя"
+    }else if(key == "HIMSELF"){
+        return "Актер: играет саму себя"
+    }else if(key == "PRODUCER"){
+        return "Продюсер"
+    }else if(key == "WRITER"){
+        return "Писатель"
+    }else if(key == "DIRECTOR"){
+        return "Директор"
+    }
+    return key
 }

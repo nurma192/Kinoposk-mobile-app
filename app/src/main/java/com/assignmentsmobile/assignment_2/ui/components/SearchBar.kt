@@ -1,5 +1,6 @@
 package com.assignmentsmobile.assignment_2.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,7 +36,8 @@ import com.assignmentsmobile.assignment_2.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
-    onFilterClicked: () -> Unit
+    onFilterClicked: () -> Unit,
+    onSubmit: () -> Unit
 ) {
     var searchText by remember { mutableStateOf("") }
     TopAppBar(
@@ -43,7 +45,10 @@ fun SearchBar(
         title = {
             TextField(
                 value = searchText,
-                onValueChange = { searchText = it },
+                onValueChange = {
+                    Log.d("searchText",searchText)
+                    searchText = it
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
@@ -59,7 +64,8 @@ fun SearchBar(
                 },
                 leadingIcon = {
                     Image(
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier.size(24.dp)
+                            .clickable { onSubmit() },
                         painter = painterResource(R.drawable.ic_search_2),
                         contentDescription = "Ic_Search"
                     )

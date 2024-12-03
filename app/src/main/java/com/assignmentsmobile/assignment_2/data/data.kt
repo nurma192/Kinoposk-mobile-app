@@ -110,6 +110,13 @@ data class ActorFilmList(
     val films: List<ActorFilm>
 )
 
+data class SearchedFilms(
+    val keyword: String,
+    val pagesCount: Int,
+    val searchFilmsCountResult: Int,
+    val films: List<Film>
+)
+
 fun ActorFilm.toFilm(): Film {
     return Film(
         kinopoiskId = this.filmId,
