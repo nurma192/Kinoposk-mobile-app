@@ -104,7 +104,6 @@ fun SearchPage(
                         end = 26.dp
                     )
                 ) {
-
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         modifier = Modifier.weight(1f)
@@ -121,7 +120,7 @@ fun SearchPage(
                         }
                     }
 
-                    if(data.films.isNotEmpty()){
+                    if (data.films.isNotEmpty()) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier
@@ -129,7 +128,7 @@ fun SearchPage(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Button(onClick = {
-                                if(page != 1){
+                                if (page != 1) {
                                     page--
                                     viewModel.searchFilms(searchText, page)
                                 }
@@ -138,7 +137,7 @@ fun SearchPage(
                             }
                             Text("${page}/${data.pagesCount + 1}")
                             Button(onClick = {
-                                if(page != data.pagesCount+1){
+                                if (page != data.pagesCount + 1) {
                                     page++
                                     viewModel.searchFilms(searchText, page)
                                 }
@@ -173,36 +172,39 @@ fun FilmViewInSearch(film: SearchedFilm, onFilmClicked: (Int) -> Unit = {}) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.clickable(onClick = { onFilmClicked(film.filmId) })
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { onFilmClicked(film.filmId) })
     ) {
         Box(
             modifier = Modifier
                 .size(width = 114.dp, height = 150.dp)
                 .clip(shape = RoundedCornerShape(6.dp))
                 .background(Color(0x60b5b5c9))
-                .padding(top = 6.dp, start = 6.dp)
         ) {
+            if (film.posterUrl != "") {
+                CoilImage(
+                    url = film.posterUrl,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
             Box(
                 modifier = Modifier
                     .size(width = 24.dp, height = 15.dp)
+                    .padding(top = 6.dp, start = 6.dp)
                     .clip(shape = RoundedCornerShape(6.dp))
                     .background(Color(0xffffffff))
             ) {
                 Text(
-                    modifier = Modifier.align(Alignment.Center),
+                    modifier = Modifier
+                        .align(Alignment.Center),
                     text = film.rating ?: "0",
                     style = TextStyle(
                         color = Color(0xff272727),
                         fontFamily = FontFamily(Font(R.font.graphik_medium)),
                         fontSize = 8.sp
                     )
-                )
-            }
-            if (film.posterUrl != "") {
-                CoilImage(
-                    url = film.posterUrl,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop
                 )
             }
         }
