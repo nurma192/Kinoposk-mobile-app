@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -35,6 +36,7 @@ import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import androidx.compose.ui.draw.clip
 import com.assignmentsmobile.assignment_2.data.dbList
+import com.assignmentsmobile.assignment_2.data.removeSectionByName
 import kotlin.math.ceil
 
 data class Collection(val name: String, val icon: Int, val count: Int)
@@ -64,6 +66,41 @@ fun ProfilePage(
         ) {
             items(sections.first().list) { film ->
                 FilmView(film = film, onFilmClicked = onFilmClicked)
+            }
+            item{
+                Column(
+                    modifier = Modifier
+                        .size(width = 111.dp, height = 156.dp)
+                        .padding(top = 51.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .size(32.dp),
+                        onClick = {
+                            removeSectionByName("watched")
+                        }
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .background(Color(0xffffffff), shape = CircleShape)
+                                .padding(6.dp)
+                                .size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_trash),
+                            contentDescription = "Ic_Trash"
+                        )
+                    }
+                    Text(
+                        text = "Очистить",
+                        modifier = Modifier.clickable { },
+                        style = TextStyle(
+                            color = Color(0xff272727),
+                            fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                            fontSize = 12.sp
+                        )
+                    )
+                }
             }
         }
 
@@ -96,6 +133,41 @@ fun ProfilePage(
         ) {
             items(sections.get(2).list) { film ->
                 FilmView(film = film, onFilmClicked = onFilmClicked)
+            }
+            item{
+                Column(
+                    modifier = Modifier
+                        .size(width = 111.dp, height = 156.dp)
+                        .padding(top = 51.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .size(32.dp),
+                        onClick = {
+                            removeSectionByName("interest")
+                        }
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .background(Color(0xffffffff), shape = CircleShape)
+                                .padding(6.dp)
+                                .size(20.dp),
+                            painter = painterResource(id = R.drawable.ic_trash),
+                            contentDescription = "Ic_Trash"
+                        )
+                    }
+                    Text(
+                        text = "Очистить",
+                        modifier = Modifier.clickable { },
+                        style = TextStyle(
+                            color = Color(0xff272727),
+                            fontFamily = FontFamily(Font(R.font.graphik_regular)),
+                            fontSize = 12.sp
+                        )
+                    )
+                }
             }
         }
     }

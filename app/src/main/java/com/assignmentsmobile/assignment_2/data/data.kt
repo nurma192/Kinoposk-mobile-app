@@ -119,8 +119,18 @@ fun addFilmToSection(sectionName: String, film: Film) {
 
 fun removeSectionByName(sectionName: String) {
     val currentList = dbList.value ?: return
-    dbList.value = currentList.filter { it.sectionName != sectionName }
+
+    val updatedList = currentList.map { section ->
+        if (section.sectionName == sectionName) {
+            section.copy(list = emptyList())
+        } else {
+            section
+        }
+    }
+
+    dbList.value = updatedList
 }
+
 
 
 @Serializable
