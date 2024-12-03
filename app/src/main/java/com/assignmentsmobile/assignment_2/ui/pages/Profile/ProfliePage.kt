@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -31,6 +32,7 @@ import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import androidx.compose.ui.draw.clip
+import kotlin.math.ceil
 
 data class Collection(val name: String, val icon: Int, val count: Int)
 
@@ -87,7 +89,7 @@ fun ProfilePage() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            // .verticalScroll(rememberScrollState())
+             .verticalScroll(rememberScrollState())
             .padding(top = 54.dp, start = 25.dp, end = 20.dp)
     ) {
         SectionHeader(
@@ -212,11 +214,13 @@ fun CollectionsGrid() {
         Collection("Русское кино", R.drawable.ic_profile, 75)
     )
 
+    val height = ceil(collections.size * 1.0 / 2) * 158
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = Modifier
+            .padding(top = 16.dp)
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .height(height.dp),
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
