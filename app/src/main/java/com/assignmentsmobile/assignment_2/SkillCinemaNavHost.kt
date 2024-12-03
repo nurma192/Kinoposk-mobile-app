@@ -55,6 +55,7 @@ fun SkillCinemaNavHost(
     var gallery by remember { mutableStateOf<FilmImagesList?>(null) }
     var filmographyFilms by remember { mutableStateOf<List<ActorFilm>?>(null) }
     var actorInfoId by remember { mutableIntStateOf(0) }
+    val searchFilmsRepository = SearchFilmsRepository(filmsSearchApiService)
 
 //    val sectionViewModel: SectionViewModel = viewModel(
 //        factory = SectionViewModelFactory(LocalContext.current.applicationContext as Application)
@@ -90,16 +91,6 @@ fun SkillCinemaNavHost(
                 },
             )
 
-//            HomePage(
-//                innerPadding = innerPadding,
-//                screenState = screenState,
-//                onFilmClicked = { filmId ->
-//                    navController.navigateToSingleFilm(filmId)
-//                },
-//                onFilmTypeClicked = { filmType ->
-//                    navController.navigateToSingleFilmType(filmType)
-//                }
-//            )
         }
         composable(route = Destination.FilterPage.route) {
             FilterPage(

@@ -46,8 +46,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.Country
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
+import com.assignmentsmobile.assignment_2.data.Genre
 import com.assignmentsmobile.assignment_2.data.SimilarFilmList
 import com.assignmentsmobile.assignment_2.data.Staff
 import com.assignmentsmobile.assignment_2.data.StaffList
@@ -210,6 +212,7 @@ fun FilmInfoContent(
     onWatchedClicked: (Film) -> Unit,
     onFavoriteClicked: (Film) -> Unit
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -440,14 +443,14 @@ fun Header(
         var cover = ""
         if(film.coverUrl != null && film.coverUrl != ""){
             CoilImage(
-                url = film.coverUrl,
+                url = film.coverUrl ?: "",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
         }
         else if (film.posterUrl != null && film.posterUrl != "") {
             CoilImage(
-                url = film.posterUrl,
+                url = film.posterUrl ?: "",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
@@ -473,7 +476,7 @@ fun Header(
         ) {
             if(film.logoUrl != null && film.logoUrl != "" && cover != "poster"){
                 CoilImage(
-                    url = film.logoUrl,
+                    url = film.logoUrl ?: "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp),
@@ -513,8 +516,9 @@ fun Header(
             Text(
                 modifier = Modifier.padding(bottom = 5.dp),
                 text = film.countries.joinToString { it.country } + ", " +
-                        "${if (film.filmLength >= 60) "${film.filmLength / 60} ч ${film.filmLength % 60} мин" else "${film.filmLength % 60} мин"}, " +
-                        film.ratingAgeLimits.filter { it.isDigit() } + "+",
+                        "${if (film.filmLength >= 60) "${film.filmLength / 60} ч ${film.filmLength % 60} мин" else "${film.filmLength % 60} мин"}, "
+//                        + film.ratingAgeLimits.filter { it.isDigit() } + "+"
+                        ,
                 style = TextStyle(
                     color = Color(0xffb5b5c9),
                     fontFamily = FontFamily(Font(R.font.graphik_regular)),
@@ -560,12 +564,9 @@ fun Header(
         }
     }
     Spacer(modifier = Modifier.height(40.dp))
-    var shortDescription = ""
-    if(film.shortDescription != null && film.shortDescription != "") shortDescription = film.shortDescription
-    FilmText(shortDescription)
+    FilmText(film.shortDescription ?: "")
     Spacer(modifier = Modifier.height(20.dp))
-    var desctiption = ""
-    if(film.description != null && film.description != "") desctiption = film.description
-    FilmText(desctiption)
+
+    FilmText(film.description ?: "")
     Spacer(modifier = Modifier.height(40.dp))
 }

@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.Filter
 import com.assignmentsmobile.assignment_2.data.SearchedFilm
 import com.assignmentsmobile.assignment_2.ui.components.CoilImage
 import com.assignmentsmobile.assignment_2.ui.components.SearchBar
@@ -62,6 +63,7 @@ fun SearchPage(
     val filmsState by viewModel.filmsState.collectAsState()
     var page by remember { mutableIntStateOf(1) }
     var searchText by remember { mutableStateOf("") }
+    var filters by remember { mutableStateOf(Filter("", "", "", "", false)) }
 
     Scaffold(
         topBar = {
@@ -235,6 +237,7 @@ fun logFilms(films: List<SearchedFilm>) {
         Log.d(
             "Film $index", """
             Name (RU): ${film.nameRu}
+            FilmID (RU): ${film.filmId}
             Name (EN): ${film.nameEn}
             Type: ${film.type}
             Year: ${film.year}

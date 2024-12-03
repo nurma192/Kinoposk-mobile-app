@@ -128,24 +128,34 @@ data class SimilarFilmList(
     val items: List<SimilarFilm>
 )
 
-data class Actor (
+data class Actor(
     val personId: Int,
     val nameRu: String,
-    val posterUrl:String,
-    val profession:String,
-    val films:List<ActorFilm>
+    val posterUrl: String,
+    val profession: String,
+    val films: List<ActorFilm>
 )
+
 data class ActorFilm(
-    val filmId:Int,
-    val nameRu:String,
+    val filmId: Int,
+    val nameRu: String,
     val nameEn: String,
     var rating: String,
     val professionKey: String
 )
+
 data class ActorFilmList(
-    val actorId:Int,
+    val actorId: Int,
     val actorName: String,
     val films: List<ActorFilm>
+)
+
+data class Filter(
+    val type: String,
+    val country: String,
+    val rating: String,
+    val sortBy: String,
+    val watched: Boolean
 )
 
 data class SearchedFilms(
@@ -154,8 +164,9 @@ data class SearchedFilms(
     val searchFilmsCountResult: Int,
     val films: List<SearchedFilm>
 )
+
 data class SearchedFilm(
-    val filmId: Int ,
+    val filmId: Int,
     val nameRu: String = "nameRU",
     val nameEn: String = "nameEN",
     val type: String = "Type",
@@ -169,7 +180,6 @@ data class SearchedFilm(
     val posterUrl: String = "",
     val posterUrlPreview: String = "",
 )
-
 
 
 fun ActorFilm.toFilm(): Film {
@@ -198,11 +208,11 @@ fun ActorFilm.toFilm(): Film {
 }
 
 fun SimilarFilm.toFilm(genres: List<Genre>): Film {
-    if(this.nameOriginal == null) this.nameOriginal = ""
-    if(this.nameRu == null) this.nameRu = ""
-    if(this.nameEn == null) this.nameEn = ""
-    if(this.posterUrl == null) this.posterUrl = ""
-    if(this.posterUrlPreview == null) this.posterUrlPreview = ""
+    if (this.nameOriginal == null) this.nameOriginal = ""
+    if (this.nameRu == null) this.nameRu = ""
+    if (this.nameEn == null) this.nameEn = ""
+    if (this.posterUrl == null) this.posterUrl = ""
+    if (this.posterUrlPreview == null) this.posterUrlPreview = ""
 
     return Film(
         kinopoiskId = this.filmId,
