@@ -42,13 +42,15 @@ import com.assignmentsmobile.assignment_2.R
 
 @Composable
 fun FilterPage(
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onCountryClicked: () -> Unit,
+    onGenreClicked: () -> Unit
 ) {
     Column(modifier = Modifier.padding(top = 42.dp, start = 26.dp, end = 26.dp)) {
         Header(onBackClicked)
         AllFilmsSerials()
-        Country()
-        Genre()
+        Country(onCountryClicked)
+        Genre(onGenreClicked)
         Year()
         Rating()
         DatePopularityRating()
@@ -228,7 +230,9 @@ fun AllFilmsSerials() {
 }
 
 @Composable
-fun Country() {
+fun Country(
+    onCountryClicked: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -245,7 +249,7 @@ fun Country() {
         )
         Text(
             modifier = Modifier.clickable {
-
+                onCountryClicked()
             },
             text = "Россия",
             style = TextStyle(
@@ -266,7 +270,9 @@ fun Country() {
 }
 
 @Composable
-fun Genre() {
+fun Genre(
+    onGenreClicked: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -283,7 +289,7 @@ fun Genre() {
         )
         Text(
             modifier = Modifier.clickable {
-
+                onGenreClicked()
             },
             text = "Комедия",
             style = TextStyle(

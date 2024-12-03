@@ -42,6 +42,7 @@ import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
 import com.assignmentsmobile.assignment_2.ui.pages.Profile.ProfilePage
+import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.CountrySelectorScreen
 import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.SearchPage
 
 @Composable
@@ -96,8 +97,24 @@ fun SkillCinemaNavHost(
             FilterPage(
                 onBackClicked = {
                     navController.popBackStack()
+                },
+                onCountryClicked = {
+                    navController.navigate(Destination.CountrySelectorScreen.route)
+                },
+                onGenreClicked = {
+                    navController.navigate(Destination.GenreSelectorScreen.route)
                 }
             )
+        }
+        composable(route = Destination.CountrySelectorScreen.route) {
+            CountrySelectorScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(route = Destination.GenreSelectorScreen.route) {
+
         }
         composable(route = Destination.AccountPage.route) {
             ProfilePage(

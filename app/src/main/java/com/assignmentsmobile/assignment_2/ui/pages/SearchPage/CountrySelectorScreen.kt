@@ -25,9 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import com.assignmentsmobile.assignment_2.R
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
-fun CountrySelectorScreen() {
+fun CountrySelectorScreen(
+    onBackClicked: () -> Unit
+) {
     val countries = listOf("Россия", "Великобритания", "Германия", "США", "Франция")
     val searchQuery = remember { mutableStateOf(TextFieldValue()) }
 
@@ -37,7 +38,7 @@ fun CountrySelectorScreen() {
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
-            HeaderSection()
+            HeaderSection(onBackClicked)
             Spacer(modifier = Modifier.height(16.dp))
             SearchField(searchQuery)
             Spacer(modifier = Modifier.height(16.dp))
@@ -48,7 +49,9 @@ fun CountrySelectorScreen() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HeaderSection() {
+fun HeaderSection(
+    onBackClicked: () -> Unit
+) {
     TopAppBar(
         title = {
             Box(modifier = Modifier.fillMaxWidth()) {
@@ -60,7 +63,7 @@ fun HeaderSection() {
             }
         },
         navigationIcon = {
-            IconButton(onClick = { /* Handle back action */ }) {
+            IconButton(onClick = { onBackClicked() }) {
                 Icon(painter = painterResource(id = R.drawable.ic_small_left_arrow), contentDescription = "Back")
             }
         },

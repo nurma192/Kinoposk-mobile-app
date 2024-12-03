@@ -30,6 +30,8 @@ sealed class Destination(val route: String, val image: Int, val selectedImage: I
     data object Actor : Destination("actor", R.drawable.ic_home, R.drawable.ic_home_selected)
 
     data object FilterPage : Destination("filter", R.drawable.ic_filter, R.drawable.ic_filter)
+    data object CountrySelectorScreen : Destination("country", R.drawable.ic_filter, R.drawable.ic_filter)
+    data object GenreSelectorScreen : Destination("genre", R.drawable.ic_filter, R.drawable.ic_filter)
 
 }
 
