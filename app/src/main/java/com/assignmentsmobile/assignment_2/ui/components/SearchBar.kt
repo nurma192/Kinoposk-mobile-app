@@ -37,17 +37,18 @@ import com.assignmentsmobile.assignment_2.R
 @Composable
 fun SearchBar(
     onFilterClicked: () -> Unit,
-    onSubmit: () -> Unit
+    onSubmit: (keyword: String) -> Unit,
+    searchText: String,
+    onSearchTextChanged: (String) -> Unit
 ) {
-    var searchText by remember { mutableStateOf("") }
+
     TopAppBar(
         modifier = Modifier.padding(start = 10.dp, end = 26.dp),
         title = {
             TextField(
                 value = searchText,
                 onValueChange = {
-                    Log.d("searchText",searchText)
-                    searchText = it
+                    onSearchTextChanged(it)
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,7 +66,7 @@ fun SearchBar(
                 leadingIcon = {
                     Image(
                         modifier = Modifier.size(24.dp)
-                            .clickable { onSubmit() },
+                            .clickable { onSubmit(searchText) },
                         painter = painterResource(R.drawable.ic_search_2),
                         contentDescription = "Ic_Search"
                     )

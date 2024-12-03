@@ -114,8 +114,25 @@ data class SearchedFilms(
     val keyword: String,
     val pagesCount: Int,
     val searchFilmsCountResult: Int,
-    val films: List<Film>
+    val films: List<SearchedFilm>
 )
+data class SearchedFilm(
+    val filmId: Int ,
+    val nameRu: String = "nameRU",
+    val nameEn: String = "nameEN",
+    val type: String = "Type",
+    val year: String = "Year",
+    val description: String = "Description",
+    val filmLength: String = "00:00",
+    val countries: List<Country>,
+    val genres: List<Genre>,
+    val rating: String = "rating",
+    val ratingVoteCount: Int = 0,
+    val posterUrl: String = "",
+    val posterUrlPreview: String = "",
+)
+
+
 
 fun ActorFilm.toFilm(): Film {
     return Film(

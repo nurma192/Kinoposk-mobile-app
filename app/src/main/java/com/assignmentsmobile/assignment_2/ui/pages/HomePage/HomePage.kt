@@ -74,10 +74,7 @@ fun HomePage(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CircularProgressIndicator()
-
                 }
-
-
             }
 
             is ScreenState.Success -> {

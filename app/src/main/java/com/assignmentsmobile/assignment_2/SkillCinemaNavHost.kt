@@ -1,31 +1,25 @@
 package com.assignmentsmobile.assignment_2
 
 import FilmographyPage
+import SearchFilmsRepository
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.assignmentsmobile.assignment_2.data.ActorFilm
-import com.assignmentsmobile.assignment_2.data.ActorFilmList
-import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
-import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
+import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain.filmsSearchApiService
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
-import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
-import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilterPage.FilterPage
@@ -46,6 +40,7 @@ fun SkillCinemaNavHost(
     var gallery by remember { mutableStateOf<FilmImagesList?>(null) }
     var filmographyFilms by remember { mutableStateOf<List<ActorFilm>?>(null) }
     var actorInfoId by remember { mutableIntStateOf(0) }
+    val searchFilmsRepository = SearchFilmsRepository(filmsSearchApiService)
 
     NavHost(
         navController = navController,
@@ -62,13 +57,17 @@ fun SkillCinemaNavHost(
                     navController.navigateToSingleFilmType(filmType)
                 },
 
-            )
+                )
         }
         composable(route = Destination.SearchPage.route) {
             SearchPage(
                 onFilterClicked = {
                     navController.navigate(Destination.FilterPage.route)
-                }
+                },
+                searchFilmsRepository = searchFilmsRepository,
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
+                },
             )
 
 //            HomePage(
@@ -102,7 +101,7 @@ fun SkillCinemaNavHost(
 //                }
 //            )
         }
-        composable(route = Destination.Gallery.route){
+        composable(route = Destination.Gallery.route) {
             GalleryPage(
                 innerPadding,
                 gallery,
@@ -111,7 +110,7 @@ fun SkillCinemaNavHost(
                 }
             )
         }
-        composable(route = Destination.Actor.route){
+        composable(route = Destination.Actor.route) {
             ActorPage(
                 id = actorInfoId,
                 mainPadding = innerPadding,
@@ -164,7 +163,8 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.Filmography.routeWithArgs) { navBackStackEntry ->
-            val actorName = navBackStackEntry.arguments?.getString(Destination.Filmography.actorName)
+            val actorName =
+                navBackStackEntry.arguments?.getString(Destination.Filmography.actorName)
             Log.d("actorName", actorName.toString())
             FilmographyPage(
                 actorFilmList = filmographyFilms,
