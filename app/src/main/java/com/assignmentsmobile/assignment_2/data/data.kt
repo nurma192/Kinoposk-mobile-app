@@ -1,5 +1,12 @@
 package com.assignmentsmobile.assignment_2.data
 
+import androidx.lifecycle.MutableLiveData
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.assignmentsmobile.assignment_2.data.local.CountryListConverter
+import com.assignmentsmobile.assignment_2.data.local.FilmListConverter
+import com.assignmentsmobile.assignment_2.data.local.GenreListConverter
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -9,14 +16,21 @@ data class FilmCollectionsResponse(
     val items: List<Film>
 )
 
+@Entity(tableName = "section_table")
+data class Section(
+    @PrimaryKey val sectionName: String,
+    @TypeConverters(FilmListConverter::class) val list: List<Film>
+)
+
+@Entity(tableName = "films")
 data class Film(
-    val kinopoiskId: Int,
+    @PrimaryKey val kinopoiskId: Int,
     val imdbId: String,
     val nameRu: String,
     val nameEn: String?,
     val nameOriginal: String,
-    val countries: List<Country>,
-    val genres: List<Genre>,
+    @TypeConverters(CountryListConverter::class) val countries: List<Country>,
+    @TypeConverters(GenreListConverter::class) val genres: List<Genre>,
     val ratingKinopoisk: Double,
     val ratingImdb: Double,
     val year: Int,
@@ -32,6 +46,36 @@ data class Film(
     val professionKey: String?
 )
 
+val dbList = MutableLiveData<List<Section>>()
+
+fun initializeSections() {
+    val watchedSection = Section("watched", emptyList())
+    val favoritesSection = Section("favorites", emptyList())
+
+    dbList.value = listOf(watchedSection, favoritesSection)
+}
+fun addFilmToSection(sectionName: String, film: Film) {
+    val currentList = dbList.value ?: return
+
+    val section = currentList.find { it.sectionName == sectionName }
+
+    if (section != null) {
+        if (film !in section.list) {
+            val updatedSection = section.copy(list = section.list + film)
+            dbList.value = currentList.map { if (it.sectionName == sectionName) updatedSection else it }
+        }
+    } else {
+        val newSection = Section(sectionName, listOf(film))
+        dbList.value = currentList + newSection
+    }
+}
+
+fun removeSectionByName(sectionName: String) {
+    val currentList = dbList.value ?: return
+    dbList.value = currentList.filter { it.sectionName != sectionName }
+}
+
+
 @Serializable
 data class Country(
     val country: String
@@ -40,12 +84,6 @@ data class Country(
 @Serializable
 data class Genre(
     val genre: String
-)
-
-
-data class Section(
-    val sectionName: String,
-    val list: List<Film>
 )
 
 data class Staff(

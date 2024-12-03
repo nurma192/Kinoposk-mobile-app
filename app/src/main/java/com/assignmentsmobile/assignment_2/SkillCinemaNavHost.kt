@@ -1,6 +1,7 @@
 package com.assignmentsmobile.assignment_2
 
 import FilmographyPage
+import android.app.Application
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -21,11 +23,16 @@ import com.assignmentsmobile.assignment_2.data.ActorFilm
 import com.assignmentsmobile.assignment_2.data.ActorFilmList
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
+import com.assignmentsmobile.assignment_2.data.addFilmToSection
+import com.assignmentsmobile.assignment_2.data.dbList
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
+import com.assignmentsmobile.assignment_2.data.initializeSections
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
+import com.assignmentsmobile.assignment_2.data.viewmodel.SectionViewModel
+import com.assignmentsmobile.assignment_2.data.viewmodel.SectionViewModelFactory
 import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilterPage.FilterPage
@@ -46,6 +53,12 @@ fun SkillCinemaNavHost(
     var gallery by remember { mutableStateOf<FilmImagesList?>(null) }
     var filmographyFilms by remember { mutableStateOf<List<ActorFilm>?>(null) }
     var actorInfoId by remember { mutableIntStateOf(0) }
+
+//    val sectionViewModel: SectionViewModel = viewModel(
+//        factory = SectionViewModelFactory(LocalContext.current.applicationContext as Application)
+//    )
+
+    initializeSections()
 
     NavHost(
         navController = navController,
@@ -70,17 +83,6 @@ fun SkillCinemaNavHost(
                     navController.navigate(Destination.FilterPage.route)
                 }
             )
-
-//            HomePage(
-//                innerPadding = innerPadding,
-//                screenState = screenState,
-//                onFilmClicked = { filmId ->
-//                    navController.navigateToSingleFilm(filmId)
-//                },
-//                onFilmTypeClicked = { filmType ->
-//                    navController.navigateToSingleFilmType(filmType)
-//                }
-//            )
         }
         composable(route = Destination.FilterPage.route) {
             FilterPage(
@@ -90,17 +92,11 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.AccountPage.route) {
-            ProfilePage()
-//            HomePage(
-//                innerPadding = innerPadding,
-//                screenState  = screenState,
-//                onFilmClicked = { filmId ->
-//                    navController.navigateToSingleFilm(filmId)
-//                },
-//                onFilmTypeClicked = { filmType ->
-//                    navController.navigateToSingleFilmType(filmType)
-//                }
-//            )
+            ProfilePage(
+                onFilmClicked = { filmId ->
+                    navController.navigateToSingleFilm(filmId)
+                }
+            )
         }
         composable(route = Destination.Gallery.route){
             GalleryPage(
@@ -148,7 +144,15 @@ fun SkillCinemaNavHost(
                 onActorClicked = { actorId ->
                     actorInfoId = actorId
                     navController.navigate(Destination.Actor.route)
-                }
+                },
+                onWatchedClicked = { film ->
+//                    sectionViewModel.addFilmToSection("Просмотрено", film)
+                    addFilmToSection("watched", film)
+                },
+                onFavoriteClicked = { film ->
+//                    sectionViewModel.addFilmToSection("Просмотрено", film)
+                    addFilmToSection("favorite", film)
+                },
             )
         }
         composable(route = Destination.FilmType.routeWithArgs) { navBackStackEntry ->

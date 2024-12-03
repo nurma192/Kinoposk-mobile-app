@@ -18,6 +18,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,69 +34,26 @@ import com.assignmentsmobile.assignment_2.R
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.ui.components.FilmView
 import androidx.compose.ui.draw.clip
+import com.assignmentsmobile.assignment_2.data.dbList
 import kotlin.math.ceil
 
 data class Collection(val name: String, val icon: Int, val count: Int)
 
 @Composable
 @Preview(showBackground = true)
-fun ProfilePage() {
-    val films = listOf(
-        Film(
-            kinopoiskId = 123456,
-            imdbId = "tt1234567",
-            nameRu = "Фильм 1",
-            nameEn = "Film 1",
-            nameOriginal = "Original Film 1",
-            countries = listOf(),
-            genres = listOf(),
-            ratingKinopoisk = 7.8,
-            ratingImdb = 7.5,
-            year = 2023,
-            type = "Movie",
-            posterUrl = "",
-            posterUrlPreview = "",
-            coverUrl = "",
-            logoUrl = "",
-            description = "This is a detailed description of the film.",
-            ratingAgeLimits = "16+",
-            filmLength = 120,
-            shortDescription = "A short description of the movie.",
-            professionKey = "director"
-        ),
-        Film(
-            kinopoiskId = 789012,
-            imdbId = "tt7890123",
-            nameRu = "Фильм 2",
-            nameEn = "Film 2",
-            nameOriginal = "Original Film 2",
-            countries = listOf(),
-            genres = listOf(),
-            ratingKinopoisk = 8.2,
-            ratingImdb = 8.0,
-            year = 2022,
-            type = "Movie",
-            posterUrl = "",
-            posterUrlPreview = "",
-            coverUrl = "",
-            logoUrl = "",
-            description = "A drama film about love and sacrifice.",
-            ratingAgeLimits = "18+",
-            filmLength = 95,
-            shortDescription = "A romantic drama about two souls finding each other.",
-            professionKey = "actor"
-        )
-    )
-
+fun ProfilePage(
+    onFilmClicked: (Int) -> Unit = {}
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
              .verticalScroll(rememberScrollState())
             .padding(top = 54.dp, start = 25.dp, end = 20.dp)
     ) {
+        val sections by dbList.observeAsState(emptyList())
         SectionHeader(
             title = "Просмотрено",
-            count = 15,
+            count = sections.first().list.size,
             onIconClick = {}
         )
 
@@ -103,8 +62,8 @@ fun ProfilePage() {
             modifier = Modifier.padding(top = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(films) { film ->
-                FilmView(film = film, onFilmClicked = { kinopoiskId -> })
+            items(sections.first().list) { film ->
+                FilmView(film = film, onFilmClicked = onFilmClicked)
             }
         }
 
@@ -127,7 +86,7 @@ fun ProfilePage() {
         Spacer(modifier = Modifier.height(8.dp))
         SectionHeader(
             title = "Вам было интересно",
-            count = 15,
+            count = sections.get(2).list.size,
             onIconClick = {}
         )
 
@@ -135,8 +94,8 @@ fun ProfilePage() {
             modifier = Modifier.padding(top = 20.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items(films) { film ->
-                FilmView(film = film, onFilmClicked = { kinopoiskId -> })
+            items(sections.get(2).list) { film ->
+                FilmView(film = film, onFilmClicked = onFilmClicked)
             }
         }
     }

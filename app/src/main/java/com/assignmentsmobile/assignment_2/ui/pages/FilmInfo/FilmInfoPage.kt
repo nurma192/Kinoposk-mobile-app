@@ -51,6 +51,7 @@ import com.assignmentsmobile.assignment_2.data.FilmImagesList
 import com.assignmentsmobile.assignment_2.data.SimilarFilmList
 import com.assignmentsmobile.assignment_2.data.Staff
 import com.assignmentsmobile.assignment_2.data.StaffList
+import com.assignmentsmobile.assignment_2.data.addFilmToSection
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
 import com.assignmentsmobile.assignment_2.data.toFilm
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
@@ -73,7 +74,9 @@ fun FilmInfoPage(
         )
     ),
     onGalleryClicked: (FilmImagesList) -> Unit = {},
-    onActorClicked: (Int) -> Unit = {}
+    onActorClicked: (Int) -> Unit = {},
+    onWatchedClicked: (Film) -> Unit = {},
+    onFavoriteClicked: (Film) -> Unit = {}
 ) {
     val filmInfoState by viewModel.filmInfoState.collectAsState()
     val staffInfoState by viewModel.staffInfoState.collectAsState()
@@ -91,6 +94,9 @@ fun FilmInfoPage(
     val staffList = (staffInfoState as? ScreenState.Success<StaffList>)?.data
     val filmImagesList = (filmImagesState as? ScreenState.Success<FilmImagesList>)?.data
     val similarFilmsList = (similarFilmState as? ScreenState.Success<SimilarFilmList>)?.data
+
+    if(film != null)
+        addFilmToSection("interest", film)
 
     if (film == null) {
         when (filmInfoState) {
@@ -184,7 +190,9 @@ fun FilmInfoPage(
         onBackClicked = onBackClicked,
         onFilmClicked = onFilmClicked,
         onGalleryClicked = onGalleryClicked,
-        onActorClicked = onActorClicked
+        onActorClicked = onActorClicked,
+        onWatchedClicked = onWatchedClicked,
+        onFavoriteClicked = onFavoriteClicked
     )
 
 }
@@ -198,14 +206,16 @@ fun FilmInfoContent(
     onBackClicked: () -> Unit,
     onFilmClicked: (Int) -> Unit = {},
     onGalleryClicked: (FilmImagesList) -> Unit,
-    onActorClicked: (Int) -> Unit
+    onActorClicked: (Int) -> Unit,
+    onWatchedClicked: (Film) -> Unit,
+    onFavoriteClicked: (Film) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(state = rememberScrollState()),
     ) {
-        Header(film, onBackClicked)
+        Header(film, onBackClicked, onWatchedClicked, onFavoriteClicked)
         InFilmActor(staffList, onActorClicked)
         InFilmWorker(staffList)
         FilmGallery(filmImagesList, onGalleryClicked)
@@ -411,7 +421,9 @@ fun RowInfo(
 @Composable
 fun Header(
     film: Film,
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    onWatchedClicked: (Film) -> Unit,
+    onFavoriteClicked: (Film) -> Unit
 ){
     Box(
         modifier = Modifier
@@ -514,19 +526,19 @@ fun Header(
                 horizontalArrangement = Arrangement.spacedBy(22.dp)
             ) {
 
-                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                IconButton(modifier = Modifier.size(18.dp), onClick = { onFavoriteClicked(film)}) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_like),
                         contentDescription = "Icon_Like"
                     )
                 }
-                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                IconButton(modifier = Modifier.size(18.dp), onClick = {  }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_flag),
                         contentDescription = "Icon_Flag"
                     )
                 }
-                IconButton(modifier = Modifier.size(18.dp), onClick = { }) {
+                IconButton(modifier = Modifier.size(18.dp), onClick = { onWatchedClicked(film) }) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_eye),
                         contentDescription = "Icon_Eye"
