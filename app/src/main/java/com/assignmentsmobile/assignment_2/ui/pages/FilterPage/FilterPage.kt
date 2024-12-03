@@ -39,18 +39,20 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.Filter
 
 @Composable
 fun FilterPage(
     onBackClicked: () -> Unit,
     onCountryClicked: () -> Unit,
     onDateRangeClicked: () -> Unit,
-    onGenreClicked: () -> Unit
+    onGenreClicked: () -> Unit,
+    filters: Filter
 ) {
     Column(modifier = Modifier.padding(top = 42.dp, start = 26.dp, end = 26.dp)) {
         Header(onBackClicked)
         AllFilmsSerials()
-        Country(onCountryClicked)
+        Country(onCountryClicked,filters)
         Genre(onGenreClicked)
         Year(onDateRangeClicked)
         Rating()
@@ -232,7 +234,8 @@ fun AllFilmsSerials() {
 
 @Composable
 fun Country(
-    onCountryClicked: () -> Unit
+    onCountryClicked: () -> Unit,
+    filters: Filter
 ) {
     Row(
         modifier = Modifier
@@ -252,7 +255,7 @@ fun Country(
             modifier = Modifier.clickable {
                 onCountryClicked()
             },
-            text = "Россия",
+            text = if (filters.country === "") "Все" else filters.country,
             style = TextStyle(
                 color = Color(0xff838390),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),

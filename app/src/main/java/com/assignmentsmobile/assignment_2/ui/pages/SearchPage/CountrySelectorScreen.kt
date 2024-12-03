@@ -23,11 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.assignmentsmobile.assignment_2.R
+import com.assignmentsmobile.assignment_2.data.Filter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CountrySelectorScreen(
-    onBackClicked: () -> Unit
+    onBackClicked: () -> Unit,
+    filters: Filter
 ) {
     val countries = listOf("Россия", "Великобритания", "Германия", "США", "Франция")
     val searchQuery = remember { mutableStateOf(TextFieldValue()) }
@@ -42,7 +44,7 @@ fun CountrySelectorScreen(
             Spacer(modifier = Modifier.height(16.dp))
             SearchField(searchQuery)
             Spacer(modifier = Modifier.height(16.dp))
-            CountryList(filteredCountries)
+            CountryList(filteredCountries, filters, onBackClicked)
         }
     }
 }
@@ -64,7 +66,10 @@ fun HeaderSection(
         },
         navigationIcon = {
             IconButton(onClick = { onBackClicked() }) {
-                Icon(painter = painterResource(id = R.drawable.ic_small_left_arrow), contentDescription = "Back")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_small_left_arrow),
+                    contentDescription = "Back"
+                )
             }
         },
         modifier = Modifier.border(1.dp, Color.Gray)
@@ -102,18 +107,21 @@ fun SearchIcon(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun CountryList(countries: List<String>) {
+fun CountryList(countries: List<String>, filters: Filter, onBackClicked: () -> Unit,) {
     Column(modifier = Modifier.padding(16.dp)) {
         countries.forEachIndexed { index, country ->
-            CountryItem(country = country, isLastItem = index == countries.size - 1)
+            CountryItem(country = country, isLastItem = index == countries.size - 1, filters, onBackClicked)
         }
     }
 }
 
 @Composable
-fun CountryItem(country: String, isLastItem: Boolean) {
+fun CountryItem(country: String, isLastItem: Boolean, filters: Filter, onBackClicked: () -> Unit,) {
     Button(
-        onClick = { /* Handle country selection */ },
+        onClick = {
+            filters.country = country
+            onBackClicked()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = if (!isLastItem) 8.dp else 0.dp),

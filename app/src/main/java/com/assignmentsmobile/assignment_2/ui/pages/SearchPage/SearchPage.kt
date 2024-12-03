@@ -25,6 +25,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -56,6 +57,7 @@ fun SearchPage(
     onFilterClicked: () -> Unit,
     searchFilmsRepository: SearchFilmsRepository,
     onFilmClicked: (Int) -> Unit = {},
+    filters: Filter
 ) {
     val viewModel: SearchFilmsViewModel = viewModel(
         factory = SearchFilmsViewModelFactory(searchFilmsRepository)
@@ -63,7 +65,8 @@ fun SearchPage(
     val filmsState by viewModel.filmsState.collectAsState()
     var page by remember { mutableIntStateOf(1) }
     var searchText by remember { mutableStateOf("") }
-    var filters by remember { mutableStateOf(Filter("", "", "", "", false)) }
+
+
 
     Scaffold(
         topBar = {
@@ -96,6 +99,18 @@ fun SearchPage(
 
             is ScreenState.Success -> {
                 val data = state.data
+                val films by remember { mutableStateOf(state.data.films) }
+
+
+                LaunchedEffect(filters) {
+                    Log.d("Filter", filters.toString())
+                    logFilms(films)
+                    films.filter { film ->
+                        val countryFilter = filters.country.isEmpty() || film.countries.any { it.country == filters.country }
+                        val typeFilter = filters.type.isEmpty() || film.type == filters.type
+                        countryFilter && typeFilter
+                    }
+                }
 
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -110,19 +125,19 @@ fun SearchPage(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         modifier = Modifier.weight(1f)
                     ) {
-                        if (data.films.isEmpty()) {
+                        if (films.isEmpty()) {
                             item {
                                 Text("Результатов не найдено")
                             }
                         } else {
-                            logFilms(data.films)
-                            items(data.films) { film: SearchedFilm ->
+                            logFilms(films)
+                            items(films) { film: SearchedFilm ->
                                 FilmViewInSearch(film, onFilmClicked)
                             }
                         }
                     }
 
-                    if (data.films.isNotEmpty()) {
+                    if (films.isNotEmpty()) {
                         Row(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             modifier = Modifier

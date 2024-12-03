@@ -208,11 +208,11 @@ data class ActorFilmList(
 )
 
 data class Filter(
-    val type: String,
-    val country: String,
-    val rating: String,
-    val sortBy: String,
-    val watched: Boolean
+    var type: String,
+    var country: String,
+    var rating: String,
+    var sortBy: String,
+    var watched: Boolean
 )
 
 data class SearchedFilms(

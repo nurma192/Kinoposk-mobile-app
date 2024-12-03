@@ -24,6 +24,7 @@ import com.assignmentsmobile.assignment_2.data.ActorFilm
 import com.assignmentsmobile.assignment_2.data.ActorFilmList
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
+import com.assignmentsmobile.assignment_2.data.Filter
 import com.assignmentsmobile.assignment_2.data.addFilmToSection
 import com.assignmentsmobile.assignment_2.data.dbList
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
@@ -58,6 +59,7 @@ fun SkillCinemaNavHost(
     var filmographyFilms by remember { mutableStateOf<List<ActorFilm>?>(null) }
     var actorInfoId by remember { mutableIntStateOf(0) }
     val searchFilmsRepository = SearchFilmsRepository(filmsSearchApiService)
+    var filters by remember { mutableStateOf(Filter("", "", "", "", false)) }
 
 //    val sectionViewModel: SectionViewModel = viewModel(
 //        factory = SectionViewModelFactory(LocalContext.current.applicationContext as Application)
@@ -91,6 +93,7 @@ fun SkillCinemaNavHost(
                 onFilmClicked = { filmId ->
                     navController.navigateToSingleFilm(filmId)
                 },
+                filters = filters
             )
 
         }
@@ -107,14 +110,16 @@ fun SkillCinemaNavHost(
                 },
                 onGenreClicked = {
                     navController.navigate(Destination.GenreSelectorScreen.route)
-                }
+                },
+                filters = filters
             )
         }
         composable(route = Destination.CountrySelectorScreen.route) {
             CountrySelectorScreen(
                 onBackClicked = {
                     navController.popBackStack()
-                }
+                },
+                filters = filters
             )
         }
         composable(route = Destination.DataRangeSelector.route) {
