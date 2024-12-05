@@ -53,7 +53,7 @@ fun FilterPage(
         Header(onBackClicked)
         AllFilmsSerials()
         Country(onCountryClicked,filters)
-        Genre(onGenreClicked)
+        Genre(onGenreClicked, filters)
         Year(onDateRangeClicked)
         Rating()
         DatePopularityRating()
@@ -275,7 +275,8 @@ fun Country(
 
 @Composable
 fun Genre(
-    onGenreClicked: () -> Unit
+    onGenreClicked: () -> Unit,
+    filters: Filter
 ) {
     Row(
         modifier = Modifier
@@ -295,7 +296,7 @@ fun Genre(
             modifier = Modifier.clickable {
                 onGenreClicked()
             },
-            text = "Комедия",
+            text = if (filters.type === "") "Все" else filters.type,
             style = TextStyle(
                 color = Color(0xff838390),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),

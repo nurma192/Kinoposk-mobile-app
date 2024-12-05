@@ -1,41 +1,28 @@
 package com.assignmentsmobile.assignment_2
 
 import FilmographyPage
-import android.app.Application
 import SearchFilmsRepository
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.assignmentsmobile.assignment_2.data.ActorFilm
-import com.assignmentsmobile.assignment_2.data.ActorFilmList
-import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
 import com.assignmentsmobile.assignment_2.data.Filter
 import com.assignmentsmobile.assignment_2.data.addFilmToSection
-import com.assignmentsmobile.assignment_2.data.dbList
-import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain
 import com.assignmentsmobile.assignment_2.data.initializeSections
 import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain.filmsSearchApiService
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
-import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModelFactory
-import com.assignmentsmobile.assignment_2.data.viewmodel.FilmInfoViewModel
-import com.assignmentsmobile.assignment_2.data.viewmodel.SectionViewModel
-import com.assignmentsmobile.assignment_2.data.viewmodel.SectionViewModelFactory
 import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilterPage.FilterPage
@@ -43,8 +30,9 @@ import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
 import com.assignmentsmobile.assignment_2.ui.pages.Profile.ProfilePage
-import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.CountrySelectorScreen
-import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.DateRangeSelector
+import com.assignmentsmobile.assignment_2.ui.pages.CountrySelectorScreen.CountrySelectorScreen
+import com.assignmentsmobile.assignment_2.ui.pages.DateRangeSelector.DateRangeSelector
+import com.assignmentsmobile.assignment_2.ui.pages.GenreSelectorScreen.GenreSelectorScreen
 import com.assignmentsmobile.assignment_2.ui.pages.SearchPage.SearchPage
 
 @Composable
@@ -130,7 +118,12 @@ fun SkillCinemaNavHost(
             )
         }
         composable(route = Destination.GenreSelectorScreen.route) {
-
+            GenreSelectorScreen(
+                onBackClicked = {
+                    navController.popBackStack()
+                },
+                filters = filters
+            )
         }
         composable(route = Destination.AccountPage.route) {
             ProfilePage(
