@@ -24,12 +24,12 @@ import com.assignmentsmobile.assignment_2.data.domain.KinopoiskDomain.filmsSearc
 
 import com.assignmentsmobile.assignment_2.data.viewmodel.FilmCollectionsViewModel
 import com.assignmentsmobile.assignment_2.ui.pages.ActorPage
-import com.assignmentsmobile.assignment_2.ui.pages.FilmInfo.FilmInfoPage
+import com.assignmentsmobile.assignment_2.ui.pages.FilmInfoPage.FilmInfoPage
 import com.assignmentsmobile.assignment_2.ui.pages.FilterPage.FilterPage
 import com.assignmentsmobile.assignment_2.ui.pages.GalleryPage.GalleryPage
 import com.assignmentsmobile.assignment_2.ui.pages.HomePage.HomePage
 import com.assignmentsmobile.assignment_2.ui.pages.ListPage.ListPage
-import com.assignmentsmobile.assignment_2.ui.pages.Profile.ProfilePage
+import com.assignmentsmobile.assignment_2.ui.pages.ProfilePage.ProfilePage
 import com.assignmentsmobile.assignment_2.ui.pages.CountrySelectorScreen.CountrySelectorScreen
 import com.assignmentsmobile.assignment_2.ui.pages.DateRangeSelector.DateRangeSelector
 import com.assignmentsmobile.assignment_2.ui.pages.GenreSelectorScreen.GenreSelectorScreen
@@ -129,6 +129,9 @@ fun SkillCinemaNavHost(
             ProfilePage(
                 onFilmClicked = { filmId ->
                     navController.navigateToSingleFilm(filmId)
+                },
+                onSeeAllClicked = { filmType ->
+                    navController.navigateToSingleFilmType(filmType)
                 }
             )
         }

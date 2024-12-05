@@ -1,4 +1,4 @@
-package com.assignmentsmobile.assignment_2.ui.pages.SearchPage
+package com.assignmentsmobile.assignment_2.ui.pages.DateRangeSelector
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

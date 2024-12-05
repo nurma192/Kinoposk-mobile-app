@@ -1,7 +1,6 @@
 
-package com.assignmentsmobile.assignment_2.ui.pages.FilmInfo
+package com.assignmentsmobile.assignment_2.ui.pages.FilmInfoPage
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -43,13 +42,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.assignmentsmobile.assignment_2.R
-import com.assignmentsmobile.assignment_2.data.Country
 import com.assignmentsmobile.assignment_2.data.Film
 import com.assignmentsmobile.assignment_2.data.FilmImagesList
-import com.assignmentsmobile.assignment_2.data.Genre
 import com.assignmentsmobile.assignment_2.data.SimilarFilmList
 import com.assignmentsmobile.assignment_2.data.Staff
 import com.assignmentsmobile.assignment_2.data.StaffList
@@ -316,9 +312,10 @@ fun PersonView(
 @Composable
 fun FilmGallery(
     filmImagesList: FilmImagesList,
-    onGalleryClicked: (FilmImagesList) -> Unit
+    onGalleryClicked: (FilmImagesList) -> Unit,
+    onSeeAllClicked: (String) -> Unit = {}
 ){
-    RowInfo("Галерея", filmImagesList.total.toString(), Modifier.clickable { onGalleryClicked(filmImagesList) })
+    RowInfo("Галерея", filmImagesList.total.toString(), onSeeAllClicked, Modifier.clickable { onGalleryClicked(filmImagesList) })
     Spacer(modifier = Modifier.height(32.dp))
     LazyRow(
         modifier = Modifier.padding(start = 26.dp),
@@ -380,6 +377,7 @@ fun FilmText(text: String){
 fun RowInfo(
     text: String,
     amount: String,
+    onSeeAllClicked: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Row(
@@ -399,17 +397,25 @@ fun RowInfo(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
         ) {
             Text(
-                modifier = modifier,
+                modifier = Modifier.clickable {
+                    //
+                    onSeeAllClicked(text)
+                },
                 text = amount, style = TextStyle(
                     color = Color(0xff3d3bff),
                     fontFamily = FontFamily(Font(R.font.graphik_medium)),
                     fontSize = 14.sp
                 )
             )
-            IconButton(modifier = Modifier.size(18.dp), onClick = {}) {
+            IconButton(
+                modifier = Modifier.size(18.dp),
+                onClick = {
+                    //
+                    onSeeAllClicked(text)
+                }
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_arrow_right),
                     contentDescription = "Icon_Arrow_Right",
