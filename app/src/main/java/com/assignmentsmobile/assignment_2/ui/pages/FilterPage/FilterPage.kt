@@ -52,7 +52,7 @@ fun FilterPage(
     Column(modifier = Modifier.padding(top = 42.dp, start = 26.dp, end = 26.dp)) {
         Header(onBackClicked)
         AllFilmsSerials()
-        Country(onCountryClicked,filters)
+        Country(onCountryClicked, filters)
         Genre(onGenreClicked, filters)
         Year(onDateRangeClicked)
         Rating()
@@ -356,6 +356,14 @@ fun Year(
 
 @Composable
 fun Rating() {
+    var sliderRange by remember { mutableStateOf(1f..10f) }
+
+    val text = if (sliderRange == 1f..10f) {
+        "любой"
+    } else {
+        "от ${"%.1f".format(sliderRange.start)} до ${"%.1f".format(sliderRange.endInclusive)}"
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -371,7 +379,7 @@ fun Rating() {
             )
         )
         Text(
-            text = "любой",
+            text = text,
             style = TextStyle(
                 color = Color(0xff838390),
                 fontFamily = FontFamily(Font(R.font.graphik_regular)),
@@ -381,7 +389,10 @@ fun Rating() {
     }
     Spacer(modifier = Modifier.height(24.dp))
 
-    CustomRangeSlider()
+    CustomRangeSlider(
+        sliderRange = sliderRange,
+        onValueChange = { sliderRange = it }
+    )
 
     Spacer(
         modifier = Modifier
@@ -394,13 +405,15 @@ fun Rating() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomRangeSlider() {
-    var sliderRange by remember { mutableStateOf(0f..100f) }
+fun CustomRangeSlider(
+    sliderRange: ClosedFloatingPointRange<Float>,
+    onValueChange: (ClosedFloatingPointRange<Float>) -> Unit
+) {
 
     RangeSlider(
         value = sliderRange,
-        onValueChange = { sliderRange = it },
-        valueRange = 0f..100f,
+        onValueChange = { onValueChange(it) },
+        valueRange = 1f..10f,
         onValueChangeFinished = {
             //Do Filter
         },
@@ -437,7 +450,9 @@ fun CustomRangeSlider() {
         }
     )
     Row(
-        modifier = Modifier.fillMaxWidth().padding(start = 11.dp, end = 3.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 11.dp, end = 3.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -462,7 +477,7 @@ fun CustomRangeSlider() {
 }
 
 @Composable
-fun DatePopularityRating(){
+fun DatePopularityRating() {
     Text(
         modifier = Modifier.clickable {
 
@@ -608,12 +623,20 @@ fun DatePopularityRating(){
 }
 
 @Composable
-fun NotViewed(){
-    Row(verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(36.dp)){
+fun NotViewed() {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(36.dp)
+    ) {
         Box(modifier = Modifier.size(46.dp)) {
-            Icon(modifier = Modifier.size(30.dp).align(Alignment.Center),
-                painter = painterResource(R.drawable.ic_eye), contentDescription = "Ic_Eye", tint = Color(0xff272727))
+            Icon(
+                modifier = Modifier
+                    .size(30.dp)
+                    .align(Alignment.Center),
+                painter = painterResource(R.drawable.ic_eye),
+                contentDescription = "Ic_Eye",
+                tint = Color(0xff272727)
+            )
         }
         Text(
             modifier = Modifier.clickable {
